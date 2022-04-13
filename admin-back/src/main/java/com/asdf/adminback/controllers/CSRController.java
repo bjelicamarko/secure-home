@@ -41,18 +41,17 @@ public class CSRController {
     public ResponseEntity<String> save(@RequestBody CSR csr) {
         try {
             csrService.save(csr);
-            return new ResponseEntity<>("Certificate signing request successfully created.", HttpStatus.OK);
+            return new ResponseEntity<>("Certificate signing request successfully created. Check your email to verify it.", HttpStatus.OK);
         }
         catch (CSRException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>("Unknown error happened while creating csr.", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/verify-csr/{id}")
+    @GetMapping("/verify-csr/{id}")
     public ResponseEntity<String> verify(@PathVariable Long id) {
         try {
             csrService.verify(id);
