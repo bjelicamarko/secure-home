@@ -1,3 +1,9 @@
+insert into role (name) VALUES ('ROLE_ADMIN');
+
+insert into system_user (username, password) values ('admin', '$2a$10$k/iwZ4.ZX3RQ.7k2qpT3yeLKmfF0IpGKoRz8bgXvoi58vXwaFsthi');
+
+INSERT INTO user_role (user_id, role_id) VALUES (1, 1); --  ROLE_ADMIN
+
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
 values('csr1@maildrop.cc', 'csr1name', 'csr1organization', 'csr1organizationunit', 'csr1city', 'csr1state', 'csr1country', true);
 
