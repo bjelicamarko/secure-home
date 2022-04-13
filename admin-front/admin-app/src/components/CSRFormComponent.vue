@@ -1,0 +1,158 @@
+<template>
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-5">
+      <form class="myForm">
+        <vue-form-generator
+          :schema="schema"
+          :model="model"
+          :options="formOptions"
+        >
+        </vue-form-generator>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+import CSRService from "../service/CSRService.js";
+export default {
+  data() {
+    return {
+      model: {
+        commonName: "",
+        organization: "",
+        organizationUnit: "",
+        email: "",
+        city: "",
+        state: "",
+        country: "",
+        status: true,
+        agreed: false,
+      },
+
+      schema: {
+        groups: [
+          {
+            legend: "Certificate Signing Request",
+            fields: [
+              {
+                type: "input",
+                inputType: "text",
+                label: "Common name",
+                model: "commonName",
+                placeholder: "User's common name",
+                required: true,
+                validator: "string",
+              },
+            ],
+          },
+          {
+            legend: "Organization Info",
+            fields: [
+              {
+                type: "input",
+                inputType: "text",
+                label: "Organization",
+                model: "organization",
+                placeholder: "User's organization",
+                validator: "string",
+                required: true,
+              },
+              {
+                type: "select",
+                label: "Organization unit",
+                model: "organizationUnit",
+                values: ["IT", "IT Services", "IT Department"],
+                required: true,
+              },
+            ],
+          },
+          {
+            legend: "User Private Info",
+            fields: [
+              {
+                type: "input",
+                inputType: "email",
+                label: "E-mail",
+                model: "email",
+                placeholder: "User's e-mail address",
+                required: true,
+                validator: "string",
+              },
+              {
+                type: "input",
+                inputType: "text",
+                label: "City",
+                model: "city",
+                placeholder: "User's city",
+                required: true,
+                validator: "string",
+              },
+              {
+                type: "input",
+                inputType: "text",
+                label: "State",
+                model: "state",
+                placeholder: "User's state",
+                required: true,
+                validator: "string",
+              },
+              {
+                type: "input",
+                inputType: "text",
+                label: "Country",
+                model: "country",
+                placeholder: "User's country",
+                required: true,
+                validator: "string",
+              },
+              {
+                type: "submit",
+                onSubmit: this.onSubmitAction,
+                buttonText: "Send request",
+                styleClasses: "myButton",
+              },
+            ],
+          },
+        ],
+      },
+
+      formOptions: {
+        validateAfterLoad: false,
+        validateAfterChanged: true,
+        validateAsync: true,
+      },
+    };
+  },
+  methods: {
+    onSubmitAction: function (csrModel) {
+      CSRService.saveCSR(csrModel)
+        .then((response) => {
+          console.log(response);
+          this.$toasted.show("CSR successfully created", {
+            theme: "toasted-primary",
+            position: "top-center",
+            duration: 2000,
+          });
+        })
+        .catch((response) => {
+          console.log(response);
+          this.$toasted.show(response.data, {
+            theme: "toasted-primary",
+            position: "top-center",
+            duration: 2000,
+          });
+        });
+    },
+  },
+};
+</script>
+<style>
+.myForm {
+  transform: translate(70px);
+}
+.myButton {
+  transform: translate(266px, 10px);
+}
+</style>
