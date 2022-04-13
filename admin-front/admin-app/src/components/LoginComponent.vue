@@ -77,7 +77,13 @@ export default {
             duration: 3000,
           });
           UserService.saveUserInLocalStorage(response);
-          // treba redirect na Admin home page
+          this.$router.push({ name: "admin-home" }).catch((err) => {
+            // Ignore the vuex err regarding  navigating to the page they are already on.
+            if (err.name != "NavigationDuplicated") {
+              // But print any other errors to the console
+              console.error(err);
+            }
+          });
         })
         .catch(() => {
           this.$toasted.show("Bad credentials", {
