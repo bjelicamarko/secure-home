@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/socket/**").permitAll()
 				.antMatchers("/api/users/login").permitAll()
-				.antMatchers("/api/csrs/**").permitAll()
+				.antMatchers("/api/csrs/**").permitAll() // ovo treba izbaciti kada uradimo autorizaciju
 				.anyRequest().authenticated().and()
 				.cors().and();
 //				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
