@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import CSRView from "../views/CSRView.vue";
 import AdminHomeView from "../views/AdminHomeView.vue";
+import CertificateSigningView from "../views/CertificateSigningView.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/admin-home",
     name: "admin-home",
     component: AdminHomeView,
+  },
+  {
+    path: "/certificate-signing/:id",
+    name: "certificate-signing",
+    component: CertificateSigningView,
   },
   // {
   //   path: "/about",

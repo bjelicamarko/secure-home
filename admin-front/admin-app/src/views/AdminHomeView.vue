@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="top-margin">
+    <h2>Verified certificate signing requests</h2>
     <CSRequestsComponent></CSRequestsComponent>
   </div>
 </template>
@@ -10,3 +11,9 @@ export default {
   components: { CSRequestsComponent },
 };
 </script>
+
+<style>
+.top-margin {
+  margin-top: 6%;
+}
+</style>

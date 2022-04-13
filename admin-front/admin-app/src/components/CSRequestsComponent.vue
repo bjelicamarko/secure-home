@@ -1,7 +1,6 @@
 <template>
   <div class="top-margin">
-    <h2>Verified certificate signin requests</h2>
-    <table class="table" style="margin-top: 50px">
+    <table class="table">
       <thead class="table-light">
         <td>Common name</td>
         <td>Organization</td>
@@ -16,11 +15,7 @@
           <td>{{ csr.email }}</td>
           <td>{{ csr.country }}</td>
           <td>
-            <button
-              type="button"
-              class="btn btn-dark"
-              @click="examine(csr.email)"
-            >
+            <button type="button" class="btn btn-dark" @click="examine(csr.id)">
               Examine
             </button>
           </td>
@@ -32,6 +27,7 @@
 
 <script>
 import CSRService from "../service/CSRService.js";
+import RedirectService from "../service/RedirectService.js";
 export default {
   data() {
     return {
@@ -42,20 +38,13 @@ export default {
   mounted() {
     CSRService.getAllVerifiedCSRs().then((response) => {
       this.csrs = response.data;
-      console.log(response);
     });
   },
 
   methods: {
-    examine: function (email) {
-      alert(email);
+    examine: function (id) {
+      RedirectService.redirectToUrl(this.$router, "certificate-signing/" + id);
     },
   },
 };
 </script>
-
-<style>
-.top-margin {
-  margin-top: 4%;
-}
-</style>
