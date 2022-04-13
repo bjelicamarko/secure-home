@@ -2,24 +2,24 @@ package com.asdf.adminback.security.auth;
 
 public class JwtAuthenticationRequest {
 	
-    private String email;
+    private String username;
     private String password;
 
     public JwtAuthenticationRequest() {
         super();
     }
 
-    public JwtAuthenticationRequest(String email, String password) {
-        this.setEmail(email);
+    public JwtAuthenticationRequest(String username, String password) {
+        this.setUsername(username);
         this.setPassword(password);
     }
 
-    public String getEmail() {
-        return this.email;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

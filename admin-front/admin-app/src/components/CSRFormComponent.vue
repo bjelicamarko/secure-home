@@ -27,8 +27,6 @@ export default {
         city: "",
         state: "",
         country: "",
-        status: true,
-        agreed: false,
       },
 
       schema: {
@@ -129,19 +127,17 @@ export default {
     onSubmitAction: function (csrModel) {
       CSRService.saveCSR(csrModel)
         .then((response) => {
-          console.log(response);
-          this.$toasted.show("CSR successfully created", {
-            theme: "toasted-primary",
-            position: "top-center",
-            duration: 2000,
-          });
-        })
-        .catch((response) => {
-          console.log(response);
           this.$toasted.show(response.data, {
             theme: "toasted-primary",
             position: "top-center",
-            duration: 2000,
+            duration: 3000,
+          });
+        })
+        .catch((response) => {
+          this.$toasted.show(response.data, {
+            theme: "toasted-primary",
+            position: "top-center",
+            duration: 3000,
           });
         });
     },
@@ -150,6 +146,7 @@ export default {
 </script>
 <style>
 .myForm {
+  margin-top: 8%;
   transform: translate(70px);
 }
 .myButton {

@@ -1,4 +1,4 @@
-package com.asdf.adminback.config.web_security;
+package com.asdf.adminback.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
