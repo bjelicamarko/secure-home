@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "vue2-toast/lib/toast.css";
 
 import Toasted from "vue-toasted";
+
 Vue.use(Toasted, {
   duration: 9000,
   position: "top-right",

@@ -6,14 +6,16 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+import static com.asdf.adminback.util.Constants.*;
 
 @Service
 public class KeyStoreServiceImpl implements KeyStoreService {
@@ -126,5 +128,19 @@ public class KeyStoreServiceImpl implements KeyStoreService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<String> getAliases() throws KeyStoreException, NoSuchProviderException, IOException, CertificateException, NoSuchAlgorithmException {
+        KeyStore ks = KeyStore.getInstance("JKS", "SUN");
+
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(FILE_PATH));
+        ks.load(in, PWD.toCharArray());
+
+        List<String> temp = new ArrayList<>();
+        Enumeration<String> en = ks.aliases();
+        while(en.hasMoreElements())
+            temp.add(en.nextElement());
+        return temp;
     }
 }

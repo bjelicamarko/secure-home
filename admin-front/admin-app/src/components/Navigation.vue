@@ -2,6 +2,7 @@
   <div class="topnav">
     <router-link to="/">Login</router-link>
     <router-link to="/certificate-signing-request">Send CSR</router-link>
+    <router-link to="/get-aliases">Aliases</router-link>
     <router-link id="logoutNav" to="#" @click="logout()">Logout</router-link>
   </div>
 </template>
