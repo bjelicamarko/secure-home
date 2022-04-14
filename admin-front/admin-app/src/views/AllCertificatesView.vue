@@ -4,16 +4,14 @@
       @changeItem="changeAlias"
       :items="aliases"
     ></DropdownComponent>
-    <CertificateDialog></CertificateDialog>
   </div>
 </template>
 
 <script>
 import DropdownComponent from "../components/DropdownComponent.vue";
-import CertificateDialog from "../components/CertificateDialog.vue";
 import CertificateService from "../service/CertificateService";
 export default {
-  components: { DropdownComponent, CertificateDialog },
+  components: { DropdownComponent },
   data: function () {
     return {
       aliases: [],
