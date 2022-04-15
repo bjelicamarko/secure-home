@@ -70,6 +70,16 @@ public class CSRServiceImpl implements CSRService {
         csrRepository.save(csr);
     }
 
+    @Override
+    public CSR findByEmail(String email) {
+        return csrRepository.findByEmail(email);
+    }
+
+    @Override
+    public void delete(CSR csr) {
+        csrRepository.delete(csr);
+    }
+
     private String composeVerificationEmail(Long id) {
         String message = """
                 Certificate signing request was created using this email address. To verify your identity click on this link %s%s

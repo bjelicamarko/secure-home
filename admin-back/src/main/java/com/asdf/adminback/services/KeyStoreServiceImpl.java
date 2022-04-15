@@ -152,4 +152,20 @@ public class KeyStoreServiceImpl implements KeyStoreService {
 
         return null;
     }
+
+    @Override
+    public boolean containsAlias(String alias) {
+        try {
+            KeyStore ks = KeyStore.getInstance("JKS", "SUN");
+
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(FILE_PATH));
+            ks.load(in, PWD.toCharArray());
+
+            return ks.containsAlias(alias);
+        } catch (CertificateException | KeyStoreException | IOException | NoSuchAlgorithmException | NoSuchProviderException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

@@ -2,8 +2,10 @@ package com.asdf.adminback.repositories;
 
 import com.asdf.adminback.models.CSR;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,4 +16,10 @@ public interface CSRRepository extends JpaRepository<CSR, Long> {
     List<CSR> findAllVerified();
 
     CSR findOneById(Long id);
+
+    CSR findByEmail(String email);
+
+    @Modifying
+    @Transactional
+    void delete(CSR csr);
 }

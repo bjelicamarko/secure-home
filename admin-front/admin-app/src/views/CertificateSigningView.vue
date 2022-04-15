@@ -171,8 +171,7 @@ export default {
           RedirectService.redirectToName(this.$router, "admin-home");
         })
         .catch((error) => {
-          console.log(error);
-          this.$toasted.show(error.response.message, {
+          this.$toasted.show(error.response.data, {
             theme: "toasted-primary",
             position: "top-center",
             duration: 3000,

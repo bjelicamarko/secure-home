@@ -5,6 +5,7 @@ import com.asdf.adminback.dto.CertificateSigningDTO;
 import com.asdf.adminback.dto.ExtendedKeyUsageDTO;
 import com.asdf.adminback.dto.KeyUsageDTO;
 import com.asdf.adminback.exceptions.CertificateSigningDTOException;
+import com.asdf.adminback.models.CSR;
 import com.asdf.adminback.models.IssuerData;
 import com.asdf.adminback.models.SubjectData;
 import com.asdf.adminback.util.CertificateSigningDTOUtils;
@@ -45,6 +46,9 @@ public class CertificateServiceImpl implements CertificateService{
 
     @Autowired
     private KeyStoreService keyStoreService;
+
+    @Autowired
+    private CSRService csrService;
 
     @PostConstruct
     private void postConstruct(){
@@ -135,6 +139,10 @@ public class CertificateServiceImpl implements CertificateService{
 
     @Override
     public void createAndWriteLeafCertificate(CertificateSigningDTO certificateSigningDTO) throws CertificateSigningDTOException {
+        if (csrService.findByEmail(certificateSigningDTO.getCertificateDataDTO().getEmail()) == null)
+            throw new CertificateSigningDTOException("There is no CSR for given email!");
+        if (keyStoreService.containsAlias(certificateSigningDTO.getCertificateDataDTO().getEmail()))
+            throw new CertificateSigningDTOException("Alias already exists!");
         CertificateSigningDTOUtils.checkBasicCertificateInfo(certificateSigningDTO);
 
         IssuerData issuerData = keyStoreService.readIssuerFromStore(FILE_PATH, "intermediate", PWD.toCharArray(), "intermediate".toCharArray());
@@ -154,6 +162,9 @@ public class CertificateServiceImpl implements CertificateService{
         String alias = certificateSigningDTO.getCertificateDataDTO().getEmail();
         keyStoreService.write(alias, keyPairSubject.getPrivate(), alias.toCharArray(), subjectCert);
         keyStoreService.saveKeyStore(FILE_PATH, PWD.toCharArray());
+
+        // Brisanje csr-a iz baze
+        csrService.delete(csrService.findByEmail(certificateSigningDTO.getCertificateDataDTO().getEmail()));
     }
 
     private X500Name generateX500Name(CertificateDataDTO certificateDataDTO) {

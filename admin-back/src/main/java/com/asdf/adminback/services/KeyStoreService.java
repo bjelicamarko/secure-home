@@ -24,4 +24,6 @@ public interface KeyStoreService {
     PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass);
 
     Long generateNextSerialNumber();
+
+    boolean containsAlias(String alias);
 }
