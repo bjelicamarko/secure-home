@@ -4,7 +4,7 @@
       <option v-for="item in items" :key="item">{{ item }}</option>
     </select>
 
-    Selected Item: {{ selectedValue }}
+    Selected: {{ selectedValue }}
   </div>
 </template>
 

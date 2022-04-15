@@ -1,5 +1,6 @@
 package com.asdf.adminback.services;
 
+import com.asdf.adminback.models.CertificateDTO;
 import com.asdf.adminback.models.IssuerData;
 
 import java.io.FileNotFoundException;
@@ -26,4 +27,6 @@ public interface KeyStoreService {
     PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass);
 
     List<String> getAliases() throws KeyStoreException, NoSuchProviderException, IOException, CertificateException, NoSuchAlgorithmException;
+
+    List<CertificateDTO> readCertificateChain(String keyStoreFile, String keyStorePass, String alias);
 }

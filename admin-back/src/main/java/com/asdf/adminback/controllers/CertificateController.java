@@ -1,5 +1,6 @@
 package com.asdf.adminback.controllers;
 
+import com.asdf.adminback.models.CertificateDTO;
 import com.asdf.adminback.services.CertificateService;
 import com.asdf.adminback.services.KeyStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,10 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/getCertificate")
-    public ResponseEntity<X509Certificate> getCertificate(@RequestBody String alias) {
+    public ResponseEntity<List<CertificateDTO>> getCertificate(@RequestBody String alias) {
         alias = alias.substring(0, alias.length() - 1);
         System.out.println("Kljuc je " + alias);
-        return new ResponseEntity<>((X509Certificate)keyStoreService.readCertificate(FILE_PATH, PWD, alias), HttpStatus.OK);
+        return new ResponseEntity<>(keyStoreService.readCertificateChain(FILE_PATH, PWD, alias)
+                , HttpStatus.OK);
     }
 }

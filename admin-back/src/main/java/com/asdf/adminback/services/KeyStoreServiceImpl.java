@@ -1,5 +1,6 @@
 package com.asdf.adminback.services;
 
+import com.asdf.adminback.models.CertificateDTO;
 import com.asdf.adminback.models.IssuerData;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
@@ -102,6 +103,7 @@ public class KeyStoreServiceImpl implements KeyStoreService {
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
             ks.load(in, keyStorePass.toCharArray());
 
+
             if (ks.isKeyEntry(alias)) {
                 return ks.getCertificate(alias);
             }
@@ -142,5 +144,39 @@ public class KeyStoreServiceImpl implements KeyStoreService {
         while(en.hasMoreElements())
             temp.add(en.nextElement());
         return temp;
+    }
+
+    @Override
+    public List<CertificateDTO> readCertificateChain(String keyStoreFile, String keyStorePass, String alias) {
+        try {
+            KeyStore ks = KeyStore.getInstance("JKS", "SUN");
+
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
+            ks.load(in, keyStorePass.toCharArray());
+
+            List<Certificate> listOfCertificates = new ArrayList<>();
+
+            if (ks.isKeyEntry(alias)) {
+                if (alias.equals("root")) {
+                    listOfCertificates.add(ks.getCertificate(alias));
+                } else if (alias.equals("intermediate")) {
+                    listOfCertificates.add(ks.getCertificate("root"));
+                    listOfCertificates.add(ks.getCertificate(alias));
+                } else {
+                    listOfCertificates.add(ks.getCertificate("root"));
+                    listOfCertificates.add(ks.getCertificate("intermediate"));
+                    listOfCertificates.add(ks.getCertificate(alias));
+                }
+
+                List<CertificateDTO> certs = new ArrayList<>();
+                for (Certificate c : listOfCertificates)
+                    certs.add(new CertificateDTO((X509Certificate)c));
+                return certs;
+            }
+        } catch (KeyStoreException | NoSuchProviderException | NoSuchAlgorithmException |
+                CertificateException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
