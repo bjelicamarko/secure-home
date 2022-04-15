@@ -5,7 +5,7 @@ public class CertificateSigningDTO {
     private CertificateDataDTO certificateDataDTO;
     private KeyUsageDTO keyUsageDTO;
     private ExtendedKeyUsageDTO extendedKeyUsageDTO;
-    private boolean isCa;
+    private boolean ca;
 
     public CertificateSigningDTO() { }
 
@@ -34,10 +34,10 @@ public class CertificateSigningDTO {
     }
 
     public boolean isCa() {
-        return isCa;
+        return ca;
     }
 
     public void setCa(boolean ca) {
-        isCa = ca;
+        this.ca = ca;
     }
 }

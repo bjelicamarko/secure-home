@@ -96,6 +96,7 @@ import KeyUsageComponent from "../components/KeyUsageComponent.vue";
 import ExtendedKeyUsageComponent from "../components/ExtendedKeyUsageComponent.vue";
 import CSRequestViewer from "../components/CSRequestViewer.vue";
 import CertificateFormComponent from "../components/CertificateFormComponent.vue";
+import CertificateService from "@/service/CertificateService.js";
 export default {
   components: {
     KeyUsageComponent,
@@ -140,7 +141,7 @@ export default {
         certificateDataDTO: null,
         keyUsageDTO: null,
         extendedKeyUsageDTO: null,
-        isCa: null,
+        ca: null,
       };
       if (!this.caSelected) {
         certDTO = {
@@ -152,11 +153,31 @@ export default {
         certDTO = {
           certificateDataDTO: certificateData,
           keyUsageDTO: this.$refs.keyUsage.model,
-          isCa: this.caCheckboxChecked,
+          ca: this.caCheckboxChecked,
         };
       }
-      console.log(certDTO);
       // Zahtev na bek
+      this.sendRequest(certDTO);
+    },
+    sendRequest: function (certDTO) {
+      console.log(certDTO);
+      CertificateService.createCertificate(certDTO)
+        .then(() => {
+          this.$toasted.show("Certificate successfully created", {
+            theme: "toasted-primary",
+            position: "top-center",
+            duration: 3000,
+          });
+          RedirectService.redirectToName(this.$router, "admin-home");
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$toasted.show(error.response.message, {
+            theme: "toasted-primary",
+            position: "top-center",
+            duration: 3000,
+          });
+        });
     },
     submit: function () {
       this.$refs.csrForm.clickTugaButton();

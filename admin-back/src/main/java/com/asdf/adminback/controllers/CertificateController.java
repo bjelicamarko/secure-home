@@ -1,8 +1,7 @@
 package com.asdf.adminback.controllers;
 
 import com.asdf.adminback.dto.CertificateSigningDTO;
-import com.asdf.adminback.exceptions.CSRException;
-import com.asdf.adminback.models.CSR;
+import com.asdf.adminback.exceptions.CertificateSigningDTOException;
 import com.asdf.adminback.services.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,16 @@ public class CertificateController {
 
     @PostMapping()
     public ResponseEntity<String> save(@RequestBody CertificateSigningDTO certificateSigningDTO) {
-        return null;
+        try {
+            certificateService.createAndWriteLeafCertificate(certificateSigningDTO);
+            return new ResponseEntity<>("Certificate successfully created.", HttpStatus.OK);
+        }
+        catch (CertificateSigningDTOException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Unknown exception happened while creating certificate", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

@@ -18,7 +18,6 @@ export default {
   mounted() {
     CSRService.getAllVerifiedCSRs().then((response) => {
       this.csrs = response.data;
-      console.log(this.csrs);
     });
   },
 };

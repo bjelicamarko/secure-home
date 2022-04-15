@@ -9,7 +9,7 @@ public class CSRUtils {
         if(csr == null) {
             throw new CSRException("Invalid csr!");
         }
-        else if(csr.getEmail().equals("") || csr.getEmail() == null) {
+        else if(csr.getEmail().equals("") || CertificateSigningDTOUtils.isEmailValid(csr.getEmail())) {
             throw new CSRException("Invalid email sent in csr!");
         }
         else if(csr.getCommonName().equals("") || csr.getCommonName() == null || csr.getCommonName().length() < 3) {
