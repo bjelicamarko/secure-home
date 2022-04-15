@@ -176,13 +176,14 @@ public class CertificateServiceImpl implements CertificateService{
     private X500Name generateIntermediateX500Name() {
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.CN, "Adminko Adminic");
-        builder.addRDN(BCStyle.SURNAME, "Adminic");
-        builder.addRDN(BCStyle.GIVENNAME, "Adminko");
+        builder.addRDN(BCStyle.SURNAME, "Adminic"); // Skloniti
+        builder.addRDN(BCStyle.GIVENNAME, "Adminko"); // Skloniti
         builder.addRDN(BCStyle.O, "UNS-FTN");
         builder.addRDN(BCStyle.OU, "Katedra za informatiku");
         builder.addRDN(BCStyle.C, "RS");
         builder.addRDN(BCStyle.E, "adminko@maildrop.cc");
-        builder.addRDN(BCStyle.UID, "2");
+        builder.addRDN(BCStyle.UID, "2"); // Automatski generisati
+        // Dodati state polje BCStyle.ST
         return builder.build();
     }
 }

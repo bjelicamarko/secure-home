@@ -9,6 +9,14 @@
           :options="formOptions"
         >
         </vue-form-generator>
+        <button
+          class="btn btn-success"
+          @click="login()"
+          type="submit"
+          style="margin-top: 10px"
+        >
+          Login
+        </button>
       </form>
     </div>
   </div>
@@ -47,12 +55,6 @@ export default {
                 placeholder: "User's password",
                 required: true,
                 validator: "string",
-              },
-              {
-                type: "submit",
-                onSubmit: this.login,
-                buttonText: "Login",
-                styleClasses: "myLButton",
               },
             ],
           },
@@ -103,6 +105,13 @@ export default {
   transform: translate(120px, 20px);
 }
 .myLButton {
-  transform: translate(220px);
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
 </style>

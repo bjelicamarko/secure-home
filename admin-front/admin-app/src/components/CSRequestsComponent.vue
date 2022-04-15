@@ -2,11 +2,11 @@
   <div class="top-margin">
     <table class="table">
       <thead class="table-light">
-        <td>Common name</td>
-        <td>Organization</td>
-        <td>Email</td>
-        <td>Country</td>
-        <td></td>
+        <th>Common name</th>
+        <th>Organization</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th></th>
       </thead>
       <tbody>
         <tr v-for="csr in csrs" :key="csr.email">
@@ -26,21 +26,9 @@
 </template>
 
 <script>
-import CSRService from "../service/CSRService.js";
 import RedirectService from "../service/RedirectService.js";
 export default {
-  data() {
-    return {
-      csrs: [],
-    };
-  },
-
-  mounted() {
-    CSRService.getAllVerifiedCSRs().then((response) => {
-      this.csrs = response.data;
-    });
-  },
-
+  props: ["csrs"],
   methods: {
     examine: function (id) {
       RedirectService.redirectToUrl(this.$router, "certificate-signing/" + id);

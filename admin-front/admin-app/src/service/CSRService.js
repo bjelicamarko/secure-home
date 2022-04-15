@@ -17,5 +17,12 @@ class CSRService {
             method: "GET"
         })
     }
+
+    static getCSR(id) {
+        return client({
+            url: "api/csrs/" + id,
+            method: "GET"
+        })
+    }
 }
 export default CSRService;

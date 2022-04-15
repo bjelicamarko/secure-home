@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import VueFormGenerator from "vue-form-generator";
-import "vue-form-generator/dist/vfg.css";
+//import "vue-form-generator/dist/vfg.css";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
