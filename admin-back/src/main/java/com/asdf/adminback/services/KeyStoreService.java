@@ -2,9 +2,10 @@ package com.asdf.adminback.services;
 
 import com.asdf.adminback.models.IssuerData;
 
-import java.security.KeyPair;
-import java.security.PrivateKey;
+import java.io.IOException;
+import java.security.*;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 
 public interface KeyStoreService {
 
@@ -22,4 +23,5 @@ public interface KeyStoreService {
 
     PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass);
 
+    Long generateNextSerialNumber();
 }

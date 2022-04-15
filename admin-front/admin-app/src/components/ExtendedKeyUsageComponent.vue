@@ -39,8 +39,8 @@ export default {
   data() {
     return {
       model: {
-        adobePdfSigning: true,
-        documentSigning: true,
+        adobePdfSigning: false,
+        documentSigning: false,
         ipSecurityEndSystem: false,
         ocspSigning: false,
         tlsWebClientAuthentication: false,
@@ -58,11 +58,13 @@ export default {
                 type: "checkbox",
                 label: "Adobe Pdf Signing",
                 model: "adobePdfSigning",
+                disabled: true,
               },
               {
                 type: "checkbox",
                 label: "Document Signing",
                 model: "documentSigning",
+                disabled: true,
               },
               {
                 type: "checkbox",
@@ -114,6 +116,7 @@ export default {
                 type: "checkbox",
                 label: "Tsl Signing",
                 model: "tslSigning",
+                disabled: true,
               },
             ],
           },

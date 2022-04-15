@@ -156,6 +156,7 @@ export default {
         };
       }
       console.log(certDTO);
+      // Zahtev na bek
     },
     submit: function () {
       this.$refs.csrForm.clickTugaButton();
