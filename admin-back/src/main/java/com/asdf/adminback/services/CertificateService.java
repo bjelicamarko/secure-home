@@ -1,5 +1,7 @@
 package com.asdf.adminback.services;
 
+import com.asdf.adminback.dto.CertificateSigningDTO;
+import com.asdf.adminback.exceptions.CertificateSigningDTOException;
 import com.asdf.adminback.models.IssuerData;
 import com.asdf.adminback.models.SubjectData;
 
@@ -13,4 +15,6 @@ public interface CertificateService {
     void createAndWriteRootCertificate();
 
     void createAndWriteIntermediateCertificate();
+
+    void createAndWriteLeafCertificate(CertificateSigningDTO certificateSigningDTO) throws CertificateSigningDTOException;
 }

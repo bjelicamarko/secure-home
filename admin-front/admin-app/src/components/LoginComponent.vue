@@ -9,6 +9,14 @@
           :options="formOptions"
         >
         </vue-form-generator>
+        <button
+          class="btn btn-success"
+          @click="login()"
+          type="submit"
+          style="margin-top: 10px"
+        >
+          Login
+        </button>
       </form>
     </div>
   </div>
@@ -48,12 +56,6 @@ export default {
                 required: true,
                 validator: "string",
               },
-              {
-                type: "submit",
-                onSubmit: this.login,
-                buttonText: "Login",
-                styleClasses: "myLButton",
-              },
             ],
           },
         ],
@@ -77,7 +79,13 @@ export default {
             duration: 3000,
           });
           UserService.saveUserInLocalStorage(response);
-          // treba redirect na Admin home page
+          this.$router.push({ name: "admin-home" }).catch((err) => {
+            // Ignore the vuex err regarding  navigating to the page they are already on.
+            if (err.name != "NavigationDuplicated") {
+              // But print any other errors to the console
+              console.error(err);
+            }
+          });
         })
         .catch(() => {
           this.$toasted.show("Bad credentials", {
@@ -97,6 +105,13 @@ export default {
   transform: translate(120px, 20px);
 }
 .myLButton {
-  transform: translate(220px);
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
 </style>

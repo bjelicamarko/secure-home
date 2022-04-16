@@ -7,24 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.List;
-
 import static com.asdf.adminback.util.Constants.*;
+import com.asdf.adminback.dto.CertificateSigningDTO;
+import com.asdf.adminback.exceptions.CertificateSigningDTOException;
 
 @RestController
-@RequestMapping("api/certificate")
+@RequestMapping("api/certificates")
 public class CertificateController {
 
     @Autowired
     private CertificateService certificateService;
+
 
     @Autowired
     private KeyStoreService keyStoreService;
@@ -45,5 +44,21 @@ public class CertificateController {
         System.out.println("Kljuc je " + alias);
         return new ResponseEntity<>(keyStoreService.readCertificateChain(FILE_PATH, PWD, alias)
                 , HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<String> save(@RequestBody CertificateSigningDTO certificateSigningDTO) {
+        try {
+            certificateService.createAndWriteLeafCertificate(certificateSigningDTO);
+            return new ResponseEntity<>("Certificate successfully created.", HttpStatus.OK);
+        }
+        catch (CertificateSigningDTOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unknown exception happened while creating certificate", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

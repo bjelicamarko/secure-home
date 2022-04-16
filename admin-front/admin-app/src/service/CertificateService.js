@@ -4,16 +4,25 @@ import { client } from "@/client/axiosClient";
 class CertificateService {
     static getAliases() {
         return client({
-            url: "api/certificate/getAliases",
+            url: "api/certificates/getAliases",
             method: "GET",
         })
     }
     static getCertificate(alias) {
         return client({
-            url: "api/certificate/getCertificate",
+            url: "api/certificates/getCertificate",
             method: "POST",
             data: alias
         })
     }
+    
+    static createCertificate(certDTO) {
+        return client({
+            url: "api/certificates",
+            method: "POST",
+            data: certDTO
+        })
+    }
+    
 }
 export default CertificateService;

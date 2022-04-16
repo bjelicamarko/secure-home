@@ -10,3 +10,21 @@ export default new Vuex.Store({
   actions: {},
   modules: {},
 });
+
+// state: {
+//   lastCertificateMailToSign: "",
+// },
+// getters: {
+//   lastCertificateMailToSign: (state) => state.lastCertificateMailToSign,
+// },
+// mutations: {
+//   setLastCertificateMailToSign(state, mail) {
+//     state.lastCertificateMailToSign = mail;
+//   },
+// },
+// actions: {},
+// modules: {},
+
+// Pristupanja i izmena
+// this.$store.getters.lastCertificateMailToSign
+// this.$store.commit("setLastCertificateMailToSign", this.csrMail);

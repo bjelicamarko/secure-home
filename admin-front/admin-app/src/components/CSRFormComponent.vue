@@ -9,6 +9,14 @@
           :options="formOptions"
         >
         </vue-form-generator>
+        <button
+          class="btn btn-success"
+          @click="onSubmitAction()"
+          type="submit"
+          style="margin-top: 10px"
+        >
+          Send request
+        </button>
       </form>
     </div>
   </div>
@@ -105,12 +113,6 @@ export default {
                 required: true,
                 validator: "string",
               },
-              {
-                type: "submit",
-                onSubmit: this.onSubmitAction,
-                buttonText: "Send request",
-                styleClasses: "myButton",
-              },
             ],
           },
         ],
@@ -148,8 +150,5 @@ export default {
 .myForm {
   margin-top: 8%;
   transform: translate(70px);
-}
-.myButton {
-  transform: translate(266px, 10px);
 }
 </style>
