@@ -5,7 +5,6 @@ import com.asdf.adminback.dto.CertificateSigningDTO;
 import com.asdf.adminback.dto.ExtendedKeyUsageDTO;
 import com.asdf.adminback.dto.KeyUsageDTO;
 import com.asdf.adminback.exceptions.CertificateSigningDTOException;
-import com.asdf.adminback.models.CSR;
 import com.asdf.adminback.models.IssuerData;
 import com.asdf.adminback.models.SubjectData;
 import com.asdf.adminback.util.CertificateSigningDTOUtils;
@@ -58,82 +57,6 @@ public class CertificateServiceImpl implements CertificateService{
         // createAndWriteRootCertificate();
         // createAndWriteIntermediateCertificate();
     }
-
-    @Override
-    public X509Certificate createNewCertificate(SubjectData subjectData, IssuerData issuerData,
-                                                 PublicKey issuerPublicKey) {
-
-        X509Certificate cert = generateCertificate(subjectData, issuerData, issuerPublicKey);
-
-        System.out.println("\n===== Podaci o izdavacu sertifikata =====");
-        assert cert != null;
-        System.out.println(cert.getIssuerX500Principal().getName());
-        System.out.println("\n===== Podaci o vlasniku sertifikata =====");
-        System.out.println(cert.getSubjectX500Principal().getName());
-        System.out.println("\n===== Sertifikat =====");
-        System.out.println("-------------------------------------------------------");
-        System.out.println(cert);
-        System.out.println("-------------------------------------------------------");
-
-        try {
-            cert.verify(issuerPublicKey);
-            System.out.println("\nValidacija uspesna :)");
-        } catch (CertificateException | NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException | SignatureException e) {
-            System.out.println("\nValidacija neuspesna :(");
-            e.printStackTrace();
-        }
-
-        return cert;
-    }
-
-    @Override
-    public void createAndWriteRootCertificate() {
-        KeyPair keyPairRoot = keyStoreService.generateKeyPair();
-        X500Name x500Name = generateRootX500Name();
-        IssuerData issuerData = generateIssuerDataFromX500Name(x500Name, keyPairRoot.getPrivate());
-        SubjectData subjectData = generateSubjectDataFromX500Name(x500Name, keyPairRoot, "2022-01-01",
-                "2027-12-31", "1");
-
-        Certificate cert = createNewCertificate(subjectData, issuerData, keyPairRoot.getPublic());
-
-        keyStoreService.loadKeyStore(FILE_PATH, PWD.toCharArray());
-        keyStoreService.write("root", issuerData.getPrivateKey(), "root".toCharArray(), cert);
-        keyStoreService.saveKeyStore(FILE_PATH, PWD.toCharArray());
-    }
-
-    @Override
-    public void createAndWriteIntermediateCertificate() {
-        IssuerData issuerData = keyStoreService.readIssuerFromStore(FILE_PATH, "root", PWD.toCharArray(), "root".toCharArray());
-        X509Certificate cert = (X509Certificate) keyStoreService.readCertificate(FILE_PATH, PWD, "root");
-        KeyPair keyPairIssuer = new KeyPair(cert.getPublicKey(), issuerData.getPrivateKey());
-
-        KeyPair keyPairSubject = keyStoreService.generateKeyPair();
-        X500Name x500NameSubject = generateIntermediateX500Name();
-        SubjectData subjectData = generateSubjectDataFromX500Name(x500NameSubject, keyPairSubject, "2022-01-02", "2025-12-31", "2");
-        X509Certificate subjectCert = createNewCertificate(subjectData, issuerData, keyPairIssuer.getPublic());
-
-        System.out.println("\n===== Podaci o izdavacu sertifikata =====");
-        System.out.println(subjectCert.getIssuerX500Principal().getName());
-        System.out.println("\n===== Podaci o vlasniku sertifikata =====");
-        System.out.println(subjectCert.getSubjectX500Principal().getName());
-        System.out.println("\n===== Sertifikat =====");
-        System.out.println("-------------------------------------------------------");
-        System.out.println(subjectCert);
-        System.out.println("-------------------------------------------------------");
-
-        try {
-            subjectCert.verify(keyPairIssuer.getPublic());
-            System.out.println("\nValidacija uspesna :)");
-        } catch (CertificateException | NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException | SignatureException e) {
-            System.out.println("\nValidacija neuspesna :(");
-            e.printStackTrace();
-        }
-
-        keyStoreService.loadKeyStore(FILE_PATH, PWD.toCharArray());
-        keyStoreService.write("intermediate", keyPairSubject.getPrivate(), "intermediate".toCharArray(), subjectCert);
-        keyStoreService.saveKeyStore(FILE_PATH, PWD.toCharArray());
-    }
-
 
     /** Deo koda za kreiranje leaf sertifikata ----------------------------------------------------------------------- **/
 
@@ -275,7 +198,83 @@ public class CertificateServiceImpl implements CertificateService{
         // if(extendedKeyUsageDTO.isTslSigning()) certGen.addExtension(Extension.extendedKeyUsage, false, null);        invalid
     }
 
-    /** Deo koda za kreiranje leaf sertifikata ----------------------------------------------------------------------- **/
+    /** Deo koda za kreiranje leaf sertifikata iznad ------------------------------------------------------------------ **/
+
+    @Override
+    public void createAndWriteRootCertificate() {
+        KeyPair keyPairRoot = keyStoreService.generateKeyPair();
+        X500Name x500Name = generateRootX500Name();
+        IssuerData issuerData = generateIssuerDataFromX500Name(x500Name, keyPairRoot.getPrivate());
+        SubjectData subjectData = generateSubjectDataFromX500Name(x500Name, keyPairRoot, "2022-01-01",
+                "2027-12-31", "1");
+
+        Certificate cert = createNewCertificate(subjectData, issuerData, keyPairRoot.getPublic());
+
+        keyStoreService.loadKeyStore(FILE_PATH, PWD.toCharArray());
+        keyStoreService.write("root", issuerData.getPrivateKey(), "root".toCharArray(), cert);
+        keyStoreService.saveKeyStore(FILE_PATH, PWD.toCharArray());
+    }
+
+    @Override
+    public void createAndWriteIntermediateCertificate() {
+        IssuerData issuerData = keyStoreService.readIssuerFromStore(FILE_PATH, "root", PWD.toCharArray(), "root".toCharArray());
+        X509Certificate cert = (X509Certificate) keyStoreService.readCertificate(FILE_PATH, PWD, "root");
+        KeyPair keyPairIssuer = new KeyPair(cert.getPublicKey(), issuerData.getPrivateKey());
+
+        KeyPair keyPairSubject = keyStoreService.generateKeyPair();
+        X500Name x500NameSubject = generateIntermediateX500Name();
+        SubjectData subjectData = generateSubjectDataFromX500Name(x500NameSubject, keyPairSubject, "2022-01-02", "2025-12-31", "2");
+        X509Certificate subjectCert = createNewCertificate(subjectData, issuerData, keyPairIssuer.getPublic());
+
+        System.out.println("\n===== Podaci o izdavacu sertifikata =====");
+        System.out.println(subjectCert.getIssuerX500Principal().getName());
+        System.out.println("\n===== Podaci o vlasniku sertifikata =====");
+        System.out.println(subjectCert.getSubjectX500Principal().getName());
+        System.out.println("\n===== Sertifikat =====");
+        System.out.println("-------------------------------------------------------");
+        System.out.println(subjectCert);
+        System.out.println("-------------------------------------------------------");
+
+        try {
+            subjectCert.verify(keyPairIssuer.getPublic());
+            System.out.println("\nValidacija uspesna :)");
+        } catch (CertificateException | NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException | SignatureException e) {
+            System.out.println("\nValidacija neuspesna :(");
+            e.printStackTrace();
+        }
+
+        keyStoreService.loadKeyStore(FILE_PATH, PWD.toCharArray());
+        keyStoreService.write("intermediate", keyPairSubject.getPrivate(), "intermediate".toCharArray(), subjectCert);
+        keyStoreService.saveKeyStore(FILE_PATH, PWD.toCharArray());
+    }
+
+    @Override
+    public X509Certificate createNewCertificate(SubjectData subjectData, IssuerData issuerData,
+                                                PublicKey issuerPublicKey) {
+
+        X509Certificate cert = generateCertificate(subjectData, issuerData, issuerPublicKey);
+
+        System.out.println("\n===== Podaci o izdavacu sertifikata =====");
+        assert cert != null;
+        System.out.println(cert.getIssuerX500Principal().getName());
+        System.out.println("\n===== Podaci o vlasniku sertifikata =====");
+        System.out.println(cert.getSubjectX500Principal().getName());
+        System.out.println("\n===== Sertifikat =====");
+        System.out.println("-------------------------------------------------------");
+        System.out.println(cert);
+        System.out.println("-------------------------------------------------------");
+
+        try {
+            cert.verify(issuerPublicKey);
+            System.out.println("\nValidacija uspesna :)");
+        } catch (CertificateException | NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException | SignatureException e) {
+            System.out.println("\nValidacija neuspesna :(");
+            e.printStackTrace();
+        }
+
+        return cert;
+    }
+
 
     private IssuerData generateIssuerDataFromX500Name(X500Name x500Name, PrivateKey issuerKey) {
         return new IssuerData(issuerKey, x500Name);
