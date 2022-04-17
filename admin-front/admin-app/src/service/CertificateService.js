@@ -10,7 +10,7 @@ class CertificateService {
     }
     static getCertificate(alias) {
         return client({
-            url: "api/certificates/getCertificate",
+            url: "api/certificates/getCertificate/" + alias,
             method: "POST",
             data: alias
         })

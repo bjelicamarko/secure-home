@@ -38,9 +38,8 @@ public class CertificateController {
         }
     }
 
-    @PostMapping(value = "/getCertificate")
-    public ResponseEntity<List<CertificateDTO>> getCertificate(@RequestBody String alias) {
-        alias = alias.substring(0, alias.length() - 1);
+    @PostMapping(value = "/getCertificate/{alias}")
+    public ResponseEntity<List<CertificateDTO>> getCertificate(@PathVariable String alias) {
         System.out.println("Kljuc je " + alias);
         return new ResponseEntity<>(keyStoreService.readCertificateChain(FILE_PATH, PWD, alias)
                 , HttpStatus.OK);

@@ -15,7 +15,7 @@
             </div>
             <div
               style="margin-left: 20px"
-              v-else-if="item.issuedTo === 'Adminko Adminic'"
+              v-else-if="item.issuedTo === 'Admin'"
             >
               {{ item.issuedTo }}
             </div>
@@ -29,7 +29,7 @@
       <el-dialog
         title="Certificate Information"
         :visible.sync="secondDialogVisible"
-        :modalAppendToBody="false"
+        append-to-body
         width="30%"
         center
       >
@@ -39,13 +39,25 @@
           <b>Valid from</b> {{ chainCertificate.validFrom }} <b>to</b>
           {{ chainCertificate.validTo }}
         </p>
-        <p>------ More Details ------</p>
+        <p>------ <b>More Details</b> ------</p>
         <p><b>Serial Number:</b> {{ chainCertificate.serialNumber }}</p>
         <p>
           <b>Public key algorithm:</b> {{ chainCertificate.publicKeyAlgorithm }}
         </p>
         <p><b>Name Issuer: </b> {{ chainCertificate.complexNameIssuer }}</p>
         <p><b>Name Subject: </b> {{ chainCertificate.complexNameSubject }}</p>
+        <p><b>Version: </b> {{ chainCertificate.version }}</p>
+        <p><b>CA: </b> {{ chainCertificate.isCA === -1 ? "Ne" : "Da" }}</p>
+        <p>------ <b>Key Usage</b> -------</p>
+        <p v-for="usage in chainCertificate.keyUsages" :key="usage">
+          {{ usage }}
+        </p>
+
+        <p>------ <b>Extended Key Usage</b> -------</p>
+        <p v-for="usage in chainCertificate.extendedKeyUsages" :key="usage">
+          {{ usage }}
+        </p>
+
         <span slot="footer" class="dialog-footer">
           <el-button @click="secondDialogVisible = false">Cancel</el-button>
         </span>

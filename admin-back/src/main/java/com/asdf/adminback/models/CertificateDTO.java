@@ -5,9 +5,12 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CertificateDTO {
     private String issuedTo;
@@ -18,12 +21,17 @@ public class CertificateDTO {
     private String complexNameSubject;
     private String complexNameIssuer;
     private String publicKeyAlgorithm;
+    private List<String> keyUsages;
+    private List<String> extendedKeyUsages;
+    private int isCA;
+    private int version;
 
     public CertificateDTO() {
-
+        this.keyUsages = new ArrayList<>();
+        this.extendedKeyUsages = new ArrayList<>();
     }
 
-    public CertificateDTO(X509Certificate certificate)  {
+    public CertificateDTO(X509Certificate certificate) throws CertificateParsingException {
         this();
         //this.issuedTo = certificate.getSubjectX500Principal().getName();
         X500Name x500name = new X500Name(certificate.getSubjectX500Principal().getName());
@@ -53,6 +61,15 @@ public class CertificateDTO {
 
         this.serialNumber = certificate.getSerialNumber().toString();
         this.publicKeyAlgorithm = certificate.getPublicKey().getAlgorithm();
+
+        if (certificate.getKeyUsage() != null)
+            this.setKeyUsages(certificate.getKeyUsage());
+
+        if (certificate.getExtendedKeyUsage() != null)
+            this.setExtendedKeyUsages(certificate.getExtendedKeyUsage());
+
+        this.isCA = certificate.getBasicConstraints();
+        this.version = certificate.getVersion();
     }
 
     public String getIssuedTo() {
@@ -117,5 +134,89 @@ public class CertificateDTO {
 
     public void setPublicKeyAlgorithm(String publicKeyAlgorithm) {
         this.publicKeyAlgorithm = publicKeyAlgorithm;
+    }
+
+    public List<String> getKeyUsages() {
+        return keyUsages;
+    }
+
+    public void setKeyUsages(List<String> keyUsages) {
+        this.keyUsages = keyUsages;
+    }
+
+    public void setKeyUsages(boolean[] list){
+        this.keyUsages = new ArrayList<>();
+        if (list[0])
+            this.keyUsages.add("Digital Signature");
+        if (list[1])
+            this.keyUsages.add("Non Repudiation");
+        if (list[2])
+            this.keyUsages.add("Key Encipherment");
+        if (list[3])
+            this.keyUsages.add("Data Encipherment");
+        if (list[4])
+            this.keyUsages.add("Key Agreement");
+        if (list[5])
+            this.keyUsages.add("Key Cert Sign");
+        if (list[6])
+            this.keyUsages.add("cRL Sign");
+        if (list[7])
+            this.keyUsages.add("Encipher Only");
+        if (list[8])
+            this.keyUsages.add("Decipher Only");
+    }
+
+    public List<String> getExtendedKeyUsages() {
+        return extendedKeyUsages;
+    }
+
+    public void setExtendedKeyUsages(List<String> extendedKeyUsagesCodes) {
+        this.extendedKeyUsages = new ArrayList<>();
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.1"))
+            this.extendedKeyUsages.add("TLS Web Server Authentication: 1.3.6.1.5.5.7.3.1");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.2"))
+            this.extendedKeyUsages.add("TLS Web Client Authentication: 1.3.6.1.5.5.7.3.2");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.3"))
+            this.extendedKeyUsages.add("Code signing: 1.3.6.1.5.5.7.3.3");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.4.1.311.10.3.12"))
+            this.extendedKeyUsages.add("Document signing: 1.3.6.1.4.1.311.10.3.12");
+        if (extendedKeyUsagesCodes.contains("1.2.840.113583.1.1.5"))
+            this.extendedKeyUsages.add("Adobe PDF Signing: 1.2.840.113583.1.1.5");
+        if (extendedKeyUsagesCodes.contains("0.4.0.2231.3.0"))
+            this.extendedKeyUsages.add("TSL Signing: 0.4.0.2231.3.0");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.4"))
+            this.extendedKeyUsages.add("E-mail Protection: 1.3.6.1.5.5.7.3.4");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.4.1.311.10.3.4"))
+            this.extendedKeyUsages.add("Encrypted File System: 1.3.6.1.4.1.311.10.3.4");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.5"))
+            this.extendedKeyUsages.add("Ip Security End System: 1.3.6.1.5.5.7.3.5");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.6"))
+            this.extendedKeyUsages.add("Ip Security Tunnel Termination: 1.3.6.1.5.5.7.3.6");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.7"))
+            this.extendedKeyUsages.add("Ip Security User: 1.3.6.1.5.5.7.3.7");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.8"))
+            this.extendedKeyUsages.add("Time Stamping: 1.3.6.1.5.5.7.3.8");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.5.5.7.3.9"))
+            this.extendedKeyUsages.add("OCSP Signing: 1.3.6.1.5.5.7.3.9");
+        if (extendedKeyUsagesCodes.contains("1.3.6.1.4.1.311.20.2.2"))
+            this.extendedKeyUsages.add("Smartcard Logon: 1.3.6.1.4.1.311.20.2.2");
+        if (extendedKeyUsagesCodes.contains("2.5.29.37.0"))
+            this.extendedKeyUsages.add("Any Extended Key Usage: 2.5.29.37.0");
+    }
+
+    public int getIsCA() {
+        return isCA;
+    }
+
+    public void setIsCA(int isCA) {
+        this.isCA = isCA;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
