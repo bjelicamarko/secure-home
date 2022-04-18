@@ -1,31 +1,39 @@
 <template>
   <div class="topnav">
-    <router-link to="/">Login</router-link>
-    <router-link to="/certificate-signing-request">Send CSR</router-link>
-    <router-link to="/get-aliases">Aliases</router-link>
-    <router-link to="/admin-home">Home Page</router-link>
-    <a id="logoutNav" @click="logout()">Logout</a>
+    <router-link to="/" v-if="isUserLoggedIn()">Login</router-link>
+    <router-link v-if="isUserLoggedIn()" to="/certificate-signing-request"
+      >Send CSR</router-link
+    >
+    <router-link v-if="!isUserLoggedIn()" to="/get-aliases"
+      >Aliases</router-link
+    >
+    <router-link v-if="!isUserLoggedIn()" to="/admin-home"
+      >Home Page</router-link
+    >
+    <a v-if="!isUserLoggedIn()" id="logoutNav" @click="logout()">Logout</a>
   </div>
 </template>
 
 <script>
 export default {
   name: "NavigationBar",
-
   data() {
     return {};
   },
 
   props: {},
-
   methods: {
     logout: function () {
       localStorage.clear();
+      this.$store.dispatch("changeLoggedUsername", "");
       this.$router.push("/").catch((err) => {
         if (err.name != "NavigationDuplicated") {
           console.error(err);
         }
       });
+    },
+    isUserLoggedIn: function () {
+      return this.$store.getters.getLoggedUsername === "";
     },
   },
 };

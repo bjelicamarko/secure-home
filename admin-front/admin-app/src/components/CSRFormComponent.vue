@@ -126,9 +126,10 @@ export default {
     };
   },
   methods: {
-    onSubmitAction: function (csrModel) {
-      CSRService.saveCSR(csrModel)
+    onSubmitAction: function () {
+      CSRService.saveCSR(this.model)
         .then((response) => {
+          this.resetForm();
           this.$toasted.show(response.data, {
             theme: "toasted-primary",
             position: "top-center",
@@ -142,6 +143,17 @@ export default {
             duration: 3000,
           });
         });
+    },
+    resetForm: function () {
+      this.model = {
+        commonName: "",
+        organization: "",
+        organizationUnit: "",
+        email: "",
+        city: "",
+        state: "",
+        country: "",
+      };
     },
   },
 };

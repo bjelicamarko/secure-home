@@ -1,30 +1,45 @@
-import Vue from "vue";
-import Vuex from "vuex";
+// import Vue from "vue";
+// import Vuex from "vuex";
+// // import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex);
+// // export default new Vuex.Store({
+// //   state: {},
+// //   getters: {},
+// //   mutations: {},
+// //   actions: {},
+// //   modules: {},
+// // });
 
-export default new Vuex.Store({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
-});
+// Vue.use(Vuex);
 
-// state: {
-//   lastCertificateMailToSign: "",
-// },
-// getters: {
-//   lastCertificateMailToSign: (state) => state.lastCertificateMailToSign,
-// },
-// mutations: {
-//   setLastCertificateMailToSign(state, mail) {
-//     state.lastCertificateMailToSign = mail;
+// const store = new Vuex.Store({
+//   // plugins: [
+//   //   createPersistedState({
+//   //     storage: window.sessionStorage, //TODO Use sessionStorage.clear(); when user logs out manually.
+//   //   }),
+//   // ],
+
+//   state: {
+//     loggedUsername: "peraperic",
 //   },
-// },
-// actions: {},
-// modules: {},
 
-// Pristupanja i izmena
-// this.$store.getters.lastCertificateMailToSign
-// this.$store.commit("setLastCertificateMailToSign", this.csrMail);
+//   actions: {
+//     changeLoggedUsername({ commit }, newUsername) {
+//       console.log("pera");
+//       commit("SET_USERNAME", newUsername);
+//     },
+//   },
+//   mutations: {
+//     SET_USERNAME(state, username) {
+//       state.loggedUsername = username;
+//     },
+//   },
+
+//   getters: {
+//     getLoggedUsername: (state) => {
+//       return state.loggedUsername;
+//     },
+//   },
+// });
+
+// export default store;

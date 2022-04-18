@@ -1,9 +1,13 @@
 package com.asdf.adminback.dto;
 
+import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
+import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
+import org.bouncycastle.util.encoders.Hex;
 
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
@@ -11,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CertificateDTO {
     private String issuedTo;
@@ -25,6 +30,8 @@ public class CertificateDTO {
     private List<String> extendedKeyUsages;
     private int isCA;
     private int version;
+    private String authorityKeyIdentifier;
+    private String subjectKeyIdentifier;
 
     public CertificateDTO() {
         this.keyUsages = new ArrayList<>();
@@ -70,6 +77,28 @@ public class CertificateDTO {
 
         this.isCA = certificate.getBasicConstraints();
         this.version = certificate.getVersion();
+
+        byte[] extensionValue = certificate.getExtensionValue("2.5.29.35");
+        byte[] octets = DEROctetString.getInstance(extensionValue).getOctets();
+        AuthorityKeyIdentifier authorityKeyIdentifier = AuthorityKeyIdentifier.getInstance(octets);
+        this.authorityKeyIdentifier = getKeyIdentifier(authorityKeyIdentifier.getKeyIdentifier());
+
+        extensionValue = certificate.getExtensionValue("2.5.29.14");
+        octets = DEROctetString.getInstance(extensionValue).getOctets();
+        SubjectKeyIdentifier subjectKeyIdentifier = SubjectKeyIdentifier.getInstance(octets);
+        this.subjectKeyIdentifier = getKeyIdentifier(subjectKeyIdentifier.getKeyIdentifier());
+    }
+
+    private String getKeyIdentifier(byte[] keyIdentifier) {
+        String keyIdentifierHex = new String(Hex.encode(keyIdentifier));
+        String uppercase = keyIdentifierHex.toUpperCase(Locale.ROOT);
+        StringBuilder sb = new StringBuilder();
+        sb.append("0x"+uppercase.charAt(0));
+        for (int i = 1; i < uppercase.length(); i++){
+            if (i % 4 == 0) sb.append(" ");
+            sb.append(uppercase.charAt(i));
+        }
+        return sb.toString();
     }
 
     public String getIssuedTo() {
@@ -218,5 +247,21 @@ public class CertificateDTO {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public String getAuthorityKeyIdentifier() {
+        return authorityKeyIdentifier;
+    }
+
+    public void setAuthorityKeyIdentifier(String authorityKeyIdentifier) {
+        this.authorityKeyIdentifier = authorityKeyIdentifier;
+    }
+
+    public String getSubjectKeyIdentifier() {
+        return subjectKeyIdentifier;
+    }
+
+    public void setSubjectKeyIdentifier(String subjectKeyIdentifier) {
+        this.subjectKeyIdentifier = subjectKeyIdentifier;
     }
 }

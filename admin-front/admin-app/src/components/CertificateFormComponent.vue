@@ -89,7 +89,6 @@ export default {
   props: ["csr"],
   methods: {
     onSubmitAction: function () {
-      // alert("Proso submit");
       this.$emit("submit", this.csrData);
     },
     clickTugaButton: function () {
@@ -97,7 +96,6 @@ export default {
     },
     onChange: function (e) {
       this.csrData.organizationUnit = e.target.value;
-      // console.log(this.csrData);
     },
   },
   computed: {

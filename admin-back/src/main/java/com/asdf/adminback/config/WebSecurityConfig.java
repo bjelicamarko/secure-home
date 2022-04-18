@@ -55,6 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 				.authorizeRequests().antMatchers("/auth/**").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
+				.antMatchers("/api/csrs").permitAll()
+				.antMatchers("/api/csrs/verify-csr/**").permitAll()
 				.antMatchers("/api/users/login").permitAll()
 				.anyRequest().authenticated().and()
 				.cors().and()

@@ -11,6 +11,11 @@ export default {
   components: {
     NavigationBar,
   },
+  created() {
+    let username = localStorage.getItem("username");
+    if (!username) this.$store.dispatch("changeLoggedUsername", "");
+    else this.$store.dispatch("changeLoggedUsername", username);
+  },
 };
 </script>
 

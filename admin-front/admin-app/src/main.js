@@ -1,7 +1,8 @@
 import Vue from "vue";
+import Vuex from "vuex";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+// import store from "./store/index";
 
 import VueFormGenerator from "vue-form-generator";
 //import "vue-form-generator/dist/vfg.css";
@@ -32,6 +33,37 @@ Vue.use(Toasted, {
 Vue.use(VueFormGenerator);
 
 Vue.config.productionTip = false;
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  // plugins: [
+  //   createPersistedState({
+  //     storage: window.sessionStorage, //TODO Use sessionStorage.clear(); when user logs out manually.
+  //   }),
+  // ],
+
+  state: {
+    loggedUsername: "peraperic",
+  },
+
+  actions: {
+    changeLoggedUsername({ commit }, newUsername) {
+      commit("SET_USERNAME", newUsername);
+    },
+  },
+  mutations: {
+    SET_USERNAME(state, username) {
+      state.loggedUsername = username;
+    },
+  },
+
+  getters: {
+    getLoggedUsername: (state) => {
+      return state.loggedUsername;
+    },
+  },
+});
 
 new Vue({
   router,

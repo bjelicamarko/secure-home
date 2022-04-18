@@ -30,7 +30,7 @@
         title="Certificate Information"
         :visible.sync="secondDialogVisible"
         append-to-body
-        width="30%"
+        width="31%"
         center
       >
         <p><b>Issued to:</b> {{ chainCertificate.issuedTo }}</p>
@@ -39,7 +39,10 @@
           <b>Valid from</b> {{ chainCertificate.validFrom }} <b>to</b>
           {{ chainCertificate.validTo }}
         </p>
-        <p>------ <b>More Details</b> ------</p>
+        <p class="centerText">
+          ----------------------------------------
+          <b>More Details</b> ------------------------------------
+        </p>
         <p><b>Serial Number:</b> {{ chainCertificate.serialNumber }}</p>
         <p>
           <b>Public key algorithm:</b> {{ chainCertificate.publicKeyAlgorithm }}
@@ -48,15 +51,32 @@
         <p><b>Name Subject: </b> {{ chainCertificate.complexNameSubject }}</p>
         <p><b>Version: </b> {{ chainCertificate.version }}</p>
         <p><b>CA: </b> {{ chainCertificate.isCA === -1 ? "No" : "Yes" }}</p>
-        <p>------ <b>Key Usage</b> -------</p>
-        <p v-for="usage in chainCertificate.keyUsages" :key="usage">
-          {{ usage }}
+        <p>
+          <b>Authority key identifier: </b>
+          {{ chainCertificate.authorityKeyIdentifier }}
         </p>
-
-        <p>------ <b>Extended Key Usage</b> -------</p>
-        <p v-for="usage in chainCertificate.extendedKeyUsages" :key="usage">
-          {{ usage }}
+        <p>
+          <b>Subject key identifier: </b>
+          {{ chainCertificate.subjectKeyIdentifier }}
         </p>
+        <div v-if="sizeKeyUsage !== 0">
+          <p class="centerText">
+            ----------------------------------------
+            <b>Key Usage</b> ---------------------------------------
+          </p>
+          <p v-for="usage in chainCertificate.keyUsages" :key="usage">
+            {{ usage }} ✔
+          </p>
+        </div>
+        <div v-if="sizeEKeyUsage !== 0">
+          <p class="centerText">
+            ----------------------------------
+            <b>Extended Key Usage</b> ---------------------------------
+          </p>
+          <p v-for="usage in chainCertificate.extendedKeyUsages" :key="usage">
+            {{ usage }}
+          </p>
+        </div>
       </el-dialog>
     </el-dialog>
   </div>
@@ -69,7 +89,9 @@ export default {
     return {
       centerDialogVisible: false,
       secondDialogVisible: false,
-      chainCertificate: "",
+      chainCertificate: {},
+      sizeKeyUsage: 0,
+      sizeEKeyUsage: 0,
     };
   },
   methods: {
@@ -77,6 +99,8 @@ export default {
       for (let i = 0; i < this.certificates.length; i++) {
         if (this.certificates[i].issuedTo === cert) {
           this.chainCertificate = this.certificates[i];
+          this.sizeKeyUsage = this.chainCertificate.keyUsages.length;
+          this.sizeEKeyUsage = this.chainCertificate.extendedKeyUsages.length;
           this.secondDialogVisible = true;
         }
       }
@@ -90,3 +114,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.centerText {
+  text-align: center;
+}
+</style>

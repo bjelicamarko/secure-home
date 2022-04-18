@@ -78,8 +78,9 @@ export default {
             position: "top-center",
             duration: 3000,
           });
+          this.$store.dispatch("changeLoggedUsername", this.model.username); // setting loggedUsername to vuexStore
           UserService.saveUserInLocalStorage(response);
-          this.$router.push({ name: "admin-home" }).catch((err) => {
+          this.$router.push("/admin-home").catch((err) => {
             // Ignore the vuex err regarding  navigating to the page they are already on.
             if (err.name != "NavigationDuplicated") {
               // But print any other errors to the console

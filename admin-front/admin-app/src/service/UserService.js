@@ -12,11 +12,10 @@ class UserService {
 
     static saveUserInLocalStorage(response) {
         var payload = UserService.parseJwt(response.data.accessToken);
-        localStorage.clear();
         localStorage.username = payload.sub;
         localStorage.setItem("USER_TOKEN", response.data.accessToken);
         localStorage.setItem("USER_ROLE", payload.role);
-        localStorage.setItem("USER_EXPIRES", response.data.expiresIn)
+        localStorage.setItem("USER_EXPIRES", response.data.expiresIn);
     }
 
     static parseJwt(tokenContent) {
@@ -32,7 +31,8 @@ class UserService {
     static isUserLoggedIn() {
         var userData = UserService.getLoggedUserData();
         //If user token present, user is logged.
-        if (userData['USER_TOKEN']) return true;
+        console.log("token: " + userData.userType);
+        if (userData.userType) return true;
         return false;
     }
 
