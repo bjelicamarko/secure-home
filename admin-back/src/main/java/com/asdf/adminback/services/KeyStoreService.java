@@ -1,6 +1,6 @@
 package com.asdf.adminback.services;
 
-import com.asdf.adminback.models.CertificateDTO;
+import com.asdf.adminback.dto.CertificateDTO;
 import com.asdf.adminback.models.IssuerData;
 import java.io.IOException;
 import java.security.*;

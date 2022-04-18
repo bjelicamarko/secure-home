@@ -3,8 +3,6 @@
     <select v-model="selectedValue" @change="passEvent()">
       <option v-for="item in items" :key="item">{{ item }}</option>
     </select>
-
-    Selected: {{ selectedValue }}
   </div>
 </template>
 
@@ -13,7 +11,7 @@ export default {
   props: ["items"],
   data: function () {
     return {
-      selectedValue: "root",
+      selectedValue: "----------",
     };
   },
   methods: {

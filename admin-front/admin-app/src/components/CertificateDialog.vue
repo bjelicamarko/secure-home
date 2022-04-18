@@ -13,13 +13,13 @@
             <div v-if="item.issuedTo === 'Tim asf'">
               {{ item.issuedTo }}
             </div>
-            <div
-              style="margin-left: 20px"
-              v-else-if="item.issuedTo === 'Adminko Adminic'"
-            >
+            <div style="margin-left: 20px" v-if="item.issuedTo === 'Admin'">
               {{ item.issuedTo }}
             </div>
-            <div style="margin-left: 40px" v-else>
+            <div
+              v-if="item.issuedTo !== 'Admin' && item.issuedTo !== 'Tim asf'"
+              style="margin-left: 40px"
+            >
               {{ item.issuedTo }}
             </div>
           </div>
@@ -29,7 +29,7 @@
       <el-dialog
         title="Certificate Information"
         :visible.sync="secondDialogVisible"
-        :modalAppendToBody="false"
+        append-to-body
         width="30%"
         center
       >
@@ -46,9 +46,6 @@
         </p>
         <p><b>Name Issuer: </b> {{ chainCertificate.complexNameIssuer }}</p>
         <p><b>Name Subject: </b> {{ chainCertificate.complexNameSubject }}</p>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="secondDialogVisible = false">Cancel</el-button>
-        </span>
       </el-dialog>
     </el-dialog>
   </div>
