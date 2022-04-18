@@ -15,7 +15,11 @@
           <td>{{ csr.email }}</td>
           <td>{{ csr.country }}</td>
           <td>
-            <button type="button" class="btn btn-dark" @click="examine(csr.id)">
+            <button
+              type="button"
+              class="btn command-button"
+              @click="examine(csr.id)"
+            >
               Examine
             </button>
           </td>
@@ -36,3 +40,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.command-button {
+  margin-top: 1%;
+  background-color: rgb(22, 117, 90);
+  color: white;
+}
+
+.command-button:hover {
+  background-color: rgb(146, 142, 142);
+  color: rgb(0, 0, 0);
+}
+</style>

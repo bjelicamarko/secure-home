@@ -1,13 +1,15 @@
 package com.asdf.adminback.services;
 
-import com.asdf.adminback.dto.CertificateDataDTO;
-import com.asdf.adminback.dto.CertificateSigningDTO;
-import com.asdf.adminback.dto.ExtendedKeyUsageDTO;
-import com.asdf.adminback.dto.KeyUsageDTO;
+import com.asdf.adminback.dto.*;
+import com.asdf.adminback.exceptions.CertificateNotFound;
 import com.asdf.adminback.exceptions.CertificateSigningDTOException;
+import com.asdf.adminback.exceptions.InvalidCertificate;
 import com.asdf.adminback.models.IssuerData;
+import com.asdf.adminback.models.RCertificate;
 import com.asdf.adminback.models.SubjectData;
+import com.asdf.adminback.repositories.CertificateRepository;
 import com.asdf.adminback.util.CertificateSigningDTOUtils;
+import org.apache.tomcat.jni.Local;
 import org.bouncycastle.asn1.x509.*;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
@@ -23,6 +25,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,9 +34,12 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +54,9 @@ public class CertificateServiceImpl implements CertificateService{
 
     @Autowired
     private CSRService csrService;
+
+    @Autowired
+    private CertificateRepository certificateRepository;
 
     @PostConstruct
     private void postConstruct(){
@@ -88,6 +97,57 @@ public class CertificateServiceImpl implements CertificateService{
 
         // Brisanje csr-a iz baze
         csrService.delete(csrService.findByEmail(certificateSigningDTO.getCertificateDataDTO().getEmail()));
+    }
+
+    @Override
+    public void revokeCertificate(String alias, String reason) throws CertificateNotFound {
+        if (!keyStoreService.containsAlias(alias)) throw new CertificateNotFound(alias);
+        RCertificate rCertificate = new RCertificate(alias, reason, LocalDate.now().toString());
+        certificateRepository.save(rCertificate);
+    }
+
+    @Override
+    public void validateCertificate(String alias) throws CertificateNotFound, InvalidCertificate, CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
+        if (!keyStoreService.containsAlias(alias)) throw new CertificateNotFound(alias);
+        if(alias.equals("root")) validateRootCertificate(alias);
+        else if(alias.equals("intermediate")) validateIntermediateCertificate(alias);
+        else validateLeafCertificate(alias);
+    }
+
+    private void validateLeafCertificate(String alias) throws InvalidCertificate, CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
+        validateRootCertificate("root");
+        PublicKey intermediatePKey = validateIntermediateCertificate("intermediate");
+        X509Certificate leafCert = (X509Certificate) keyStoreService.readCertificate(FILE_PATH, PWD, alias);
+        validateCertificate(leafCert, intermediatePKey, alias);
+    }
+
+    private PublicKey validateIntermediateCertificate(String alias) throws InvalidCertificate, CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
+        PublicKey rootPKey = validateRootCertificate("root");
+        X509Certificate intermediateCert = (X509Certificate) keyStoreService.readCertificate(FILE_PATH, PWD, alias);
+        validateCertificate(intermediateCert, rootPKey, alias);
+        return intermediateCert.getPublicKey();
+    }
+
+    private PublicKey validateRootCertificate(String alias) throws InvalidCertificate, CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException {
+        X509Certificate rootCert = (X509Certificate) keyStoreService.readCertificate(FILE_PATH, PWD, alias);
+        validateCertificate(rootCert, rootCert.getPublicKey(), alias);
+        return rootCert.getPublicKey();
+    }
+
+    private void validateCertificate(X509Certificate certificate, PublicKey publicKey, String alias) throws CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException, InvalidCertificate {
+        // Is it revoked?
+        RCertificate rCertificate = certificateRepository.getByAlias(alias);
+        if(rCertificate != null)
+            throw new InvalidCertificate(alias);
+        // Is it expired?
+        // Date to LocalDate
+        LocalDate validFrom = certificate.getNotBefore().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate validTo = certificate.getNotAfter().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now();
+        if(now.isBefore(validFrom) || now.isAfter(validTo))
+            throw new InvalidCertificate(alias);
+        // Is dig. signature valid?
+        certificate.verify(publicKey);
     }
 
     private X500Name generateX500Name(CertificateDataDTO certificateDataDTO) {

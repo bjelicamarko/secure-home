@@ -10,7 +10,7 @@
         >
         </vue-form-generator>
         <button
-          class="btn btn-success"
+          class="btn command-button"
           @click="login()"
           type="submit"
           style="margin-top: 10px"
@@ -99,7 +99,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login {
   margin-top: 8%;
   transform: translate(120px, 20px);
@@ -113,5 +113,15 @@ export default {
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+}
+.command-button {
+  margin-top: 1%;
+  background-color: rgb(22, 117, 90);
+  color: white;
+}
+
+.command-button:hover {
+  background-color: rgb(146, 142, 142);
+  color: rgb(0, 0, 0);
 }
 </style>

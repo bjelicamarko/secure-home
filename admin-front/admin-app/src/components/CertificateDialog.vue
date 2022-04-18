@@ -13,13 +13,13 @@
             <div v-if="item.issuedTo === 'Tim asf'">
               {{ item.issuedTo }}
             </div>
-            <div
-              style="margin-left: 20px"
-              v-else-if="item.issuedTo === 'Admin'"
-            >
+            <div style="margin-left: 20px" v-if="item.issuedTo === 'Admin'">
               {{ item.issuedTo }}
             </div>
-            <div style="margin-left: 40px" v-else>
+            <div
+              v-if="item.issuedTo !== 'Admin' && item.issuedTo !== 'Tim asf'"
+              style="margin-left: 40px"
+            >
               {{ item.issuedTo }}
             </div>
           </div>
@@ -47,7 +47,7 @@
         <p><b>Name Issuer: </b> {{ chainCertificate.complexNameIssuer }}</p>
         <p><b>Name Subject: </b> {{ chainCertificate.complexNameSubject }}</p>
         <p><b>Version: </b> {{ chainCertificate.version }}</p>
-        <p><b>CA: </b> {{ chainCertificate.isCA === -1 ? "Ne" : "Da" }}</p>
+        <p><b>CA: </b> {{ chainCertificate.isCA === -1 ? "No" : "Yes" }}</p>
         <p>------ <b>Key Usage</b> -------</p>
         <p v-for="usage in chainCertificate.keyUsages" :key="usage">
           {{ usage }}
@@ -57,10 +57,6 @@
         <p v-for="usage in chainCertificate.extendedKeyUsages" :key="usage">
           {{ usage }}
         </p>
-
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="secondDialogVisible = false">Cancel</el-button>
-        </span>
       </el-dialog>
     </el-dialog>
   </div>
