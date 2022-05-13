@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,11 +36,11 @@ public class AppUser implements UserDetails {
     @Column(name = "deleted", nullable=false)
     private boolean deleted;
 
+    @Column(name = "verified", nullable=false)
+    private boolean verified;
+
     @Column(name = "blocked_until_date", nullable=true)
     private Long blockedUntilDate;
-
-    @Column(name = "salt", nullable=false)
-    private String salt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -52,11 +53,14 @@ public class AppUser implements UserDetails {
 
     public AppUser(RegistrationDTO resDTO) {
         this.username = resDTO.getUsername();
+        this.password = resDTO.getPassword();
         this.email = resDTO.getEmail();
         this.firstname = resDTO.getFirstname();
         this.lastname = resDTO.getLastname();
         this.blockedUntilDate = null;
         this.deleted = false;
+        this.verified = false;
+        this.roles = new ArrayList<>();
     }
 
 
@@ -116,20 +120,20 @@ public class AppUser implements UserDetails {
         this.deleted = deleted;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     public Long getBlockedUntilDate() {
         return blockedUntilDate;
     }
 
     public void setBlockedUntilDate(Long blockedUntilDate) {
         this.blockedUntilDate = blockedUntilDate;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     @Override

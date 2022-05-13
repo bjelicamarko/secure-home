@@ -1,5 +1,7 @@
 package com.asdf.myhomeback.controllers;
 
+import com.asdf.myhomeback.Exception.AppUserException;
+import com.asdf.myhomeback.dto.RegistrationDTO;
 import com.asdf.myhomeback.dto.UserTokenStateDTO;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.security.TokenUtils;
@@ -8,7 +10,6 @@ import com.asdf.myhomeback.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,6 +40,10 @@ public class AppUserController {
 
         // Kreiraj token za tog korisnika
         AppUser appUser = (AppUser) authentication.getPrincipal();
+
+        if(!appUser.isVerified())
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
         String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles().get(0).getName());
         int expiresIn = tokenUtils.getExpiredIn();
 
@@ -47,9 +52,33 @@ public class AppUserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register() {
-        // Pozovi servis
-        return new ResponseEntity<>("Ciao", HttpStatus.OK);
+    public ResponseEntity<String> register(@RequestBody RegistrationDTO registrationDTO) {
+        try {
+            appUserService.register(registrationDTO);
+            return new ResponseEntity<>("Registration successfully finished. Check your email to verify it.", HttpStatus.OK);
+        }catch (AppUserException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>("There was an unknown error with your registration", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/verify-registration/{username}")
+    public ResponseEntity<String> register(@PathVariable String username) {
+        try {
+            appUserService.verify(username);
+            return new ResponseEntity<>("Registration successfully verified.", HttpStatus.OK);
+        }catch (AppUserException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>("There was an unknown error while verifying registration.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
