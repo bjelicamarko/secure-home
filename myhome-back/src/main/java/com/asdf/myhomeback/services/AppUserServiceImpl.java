@@ -33,6 +33,14 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable) {
-        return null;
+        if (searchField == null)
+            searchField = "";
+
+        if (userType == null){
+            userType = "";
+        }else if (userType.equalsIgnoreCase("all")){
+            userType = "";
+        }
+        return appUserRepository.searchUsers(searchField, userType, pageable);
     }
 }

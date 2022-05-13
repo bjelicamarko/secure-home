@@ -55,9 +55,21 @@ public class AppUserController {
     }
 
     @GetMapping(value = "/getAllUsersButAdmin", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<AppUserDTO>> getAllUsersButAdmin(Pageable pageable) {
         Page<AppUser> users = appUserService.getAllUsersButAdmin(pageable);
-        return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(), ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
+        return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
+                ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/searchUsers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<AppUserDTO>> searchUsers(
+            @RequestParam(value = "searchField", required = false) String searchField,
+            @RequestParam(value = "userType", required = false) String userType,
+            Pageable pageable) {
+        Page<AppUser> users = appUserService.searchUsers(searchField, userType, pageable);
+        return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
+                ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
     }
 }

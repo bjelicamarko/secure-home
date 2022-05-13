@@ -9,6 +9,7 @@ public class AppUserDTO {
     private String firstName;
     private String lastName;
     private String role;
+    private String profilePhoto;
 
     public AppUserDTO() {}
 
@@ -19,6 +20,7 @@ public class AppUserDTO {
         this.firstName = appUser.getFirstname();
         this.lastName = appUser.getLastname();
         this.role = appUser.getRoles().get(0).getName();
+        this.profilePhoto = appUser.getProfilePhoto();
     }
 
     public Long getId() {
@@ -67,5 +69,13 @@ public class AppUserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 }

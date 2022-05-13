@@ -37,6 +37,12 @@ public class AppUser implements UserDetails {
     @Column(name = "blocked_until_date", nullable=true)
     private Long blockedUntilDate;
 
+    @Column(name = "usertype", nullable = false)
+    private String userType;
+
+    @Column(name="profile_photo")
+    private String profilePhoto;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -108,6 +114,26 @@ public class AppUser implements UserDetails {
 
     public void setBlockedUntilDate(long blockedUntilDate) {
         this.blockedUntilDate = blockedUntilDate;
+    }
+
+    public void setBlockedUntilDate(Long blockedUntilDate) {
+        this.blockedUntilDate = blockedUntilDate;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     @Override

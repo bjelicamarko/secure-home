@@ -5,4 +5,5 @@ export interface AppUserDTO {
     firstName: string;
     lastName: string;
     role: string;
+    profilePhoto: string;
 }

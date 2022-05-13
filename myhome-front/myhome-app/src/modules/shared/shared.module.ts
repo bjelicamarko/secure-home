@@ -15,6 +15,9 @@ import { Interceptor } from './interceptors/interceptor.interceptor';
     CommonModule,
     MatSnackBarModule
   ],
+  exports: [
+    PaginationComponent
+  ],
   providers: [
     SnackBarService,
     UtilService,

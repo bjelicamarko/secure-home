@@ -1,1 +1,35 @@
-<p>users-view works!</p>
+<form class="row p-4 align-items-center justify-content-center" [formGroup]="searchFormGroup"
+        (keydown.enter)="$event.preventDefault()">
+        <div class="col-4 align-items-center justify-content-center" style="border: 1px solid;">
+            <label style="color: red; font-weight: bold;">Search users</label>
+            <mat-form-field class="example-form-field" appearance="fill" style="width: 100%;">
+                <mat-label>Search users</mat-label>
+                <input id="searchFieldInput" matInput type="text" formControlName="searchField">
+                <button id="clearSearchField" *ngIf="searchFormGroup.controls['searchField'].value" matSuffix
+                    mat-icon-button aria-label="Clear" (click)="searchFormGroup.controls['searchField'].setValue('')">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+        <div class="col-2" style="border: 1px solid; margin-left: 50px;">
+            <label style="color: red; font-weight: bold;">Role</label>
+            <mat-form-field appearance="fill">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="userType" id="userTypeSelect">
+                    <mat-option value="all" selected>Any</mat-option>
+                    <mat-option value="ROLE_OWNER">Owner</mat-option>
+                    <mat-option value="ROLE_TENANT">Tenant</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+</form>
+<div class="row" style="margin-top: 50px; margin-left: 40px;">
+    <div *ngFor="let user of users" class="col">
+        <app-app-user-card [user]="user"></app-app-user-card>
+    </div>
+</div>
+<div class="row" style="margin-top: 50px; margin-left: 50px;">
+    <app-pagination class='pagination' [totalItems]="totalSize" [pageSize]="pageSize"
+        (pageSelected)="changePage($event)">
+    </app-pagination>
+</div>
