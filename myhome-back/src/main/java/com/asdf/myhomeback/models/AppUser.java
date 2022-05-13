@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.models;
 
+import com.asdf.myhomeback.dto.RegistrationDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,6 +38,9 @@ public class AppUser implements UserDetails {
     @Column(name = "blocked_until_date", nullable=true)
     private Long blockedUntilDate;
 
+    @Column(name = "salt", nullable=false)
+    private String salt;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -45,6 +49,16 @@ public class AppUser implements UserDetails {
 
     public AppUser() {
     }
+
+    public AppUser(RegistrationDTO resDTO) {
+        this.username = resDTO.getUsername();
+        this.email = resDTO.getEmail();
+        this.firstname = resDTO.getFirstname();
+        this.lastname = resDTO.getLastname();
+        this.blockedUntilDate = null;
+        this.deleted = false;
+    }
+
 
     public Long getId() {
         return id;
@@ -102,17 +116,25 @@ public class AppUser implements UserDetails {
         this.deleted = deleted;
     }
 
-    public long getBlockedUntilDate() {
+    public Long getBlockedUntilDate() {
         return blockedUntilDate;
     }
 
-    public void setBlockedUntilDate(long blockedUntilDate) {
+    public void setBlockedUntilDate(Long blockedUntilDate) {
         this.blockedUntilDate = blockedUntilDate;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.roles;
     }
 
     @Override
