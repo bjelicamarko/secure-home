@@ -34,8 +34,14 @@ public class AppUser implements UserDetails {
     @Column(name = "deleted", nullable=false)
     private boolean deleted;
 
-    @Column(name = "blocked_until_date", nullable=true)
-    private Long blockedUntilDate;
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
+
+    @Column(name = "failed_attempt")
+    private int failedAttempt;
+
+    @Column(name = "lock_time")
+    private Long lockTime;
 
     @Column(name = "usertype", nullable = false)
     private String userType;
@@ -108,18 +114,6 @@ public class AppUser implements UserDetails {
         this.deleted = deleted;
     }
 
-    public long getBlockedUntilDate() {
-        return blockedUntilDate;
-    }
-
-    public void setBlockedUntilDate(long blockedUntilDate) {
-        this.blockedUntilDate = blockedUntilDate;
-    }
-
-    public void setBlockedUntilDate(Long blockedUntilDate) {
-        this.blockedUntilDate = blockedUntilDate;
-    }
-
     public String getUserType() {
         return userType;
     }
@@ -156,9 +150,13 @@ public class AppUser implements UserDetails {
         return true;
     }
 
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
@@ -169,5 +167,21 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public int getFailedAttempt() {
+        return failedAttempt;
+    }
+
+    public void setFailedAttempt(int failedAttempt) {
+        this.failedAttempt = failedAttempt;
+    }
+
+    public Long getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(Long lockTime) {
+        this.lockTime = lockTime;
     }
 }

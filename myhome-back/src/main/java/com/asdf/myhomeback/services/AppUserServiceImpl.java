@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -55,4 +57,40 @@ public class AppUserServiceImpl implements AppUserService {
             appUserRepository.save(appUser);
         } // else bi trebalo neka greska biti
     }
+    
+    @Transactional
+    public void increaseFailedAttempts(AppUser user) {
+        int newFailAttempts = user.getFailedAttempt() + 1;
+        appUserRepository.updateFailedAttempts(newFailAttempts, user.getUsername());
+    }
+
+    @Transactional
+    public void resetFailedAttempts(String username) {
+        appUserRepository.updateFailedAttempts(0, username);
+    }
+
+    public void lock(AppUser user) {
+        user.setAccountNonLocked(false);
+        user.setLockTime(LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+
+        appUserRepository.save(user);
+    }
+
+    public boolean unlockWhenTimeExpired(AppUser user) {
+        long lockTimeInMillis = user.getLockTime();
+        long currentTimeInMillis = System.currentTimeMillis();
+
+        if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis) {
+            user.setAccountNonLocked(true);
+            user.setLockTime(null);
+            user.setFailedAttempt(0);
+
+            appUserRepository.save(user);
+
+            return true;
+        }
+
+        return false;
+    }
+
 }

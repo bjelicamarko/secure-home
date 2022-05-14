@@ -49,16 +49,16 @@ export class LoginComponent implements OnInit {
       if (role === "ROLE_ADMIN") {
         this.router.navigate(["mh-app/admin/home-page"]);
       }
-      else if (role === "ROLE_OWNER") {  
+      else if (role === "ROLE_OWNER") {
         this.router.navigate(["mh-app"]);
       }
-      else if (role === "ROLE_TENANT") {  
+      else if (role === "ROLE_TENANT") {
         this.router.navigate(["mh-app"]);
       }
     },
       (err: any) => {
         if (err.status === 401)
-          this.snackBarService.openSnackBar("Bad credentials.");
+          this.snackBarService.openSnackBar(err.error.exception);
       }
     );
   }
