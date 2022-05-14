@@ -75,7 +75,7 @@ public class AppUserController {
     }
 
     @GetMapping(value = "/getAllUsersButAdmin", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('READ_USERS_WITHOUT_ADMIN')")
     public ResponseEntity<List<AppUserDTO>> getAllUsersButAdmin(Pageable pageable) {
         Page<AppUser> users = appUserService.getAllUsersButAdmin(pageable);
         return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
@@ -83,7 +83,7 @@ public class AppUserController {
     }
 
     @GetMapping(value = "/searchUsers", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SEARCH_USERS')")
     public ResponseEntity<List<AppUserDTO>> searchUsers(
             @RequestParam(value = "searchField", required = false) String searchField,
             @RequestParam(value = "userType", required = false) String userType,
@@ -94,7 +94,7 @@ public class AppUserController {
     }
 
     @DeleteMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('DELETE_USER')")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long id){
         try{
             appUserService.deleteUser(id);

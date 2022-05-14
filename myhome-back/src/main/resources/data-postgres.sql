@@ -2,6 +2,11 @@ insert into role (name) VALUES ('ROLE_ADMIN');
 insert into role (name) VALUES ('ROLE_OWNER');
 insert into role (name) VALUES ('ROLE_TENANT');
 
+
+INSERT INTO privilege (name) VALUES ('READ_USERS_WITHOUT_ADMIN');
+INSERT INTO privilege (name) VALUES ('SEARCH_USERS');
+INSERT INTO privilege (name) VALUES ('DELETE_USER');
+
 insert into system_user (username, password, firstname, lastname, email, deleted, account_non_locked, failed_attempt, lock_time, usertype, profile_photo) values ('admin', '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W',
                                                                                                               'Admin', 'Admin', 'admin@maildrop.cc', false, true, 0, null, 'ROLE_ADMIN',
                                                                                                               '/user_profile_photos/default.jpg');
@@ -67,3 +72,7 @@ INSERT INTO user_role (user_id, role_id) VALUES (6, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (7, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (8, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (9, 3); --  ROLE_TENANT
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 1);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 2);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 3);

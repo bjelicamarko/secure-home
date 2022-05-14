@@ -6,6 +6,7 @@ import com.asdf.adminback.services.CSRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class CSRController {
     }
 
     @GetMapping(value="/verified")
+    // @PreAuthorize("hasAuthority('READ_VERIFIED_CSRS')")
     public ResponseEntity<List<CSR>> findAllVerified() {
         return new ResponseEntity<>(csrService.findAllVerified(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    // @PreAuthorize("hasAuthority('FIND_CSR')")
     public ResponseEntity<CSR> findOneById(@PathVariable Long id) {
         CSR csr = csrService.findOneById(id);
 
@@ -37,7 +40,8 @@ public class CSRController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping()
+    @PostMapping
+    // @PreAuthorize("hasAuthority('SAVE_CSR')")
     public ResponseEntity<String> save(@RequestBody CSR csr) {
         try {
             csrService.save(csr);
@@ -52,6 +56,7 @@ public class CSRController {
     }
 
     @GetMapping("/verify-csr/{id}")
+    // @PreAuthorize("hasAuthority('VERIFY_CSR')")
     public ResponseEntity<String> verify(@PathVariable Long id) {
         try {
             csrService.verify(id);
