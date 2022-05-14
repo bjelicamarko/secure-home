@@ -26,4 +26,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             "and (:userType = '' or u.userType = :userType) ")
     Page<AppUser> searchUsers(@Param("search") String searchField,
                                           @Param("userType") String userType, Pageable pageable);
+
+    Optional<AppUser> findByIdAndDeleted(Long id, boolean deleted);
 }

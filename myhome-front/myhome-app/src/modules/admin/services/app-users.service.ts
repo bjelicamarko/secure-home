@@ -43,4 +43,16 @@ export class AppUsersService {
       };
     return this.http.get<HttpResponse<AppUserDTO[]>>("myhome/api/users/searchUsers", queryParams);
   }
+
+  deleteUser(id: number): Observable<HttpResponse<String>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: 'response',
+      responseType: 'text'
+    };
+
+    return this.http.delete<HttpResponse<String>>("myhome/api/users/deleteUser/" + id, queryParams);
+  }
 }

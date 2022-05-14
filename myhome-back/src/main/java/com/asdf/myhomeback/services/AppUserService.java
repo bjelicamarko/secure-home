@@ -11,4 +11,5 @@ public interface AppUserService extends UserDetailsService {
 
     Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable);
 
+    void deleteUser(Long id);
 }

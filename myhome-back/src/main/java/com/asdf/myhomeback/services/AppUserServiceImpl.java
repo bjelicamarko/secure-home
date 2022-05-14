@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AppUserServiceImpl implements AppUserService {
 
@@ -42,5 +44,15 @@ public class AppUserServiceImpl implements AppUserService {
             userType = "";
         }
         return appUserRepository.searchUsers(searchField, userType, pageable);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
+        if (user.isPresent()) {
+            AppUser appUser = user.get();
+            appUser.setDeleted(true);
+            appUserRepository.save(appUser);
+        } // else bi trebalo neka greska biti
     }
 }

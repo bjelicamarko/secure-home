@@ -94,4 +94,8 @@ export class UsersViewComponent implements AfterViewInit {
     }
     return false;
   }
+
+  renderList() {
+    window.location.reload();
+  }
 }

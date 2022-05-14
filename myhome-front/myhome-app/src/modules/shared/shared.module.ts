@@ -6,10 +6,12 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor.interceptor';
+import { ConformationDialogComponent } from './components/conformation-dialog/conformation-dialog.component';
 
 @NgModule({
   declarations: [
-    PaginationComponent
+    PaginationComponent,
+    ConformationDialogComponent
   ],
   imports: [
     CommonModule,

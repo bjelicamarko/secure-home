@@ -72,4 +72,15 @@ public class AppUserController {
         return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
                 ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long id){
+        try{
+            appUserService.deleteUser(id);
+            return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error happened while deleting user!", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
