@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RootLayoutPageComponent } from './root-layout-page.component';
+import { UserHomePageComponent } from './user-home-page.component';
 
-describe('RootLayoutPageComponent', () => {
-  let component: RootLayoutPageComponent;
-  let fixture: ComponentFixture<RootLayoutPageComponent>;
+describe('UserHomePageComponent', () => {
+  let component: UserHomePageComponent;
+  let fixture: ComponentFixture<UserHomePageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RootLayoutPageComponent ]
+      declarations: [ UserHomePageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RootLayoutPageComponent);
+    fixture = TestBed.createComponent(UserHomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -45,7 +45,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void register(RegistrationDTO registrationDTO) throws AppUserException {
+    public void register(RegistrationDTO registrationDTO) throws AppUserException, IOException {
         AppUser appUser = new AppUser(registrationDTO);
 
         AppUserUtils.checkBasicAppUserInfo(appUser);
