@@ -2,6 +2,9 @@
     <div class="col">
       <app-header-admin *ngIf="role === 'ROLE_ADMIN'"></app-header-admin>
     </div>
+    <div class="col">
+      <app-header-user *ngIf="role === 'ROLE_OWNER' || role === 'ROLE_TENANT' || role === 'ROLE_UNASSIGNED'"></app-header-user>
+    </div>
   
     <div class="container-fluid" style="height: 100%;">
       <div class="row">

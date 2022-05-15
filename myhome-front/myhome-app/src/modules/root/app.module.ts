@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from '../auth/auth.module';
 import { SharedModule } from '../shared/shared.module';
 import { AdminModule } from '../admin/admin.module';
+import { UserModule } from '../user/user.module';
+import { HeaderUserComponent } from './components/headers/header-user/header-user.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { AdminModule } from '../admin/admin.module';
     RootLayoutPageComponent,
     NotFoundPageComponent,
     HeaderCommonComponent,
-    HeaderAdminComponent
+    HeaderAdminComponent,
+    HeaderUserComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,8 @@ import { AdminModule } from '../admin/admin.module';
     HttpClientModule,
     AuthModule,
     SharedModule,
-    AdminModule
+    AdminModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

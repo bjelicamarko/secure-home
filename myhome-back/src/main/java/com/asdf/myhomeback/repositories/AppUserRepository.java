@@ -33,4 +33,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     @Query("UPDATE AppUser u SET u.failedAttempt = ?1 WHERE u.username = ?2")
     @Modifying
     void updateFailedAttempts(int failAttempts, String username);
+
+    Optional<AppUser> findByEmail(String email);
+
 }

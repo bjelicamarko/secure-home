@@ -49,16 +49,21 @@ export class LoginComponent implements OnInit {
       if (role === "ROLE_ADMIN") {
         this.router.navigate(["mh-app/admin/home-page"]);
       }
-      else if (role === "ROLE_OWNER") {
-        this.router.navigate(["mh-app"]);
+      else if (role === "ROLE_OWNER") {  
+        this.router.navigate(["mh-app/user/user-home-page"]);
       }
-      else if (role === "ROLE_TENANT") {
-        this.router.navigate(["mh-app"]);
+      else if (role === "ROLE_TENANT") {  
+        this.router.navigate(["mh-app/user/user-home-page"]);
+      }
+      else if (role === "ROLE_UNASSIGNED") {  
+        this.router.navigate(["mh-app/user/user-home-page"]);
       }
     },
       (err: any) => {
         if (err.status === 401)
           this.snackBarService.openSnackBar(err.error.exception);
+        if (err.status === 403)
+          this.snackBarService.openSnackBar("You must verify yor account to login.");
       }
     );
   }

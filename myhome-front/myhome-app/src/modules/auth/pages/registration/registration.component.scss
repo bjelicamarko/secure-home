@@ -1,6 +1,6 @@
 .loginForm {
-    transform: translate(0%,50%);
-    width: 40%;
+    transform: translate(0%,15%);
+    width: 60%;
     position: relative;
     margin: auto;
     background-color: lightgray;
@@ -14,11 +14,11 @@
     }
   }
   
-  #username-div, #pass-div {
+  #username-div, #pass-div, #email-div, #firstname-div, #lastname-div, #repeatPassword-div {
     text-align: center;
   }
   
-  #username, #password {
+  #username, #password, #firstname, #lastname, #email, #repeatPassword {
     position: relative;
     margin: auto;
     width: 70%;
@@ -26,17 +26,10 @@
     margin-bottom: 10px;
   }
   
-  #login-button, a {
+  #login-button {
     position: relative;
     margin: auto;
-    width: 30%;
-    margin-top: 10px;
-  }
-
- a {
-    position: relative;
-    margin: auto;
-    width: 13%;
+    width: 15%;
     margin-top: 10px;
   }
   

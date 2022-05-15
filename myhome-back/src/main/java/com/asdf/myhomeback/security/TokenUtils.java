@@ -14,7 +14,7 @@ import java.util.Date;
 @Component
 public class TokenUtils {
 
-	@Value("restaurant-app")
+	@Value("myhome-app")
 	private String APP_NAME;
 
 	@Value("somesecret")

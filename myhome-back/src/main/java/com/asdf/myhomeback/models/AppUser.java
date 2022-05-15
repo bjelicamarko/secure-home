@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.models;
 
+import com.asdf.myhomeback.dto.RegistrationDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,6 +52,9 @@ public class AppUser implements UserDetails {
     @Column(name="profile_photo")
     private String profilePhoto;
 
+    @Column(name = "verified", nullable=false)
+    private boolean verified;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -59,6 +63,21 @@ public class AppUser implements UserDetails {
 
     public AppUser() {
     }
+
+    public AppUser(RegistrationDTO resDTO) {
+        this.username = resDTO.getUsername();
+        this.password = resDTO.getPassword();
+        this.email = resDTO.getEmail();
+        this.firstname = resDTO.getFirstname();
+        this.lastname = resDTO.getLastname();
+        this.accountNonLocked = true;
+        this.failedAttempt = 0;
+        this.lockTime = null;
+        this.deleted = false;
+        this.verified = false;
+        this.roles = new ArrayList<>();
+    }
+
 
     public Long getId() {
         return id;
@@ -130,6 +149,14 @@ public class AppUser implements UserDetails {
 
     public void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     @Override

@@ -15,10 +15,10 @@ public class UserRole implements GrantedAuthority {
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name="name")
-    String name;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_privilege",

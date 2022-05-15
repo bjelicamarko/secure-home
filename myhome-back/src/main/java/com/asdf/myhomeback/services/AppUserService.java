@@ -1,9 +1,12 @@
 package com.asdf.myhomeback.services;
 
 import com.asdf.myhomeback.models.AppUser;
+import com.asdf.myhomeback.Exception.AppUserException;
+import com.asdf.myhomeback.dto.RegistrationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import java.io.IOException;
 
 public interface AppUserService extends UserDetailsService {
 
@@ -24,4 +27,9 @@ public interface AppUserService extends UserDetailsService {
     void resetFailedAttempts(String username);
 
     boolean unlockWhenTimeExpired(AppUser user);
+
+    void register(RegistrationDTO registrationDTO) throws AppUserException, IOException;
+
+    void verify(String username) throws AppUserException;
+
 }
