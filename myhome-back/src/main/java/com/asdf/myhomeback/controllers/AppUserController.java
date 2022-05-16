@@ -93,8 +93,10 @@ public class AppUserController {
             @RequestParam(value = "userType", required = false) String userType,
             Pageable pageable) {
         Page<AppUser> users = appUserService.searchUsers(searchField, userType, pageable);
+
         return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
-                ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
+                    ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
+
     }
 
     @DeleteMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

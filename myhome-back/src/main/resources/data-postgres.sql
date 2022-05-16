@@ -72,7 +72,11 @@ INSERT INTO user_role (user_id, role_id) VALUES (6, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (7, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (8, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (9, 3); --  ROLE_TENANT
-INSERT INTO user_role (user_id, role_id) VALUES (9, 4); --  ROLE_UNASSIGNED
+INSERT INTO user_role (user_id, role_id) VALUES (10, 3); --  ROLE_TENANT
+INSERT INTO user_role (user_id, role_id) VALUES (11, 3); --  ROLE_TENANT
+INSERT INTO user_role (user_id, role_id) VALUES (12, 3); --  ROLE_TENANT
+INSERT INTO user_role (user_id, role_id) VALUES (13, 3); --  ROLE_TENANT
+INSERT INTO user_role (user_id, role_id) VALUES (14, 3); --  ROLE_TENANT
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 1);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 2);
