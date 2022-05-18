@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "system_user")
@@ -60,6 +61,9 @@ public class AppUser implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<UserRole> roles;
+
+    @OneToMany(mappedBy = "user")
+    Set<UserRealEstate> realEstates;
 
     public AppUser() {
     }
@@ -234,5 +238,17 @@ public class AppUser implements UserDetails {
 
     public void setLockTime(Long lockTime) {
         this.lockTime = lockTime;
+    }
+
+    public Set<UserRealEstate> getRealEstates() {
+        return realEstates;
+    }
+
+    public void setRealEstates(Set<UserRealEstate> realEstates) {
+        this.realEstates = realEstates;
+    }
+
+    public void addRole(UserRole role) {
+        this.roles.add(role);
     }
 }
