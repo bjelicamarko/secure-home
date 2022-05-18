@@ -68,6 +68,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser getUser(Long id) {
+        return appUserRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void deleteUser(Long id) {
         Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
         if (user.isPresent()) {
@@ -159,5 +164,10 @@ public class AppUserServiceImpl implements AppUserService {
         } else {
             throw new AppUserException("User with given username does not exists in database.");
         }
+    }
+
+    @Override
+    public void save(AppUser user) {
+        appUserRepository.save(user);
     }
 }

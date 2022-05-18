@@ -19,13 +19,16 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     @Query("select u from AppUser u where not u.username= 'admin' and u.deleted=false")
     Page<AppUser> getAllUsersButAdmin(Pageable pageable);
 
-    @Query("select u from AppUser u where u.deleted=false and not u.username= 'admin' and " +
+    @Query("select u from AppUser u " +
+            "where u.deleted=false and not u.username= 'admin' and " +
             "( :search = '' " +
             "or lower(u.firstname) like lower(concat('%', :search, '%')) " +
             "or lower(u.lastname) like lower(concat('%', :search, '%'))" +
             "or lower(u.username) like lower(concat('%', :search, '%'))" +
             "or lower(u.email) like lower(concat('%', :search, '%')))" +
-            "and (:userType = '' or u.userType = :userType) ")
+            "and (:userType = '' or " +
+            "((:userType = 'ROLE_BOTH' and u.userType != 'ROLE_UNASSIGNED') or (:userType != 'ROLE_BOTH' and " +
+            ":userType = u.userType)))")
     Page<AppUser> searchUsers(@Param("search") String searchField, @Param("userType") String userType, Pageable pageable);
 
     Optional<AppUser> findByIdAndDeleted(Long id, boolean deleted);
