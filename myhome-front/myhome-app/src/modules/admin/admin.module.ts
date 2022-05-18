@@ -10,12 +10,14 @@ import { MaterialExampleModule } from 'src/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
+import { RealEstateCreationPageComponent } from './pages/real-estate-creation-page/real-estate-creation-page.component';
 
 @NgModule({
   declarations: [
     HomePageComponent,
     UsersViewComponent,
-    AppUserCardComponent
+    AppUserCardComponent,
+    RealEstateCreationPageComponent,
   ],
   imports: [
     CommonModule,
