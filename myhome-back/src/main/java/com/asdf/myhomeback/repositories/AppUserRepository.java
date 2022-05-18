@@ -27,8 +27,9 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             "or lower(u.username) like lower(concat('%', :search, '%'))" +
             "or lower(u.email) like lower(concat('%', :search, '%')))" +
             "and (:userType = '' or " +
-            "((:userType = 'ROLE_BOTH' and u.userType != 'ROLE_UNASSIGNED') or (:userType != 'ROLE_BOTH' and " +
-            ":userType = u.userType)))")
+            "((:userType = 'ROLE_BOTH' and :userType = u.userType)" +
+            "or (:userType = 'ROLE_UNASSIGNED' and :userType = u.userType)" +
+            "or ((:userType = 'ROLE_TENANT' or :userType = 'ROLE_OWNER') and (:userType = u.userType or u.userType = 'ROLE_BOTH'))))")
     Page<AppUser> searchUsers(@Param("search") String searchField, @Param("userType") String userType, Pageable pageable);
 
     Optional<AppUser> findByIdAndDeleted(Long id, boolean deleted);

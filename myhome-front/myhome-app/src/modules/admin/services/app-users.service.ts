@@ -41,6 +41,7 @@ export class AppUsersService {
         },
         observe: 'response'
       };
+      console.log(queryParams);
     return this.http.get<HttpResponse<AppUserDTO[]>>("myhome/api/users/searchUsers", queryParams);
   }
 

@@ -12,6 +12,7 @@ import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.util.ControllerUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,15 +68,20 @@ public class AppUserController {
         if(!appUser.isVerified())
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles().get(0).getName());
+        String fingerprint = tokenUtils.generateFingerprint();
+        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles().get(0).getName(), fingerprint);
         int expiresIn = tokenUtils.getExpiredIn();
 
         if (appUser.getFailedAttempt() > 0) {
             appUserService.resetFailedAttempts(appUser.getUsername());
         }
 
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
+        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", cookie);
+
+        return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
 
     @GetMapping(value = "/getAllUsersButAdmin", produces = MediaType.APPLICATION_JSON_VALUE)
