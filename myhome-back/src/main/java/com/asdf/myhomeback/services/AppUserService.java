@@ -18,6 +18,8 @@ public interface AppUserService extends UserDetailsService {
 
     Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable);
 
+    AppUser getUser(Long id);
+
     void deleteUser(Long id);
 
     void increaseFailedAttempts(AppUser user);
@@ -32,4 +34,5 @@ public interface AppUserService extends UserDetailsService {
 
     void verify(String username) throws AppUserException;
 
+    void save(AppUser user);
 }
