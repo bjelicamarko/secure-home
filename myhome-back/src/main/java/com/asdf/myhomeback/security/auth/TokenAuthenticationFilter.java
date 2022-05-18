@@ -1,6 +1,8 @@
 package com.asdf.myhomeback.security.auth;
 
+import com.asdf.myhomeback.Exception.TokenBlacklistedException;
 import com.asdf.myhomeback.security.TokenUtils;
+import com.asdf.myhomeback.services.BlacklistedTokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,11 +23,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
 	private UserDetailsService userDetailsService;
 
+	private BlacklistedTokenService blackListedTokenService;
+
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
-	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
+	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService, BlacklistedTokenService blackListedTokenService) {
 		this.tokenUtils = tokenHelper;
 		this.userDetailsService = userDetailsService;
+		this.blackListedTokenService = blackListedTokenService;
 	}
 
 	@Override
@@ -35,13 +40,17 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		String username;
 		String authToken = tokenUtils.getToken(request);
 
-		// preuzimanje finger printa NOVO
 		String fingerprint = tokenUtils.getFingerprintFromCookie(request);
 
 		try {
 			if (authToken != null) {
 				username = tokenUtils.getUsernameFromToken(authToken);
 				if (username != null) {
+					// check if token on blacklist
+					Long tokenExpiredIn = tokenUtils.getExpirationDateFromToken(authToken).getTime();
+					if (blackListedTokenService.isTokenBlackListed(username))
+						throw new TokenBlacklistedException();
+					// get user with username
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 					if (tokenUtils.validateToken(authToken, userDetails, fingerprint)) {
 						TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
@@ -52,7 +61,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			}
 		} catch (ExpiredJwtException ex) {
 			LOGGER.debug("Token expired!");
+		} catch (TokenBlacklistedException e){
+			System.err.println(e.getMessage());
+			LOGGER.debug(e.getMessage());
 		}
+
 		chain.doFilter(request, response);
 	}
 

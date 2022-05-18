@@ -9,6 +9,7 @@ import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.security.auth.JwtAuthenticationRequest;
 import com.asdf.myhomeback.services.AppUserService;
+import com.asdf.myhomeback.services.BlacklistedTokenService;
 import com.asdf.myhomeback.util.ControllerUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -43,6 +45,9 @@ public class AppUserController {
 
     @Autowired
     private AppUserService appUserService;
+
+    @Autowired
+    private BlacklistedTokenService blacklistedTokenService;
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)  {
@@ -82,6 +87,15 @@ public class AppUserController {
         headers.add("Set-Cookie", cookie);
 
         return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request)  {
+        String authToken = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(authToken);
+        Long tokenExpiredIn = tokenUtils.getExpirationDateFromToken(authToken).getTime();
+        blacklistedTokenService.saveToken(username, tokenExpiredIn);
+        return new ResponseEntity<>("You have been successfully logged out!", HttpStatus.OK);
     }
 
     @GetMapping(value = "/getAllUsersButAdmin", produces = MediaType.APPLICATION_JSON_VALUE)

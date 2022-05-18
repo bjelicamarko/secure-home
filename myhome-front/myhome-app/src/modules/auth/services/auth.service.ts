@@ -11,7 +11,7 @@ import { RegistrationDTO } from "../models/RegistrationDTO";
 export class AuthService {
   private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(auth: Login): Observable<Token> {
     return this.http.post<Token>("myhome/api/users/login", auth, {
@@ -32,8 +32,11 @@ export class AuthService {
     return this.http.post<HttpResponse<string>>("myhome/api/users/register", RegistrationDTO, queryParams);
   }
 
-  logout(): void {
-    localStorage.removeItem("user");
+  logout(): Observable<String> {
+    return this.http.post<String>("myhome/api/users/logout", {
+      headers: this.headers,
+      responseType: "json",
+    });
   }
 
   isLoggedIn(): boolean {

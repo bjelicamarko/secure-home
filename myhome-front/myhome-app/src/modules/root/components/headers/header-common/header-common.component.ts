@@ -16,7 +16,11 @@ export class HeaderCommonComponent implements AfterViewInit {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.authService.logout().subscribe((result) => {
+      console.log(result);
+    });
+
+    localStorage.removeItem("user");
   }
 
   profile(): void {
