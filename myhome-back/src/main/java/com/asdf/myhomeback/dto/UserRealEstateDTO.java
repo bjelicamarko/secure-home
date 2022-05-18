@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRealEstateDTO {
 
-    private Long userId;
+    private String username;
     private Long realEstateId;
     private String role;
 }

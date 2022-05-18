@@ -1,5 +1,5 @@
 export interface UserRealEstateDTO {
     username: string
-    realEstateIt: number
+    realEstateId: number
     role: string
 }

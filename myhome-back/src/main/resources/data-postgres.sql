@@ -11,6 +11,7 @@ INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_BY_ID');
 INSERT INTO privilege (name) VALUES ('SAVE_REAL_ESTATE');
 INSERT INTO privilege (name) VALUES ('SAVE_USER_REAL_ESTATE');
 INSERT INTO privilege (name) VALUES ('CHANGE_ROLE_USER_REAL_ESTATE');
+INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATE_TO_ASSIGN');
 
 insert into system_user (username, password, firstname, lastname, email, deleted, account_non_locked, failed_attempt, lock_time, usertype, profile_photo, verified) values ('admin', '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W',
                                                                                                               'Admin', 'Admin', 'admin@maildrop.cc', false, true, 0, null, 'ROLE_ADMIN',
@@ -93,6 +94,7 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 4);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 5);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 6);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 7);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 8);
 
 INSERT INTO real_estate (name) VALUES ('Kuca 1');
 INSERT INTO real_estate (name) VALUES ('Kuca 2');

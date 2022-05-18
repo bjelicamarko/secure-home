@@ -20,6 +20,8 @@ public interface AppUserService extends UserDetailsService {
 
     AppUser getUser(Long id);
 
+    AppUser getUser(String username);
+
     void deleteUser(Long id);
 
     void increaseFailedAttempts(AppUser user);

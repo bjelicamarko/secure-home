@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
-import { EstateDTO } from '../../models/EstateDTO';
+import { RealEstateToAssignDTO } from '../../models/RealEstateDTO';
 import { UserRealEstateDTO } from '../../models/UserRealEstateDTO';
 import { RealEstateService } from '../../services/real-estate.service';
 import { UserRealEstateService } from '../../services/user-real-estate.service';
@@ -14,7 +14,7 @@ import { UserRealEstateService } from '../../services/user-real-estate.service';
 export class AssignEstatePageComponent implements OnInit {
 
   username: string;
-  estates: EstateDTO[];
+  estates: RealEstateToAssignDTO[];
 
   constructor(private route: ActivatedRoute, private userRealEstateService: UserRealEstateService,
               private snackBarSerice: SnackBarService, private realEstateService: RealEstateService) {
@@ -24,9 +24,11 @@ export class AssignEstatePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.realEstateService.getRealEstateForUserToAssign(this.username).subscribe((res: any) => {
+      console.log(res);
       this.estates = res.body;
     },
     (error) => {
+      console.log(error);
       this.snackBarSerice.openSnackBar("An error ocured while loading real estates")
     })
   }
@@ -34,10 +36,10 @@ export class AssignEstatePageComponent implements OnInit {
   setOwner(estateId: number): void {
     let userRealEstateDTO: UserRealEstateDTO = {
       username: this.username,
-      realEstateIt: estateId,
+      realEstateId: estateId,
       role: 'OWNER'
     }
-
+    
     this.userRealEstateService.saveUserRealEstate(userRealEstateDTO).subscribe((result: any) => {
       this.snackBarSerice.openSnackBar(result.body);
       this.removeEstateFromTable(estateId);
@@ -50,7 +52,7 @@ export class AssignEstatePageComponent implements OnInit {
   setTenant(estateId: number): void {
     let userRealEstateDTO: UserRealEstateDTO = {
       username: this.username,
-      realEstateIt: estateId,
+      realEstateId: estateId,
       role: 'TENANT'
     }
 
