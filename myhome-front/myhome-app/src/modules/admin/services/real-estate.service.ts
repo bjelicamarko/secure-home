@@ -23,4 +23,17 @@ export class RealEstateService {
 
     return this.http.post<HttpResponse<string>>("myhome/api/realEstates", realEstateDTO, queryParams);
   }
+
+  getRealEstateForUserToAssign(username: string): Observable<HttpResponse<RealEstateDTO[]>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "json"
+    };
+
+    return this.http.get<HttpResponse<RealEstateDTO[]>>("myhome/api/realEstates/toAssign?username=" + username, queryParams);
+  }
+
 }

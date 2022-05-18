@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { PaginationComponent } from 'src/modules/shared/components/pagination/pagination.component';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { AppUserDTO } from '../../models/AppUserDTO';
@@ -22,7 +23,8 @@ export class UsersViewComponent implements AfterViewInit {
 
   public searchFormGroup: FormGroup;
 
-  constructor(private fb: FormBuilder, private appUsersService: AppUsersService, private snackBarService: SnackBarService) {
+  constructor(private fb: FormBuilder, private appUsersService: AppUsersService, private snackBarService: SnackBarService,
+              private router: Router) {
     this.users = [];
     this.pageSize = 4;
     this.currentPage = 1;
@@ -97,5 +99,9 @@ export class UsersViewComponent implements AfterViewInit {
 
   renderList() {
     window.location.reload();
+  }
+
+  assignEstate(username: string) {
+    this.router.navigate(["mh-app/admin/assign-real-estate/" + username]);
   }
 }

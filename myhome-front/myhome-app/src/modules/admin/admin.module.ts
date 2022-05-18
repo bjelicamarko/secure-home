@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
 import { RealEstateCreationPageComponent } from './pages/real-estate-creation-page/real-estate-creation-page.component';
+import { AssignEstatePageComponent } from './pages/assign-estate-page/assign-estate-page.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { RealEstateCreationPageComponent } from './pages/real-estate-creation-pa
     UsersViewComponent,
     AppUserCardComponent,
     RealEstateCreationPageComponent,
+    AssignEstatePageComponent,
   ],
   imports: [
     CommonModule,
