@@ -48,19 +48,19 @@ insert into system_user (username, password, firstname, lastname, email, deleted
                                                                                                                '/user_profile_photos/default.jpg', true);
 
 insert into system_user (username, password, firstname, lastname, email, deleted, account_non_locked, failed_attempt, lock_time, usertype, profile_photo, verified) values ('beli1', '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W',
-                                                                                                              'Marko', 'Bjelica', 'beli1@maildrop.cc', false, true, 0, null,  'ROLE_TENANT',
+                                                                                                              'Marko', 'Bjelica', 'beli1@maildrop.cc', false, true, 0, null,  'ROLE_BOTH',
                                                                                                               '/user_profile_photos/default.jpg', true);
 
 insert into system_user (username, password, firstname, lastname, email, deleted, account_non_locked, failed_attempt, lock_time, usertype, profile_photo, verified) values ('bojan1', '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W',
-                                                                                                              'Bojan', 'Baskalo', 'bojan1@maildrop.cc', false, true, 0, null,  'ROLE_TENANT',
+                                                                                                              'Bojan', 'Baskalo', 'bojan1@maildrop.cc', false, true, 0, null,  'ROLE_BOTH',
                                                                                                               '/user_profile_photos/default.jpg', true);
 
 insert into system_user (username, password, firstname, lastname, email, deleted, account_non_locked, failed_attempt, lock_time, usertype, profile_photo, verified) values ('veljko1', '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W',
-                                                                                                              'Veljko', 'Tosic', 'veljko1@maildrop.cc', false, true, 0, null,  'ROLE_TENANT',
+                                                                                                              'Veljko', 'Tosic', 'veljko1@maildrop.cc', false, true, 0, null,  'ROLE_UNASSIGNED',
                                                                                                               '/user_profile_photos/default.jpg', true);
 
 insert into system_user (username, password, firstname, lastname, email, deleted, account_non_locked, failed_attempt, lock_time, usertype, profile_photo, verified) values ('ptica1', '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W',
-                                                                                                              'Darko', 'Tica', 'ptica1@maildrop.cc', false, true, 0, null,  'ROLE_TENANT',
+                                                                                                              'Darko', 'Tica', 'ptica1@maildrop.cc', false, true, 0, null,  'ROLE_UNASSIGNED',
                                                                                                               '/user_profile_photos/default.jpg', true);
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1); --  ROLE_ADMIN
@@ -73,10 +73,14 @@ INSERT INTO user_role (user_id, role_id) VALUES (7, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (8, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (9, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (10, 3); --  ROLE_TENANT
-INSERT INTO user_role (user_id, role_id) VALUES (11, 3); --  ROLE_TENANT
-INSERT INTO user_role (user_id, role_id) VALUES (12, 3); --  ROLE_TENANT
-INSERT INTO user_role (user_id, role_id) VALUES (13, 3); --  ROLE_TENANT
-INSERT INTO user_role (user_id, role_id) VALUES (14, 3); --  ROLE_TENANT
+
+INSERT INTO user_role (user_id, role_id) VALUES (11, 2); --  ROLE_BOTH
+INSERT INTO user_role (user_id, role_id) VALUES (12, 2); --  ROLE_BOTH
+INSERT INTO user_role (user_id, role_id) VALUES (11, 3); --  ROLE_BOTH
+INSERT INTO user_role (user_id, role_id) VALUES (12, 3); --  ROLE_BOTH
+
+INSERT INTO user_role (user_id, role_id) VALUES (13, 4); --  ROLE_UNASSIGNED
+INSERT INTO user_role (user_id, role_id) VALUES (14, 4); --  ROLE_UNASSIGNED
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 1);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 2);

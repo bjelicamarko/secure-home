@@ -19,7 +19,7 @@ public class AppUserDTO {
         this.email = appUser.getEmail();
         this.firstName = appUser.getFirstname();
         this.lastName = appUser.getLastname();
-        this.role = appUser.getRoles().get(0).getName();
+        this.role = appUser.getUserType();
         this.profilePhoto = appUser.getProfilePhoto();
     }
 
