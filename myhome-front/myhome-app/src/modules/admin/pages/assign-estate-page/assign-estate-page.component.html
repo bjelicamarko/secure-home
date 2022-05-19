@@ -1,0 +1,25 @@
+<div class="row justify-content-center align-items-center loginForm">
+    <p class="login-label">Assign real estate to {{username}}</p>
+    <div class="form-group row">
+        <table id="cssTable" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Set as owner</th>
+                    <th>Set as tenant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let estate of estates">
+                    <td>{{estate.name}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="setOwner(estate.id)">Set as owner</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="setTenant(estate.id)">Set as tenant</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

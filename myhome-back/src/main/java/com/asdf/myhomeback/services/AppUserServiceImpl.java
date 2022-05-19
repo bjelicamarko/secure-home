@@ -73,6 +73,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser getUser(String username) {
+        return appUserRepository.findByUsername(username).orElse(null);
+    }
+
+    @Override
     public void deleteUser(Long id) {
         Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
         if (user.isPresent()) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserRealEstateServiceImpl implements UserRealEstateService {
@@ -31,10 +32,10 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     public void saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception {
         UserRoleEnum role = UserRoleEnum.valueOf(userRealEstateDTO.getRole());
         UserRealEstate userRealEstateDuplicate = userRealEstateRepository
-                .findDuplicate(userRealEstateDTO.getUserId(), userRealEstateDTO.getRealEstateId());
+                .findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
         if (userRealEstateDuplicate != null) throw new Exception("(User, Real estate) tuple already exist.");
 
-        AppUser user = appUserService.getUser(userRealEstateDTO.getUserId());
+        AppUser user = appUserService.getUser(userRealEstateDTO.getUsername());
         if (user == null) throw new Exception("User with given id doesnt exist.");
 
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
@@ -72,6 +73,6 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     @Override
     public void changeRoleInUserRealEstate(UserRealEstateDTO realEstateDTO) {
         UserRoleEnum newRole = UserRoleEnum.valueOf(realEstateDTO.getRole());
-        userRealEstateRepository.updateRole(realEstateDTO.getUserId(), realEstateDTO.getRealEstateId(), newRole);
+        userRealEstateRepository.updateRole(realEstateDTO.getUsername(), realEstateDTO.getRealEstateId(), newRole);
     }
 }

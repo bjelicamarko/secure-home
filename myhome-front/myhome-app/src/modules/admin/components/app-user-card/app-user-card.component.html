@@ -9,10 +9,14 @@
           Role: {{user.role}}
       </p>
     </div>
-    <div style="margin-bottom: 20px; margin-left: 210px;">
+    <div style="margin-bottom: 20px; margin-left: 20px;">
       <button mat-fab color="warn"
         aria-label="Example icon button with a home icon" (click)="removeUser()">
-        <mat-icon>delete</mat-icon>
+        <mat-icon matTooltip="Delete user">delete</mat-icon>
+      </button>
+      <button mat-fab color="warn" style="margin-left: 130px;"
+        aria-label="Example icon button with a home icon" (click)="showAssignEstatePage(user.username)">
+        <mat-icon matTooltip="Assign real estate">account_balance</mat-icon>
       </button>
     </div>
 </div>
