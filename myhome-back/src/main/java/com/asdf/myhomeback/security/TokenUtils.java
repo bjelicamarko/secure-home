@@ -1,10 +1,12 @@
 package com.asdf.myhomeback.security;
 
 import com.asdf.myhomeback.models.AppUser;
+import com.asdf.myhomeback.utils.UUIDUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -46,6 +48,9 @@ public class TokenUtils {
 
 	private final SecureRandom secureRandom = new SecureRandom();
 
+	@Autowired
+	private UUIDUtils uuidGenerator;
+
 	public String generateToken(String username, String userType, String fingerprint) {
 		String fingerprintHash = generateFingerprintHash(fingerprint);
 		return Jwts.builder()
@@ -54,6 +59,7 @@ public class TokenUtils {
 				.setAudience(AUDIENCE_WEB)
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
+				.claim("UUID", uuidGenerator.generateUUID().toString())
 				.claim("role", userType)
 				.claim("userFingerprint", fingerprintHash)
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
@@ -237,4 +243,16 @@ public class TokenUtils {
 		return fingerprintFromToken.equals(fingerprintHash);
 	}
 
+	public String getUUIDFromToken(String authToken) {
+		String uuid;
+		try {
+			final Claims claims = this.getAllClaimsFromToken(authToken);
+			uuid = claims.get("UUID", String.class);
+		} catch (ExpiredJwtException ex) {
+			throw ex;
+		} catch (Exception e) {
+			uuid = null;
+		}
+		return uuid;
+	}
 }
