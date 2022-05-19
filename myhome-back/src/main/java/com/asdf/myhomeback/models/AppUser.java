@@ -267,4 +267,6 @@ public class AppUser implements UserDetails {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
+    public void removeRole(UserRole role) {this.roles.remove(role);}
+
 }

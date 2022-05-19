@@ -27,7 +27,7 @@
 </form>
 <div class="row" style="margin-top: 50px; margin-left: 40px;">
     <div *ngFor="let user of users" class="col">
-        <app-app-user-card (renderList)="renderList()" [user]="user" (assignEstate)="assignEstate($event)"></app-app-user-card>
+        <app-app-user-card (renderList)="renderList()" [user]="user" (assignEstate)="assignEstate($event)" (showUserEstate)="showUserEstate($event)"></app-app-user-card>
     </div>
 </div>
 <div class="row" style="margin-top: 50px; margin-left: 50px;">

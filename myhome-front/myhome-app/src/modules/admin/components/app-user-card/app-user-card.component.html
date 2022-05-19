@@ -14,7 +14,11 @@
         aria-label="Example icon button with a home icon" (click)="removeUser()">
         <mat-icon matTooltip="Delete user">delete</mat-icon>
       </button>
-      <button mat-fab color="warn" style="margin-left: 130px;"
+      <button mat-fab color="warn" style="margin-left: 40px;"
+        aria-label="Example icon button with a home icon" (click)="showUserEstatePage(user.username)">
+        <mat-icon matTooltip="Show user real estate">account_box</mat-icon>
+      </button>
+      <button mat-fab color="warn" style="margin-left: 40px;"
         aria-label="Example icon button with a home icon" (click)="showAssignEstatePage(user.username)">
         <mat-icon matTooltip="Assign real estate">account_balance</mat-icon>
       </button>

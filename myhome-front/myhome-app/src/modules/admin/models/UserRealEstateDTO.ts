@@ -3,3 +3,7 @@ export interface UserRealEstateDTO {
     realEstateId: number
     role: string
 }
+
+export interface UserRealEstateToViewDTO extends UserRealEstateDTO {
+    realEstateName: string
+}

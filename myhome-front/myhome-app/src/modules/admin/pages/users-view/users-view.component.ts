@@ -104,4 +104,8 @@ export class UsersViewComponent implements AfterViewInit {
   assignEstate(username: string) {
     this.router.navigate(["mh-app/admin/assign-real-estate/" + username]);
   }
+
+  showUserEstate(username: string) {
+    this.router.navigate(["mh-app/admin/user-real-estate/" + username]);
+  }
 }

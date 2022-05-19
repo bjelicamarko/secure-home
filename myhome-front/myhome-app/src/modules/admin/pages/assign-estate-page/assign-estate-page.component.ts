@@ -24,11 +24,9 @@ export class AssignEstatePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.realEstateService.getRealEstateForUserToAssign(this.username).subscribe((res: any) => {
-      console.log(res);
       this.estates = res.body;
     },
     (error) => {
-      console.log(error);
       this.snackBarSerice.openSnackBar("An error ocured while loading real estates")
     })
   }

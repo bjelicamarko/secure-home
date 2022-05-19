@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { RealEstateCreationPageComponent } from './pages/real-estate-creation-page/real-estate-creation-page.component';
 import { AssignEstatePageComponent } from './pages/assign-estate-page/assign-estate-page.component';
+import { UserRealEstatePageComponent } from './pages/user-real-estate-page/user-real-estate-page.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AssignEstatePageComponent } from './pages/assign-estate-page/assign-est
     AppUserCardComponent,
     RealEstateCreationPageComponent,
     AssignEstatePageComponent,
+    UserRealEstatePageComponent,
   ],
   imports: [
     CommonModule,

@@ -10,6 +10,7 @@ import com.asdf.myhomeback.repositories.UserRealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +72,61 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     }
 
     @Override
-    public void changeRoleInUserRealEstate(UserRealEstateDTO realEstateDTO) {
-        UserRoleEnum newRole = UserRoleEnum.valueOf(realEstateDTO.getRole());
-        userRealEstateRepository.updateRole(realEstateDTO.getUsername(), realEstateDTO.getRealEstateId(), newRole);
+    public void changeRoleInUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception {
+        UserRoleEnum newRole = UserRoleEnum.valueOf(userRealEstateDTO.getRole());
+        AppUser user = appUserService.getUser(userRealEstateDTO.getUsername());
+        if (user == null) throw new Exception("User with given id doesnt exist.");
+
+        UserRealEstate userRealEstate = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
+        userRealEstate.setRole(UserRoleEnum.valueOf(userRealEstateDTO.getRole()));
+        userRealEstateRepository.save(userRealEstate);
+
+        long countOfRoleOwner = findCountOfRole(user.getId(), UserRoleEnum.OWNER); // how many times you are owner
+        long countOfRoleTenant = findCountOfRole(user.getId(), UserRoleEnum.TENANT); // how many times you are tenant
+        UserRole owner = userRoleService.findByName("ROLE_OWNER");
+        UserRole tenant = userRoleService.findByName("ROLE_TENANT");
+
+        if(newRole.equals(UserRoleEnum.OWNER)){
+            if (countOfRoleOwner == 1) { // first time owner
+                user.addRole(owner);
+                if (countOfRoleTenant > 0)
+                    user.setUserType("ROLE_BOTH");
+                else {
+                    // remove user role tenant
+                }
+            }
+            else {
+                if (countOfRoleTenant == 0) {
+                    user.removeRole(tenant);
+                    user.setUserType("ROLE_OWNER");
+                }
+            }
+        }
+
+        if(newRole.equals(UserRoleEnum.TENANT)) {
+            if (countOfRoleTenant == 1){ // first time tenant
+                user.addRole(tenant);
+                if (countOfRoleOwner > 0)
+                    user.setUserType("ROLE_BOTH");
+            }
+            else {
+                if (countOfRoleOwner == 0) {
+                    user.removeRole(owner);
+                    user.setUserType("ROLE_TENANT");
+                }
+            }
+        }
+
+        appUserService.save(user);
+    }
+
+    @Override
+    public List<UserRealEstate> getUserRealEstatesFromUser(String username) {
+        return userRealEstateRepository.findUserRealEstateByUsername(username);
+    }
+
+    @Override
+    public int findCountOfRole(Long userId, UserRoleEnum role) {
+        return userRealEstateRepository.findCountOfUserRole(userId, role);
     }
 }

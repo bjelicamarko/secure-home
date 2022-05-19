@@ -47,9 +47,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 				username = tokenUtils.getUsernameFromToken(authToken);
 				if (username != null) {
 					// check if token on blacklist
-					Long tokenExpiredIn = tokenUtils.getExpirationDateFromToken(authToken).getTime();
-					if (blackListedTokenService.isTokenBlackListed(username))
-						throw new TokenBlacklistedException();
+//					Long tokenExpiredIn = tokenUtils.getExpirationDateFromToken(authToken).getTime();
+//					if (blackListedTokenService.isTokenBlackListed(username))
+//						throw new TokenBlacklistedException();
 					// get user with username
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 					if (tokenUtils.validateToken(authToken, userDetails, fingerprint)) {
@@ -61,10 +61,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			}
 		} catch (ExpiredJwtException ex) {
 			LOGGER.debug("Token expired!");
-		} catch (TokenBlacklistedException e){
-			System.err.println(e.getMessage());
-			LOGGER.debug(e.getMessage());
 		}
+//		catch (TokenBlacklistedException e){
+//			System.err.println(e.getMessage());
+//			LOGGER.debug(e.getMessage());
+//		}
 
 		chain.doFilter(request, response);
 	}

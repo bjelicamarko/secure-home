@@ -24,6 +24,7 @@ export class AppUserCardComponent {
 
   @Output() renderList: EventEmitter<any> = new EventEmitter();
   @Output() assignEstate: EventEmitter<string> = new EventEmitter();
+  @Output() showUserEstate: EventEmitter<string> = new EventEmitter();
   
   constructor(public dialog: MatDialog, private appUsersService: AppUsersService, 
     private snackBarService: SnackBarService) { }
@@ -56,5 +57,9 @@ export class AppUserCardComponent {
 
   showAssignEstatePage(username: string): void {
     this.assignEstate.emit(username);
+  }
+
+  showUserEstatePage(username: string): void {
+    this.showUserEstate.emit(username);
   }
 }
