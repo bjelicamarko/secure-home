@@ -47,9 +47,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 				username = tokenUtils.getUsernameFromToken(authToken);
 				if (username != null) {
 					// check if token on blacklist
-//					Long tokenExpiredIn = tokenUtils.getExpirationDateFromToken(authToken).getTime();
-//					if (blackListedTokenService.isTokenBlackListed(username))
-//						throw new TokenBlacklistedException();
+					String uuid = tokenUtils.getUUIDFromToken(authToken);
+					if (blackListedTokenService.isTokenBlackListed(uuid))
+						throw new TokenBlacklistedException();
 					// get user with username
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 					if (tokenUtils.validateToken(authToken, userDetails, fingerprint)) {

@@ -14,8 +14,8 @@ public class BlacklistedTokenServiceImpl implements BlacklistedTokenService {
     private BlackListedTokenRepository blackListedTokenRepository;
 
     @Override
-    public boolean isTokenBlackListed(String username) {
-        BlacklistedToken blackListedToken = blackListedTokenRepository.getByUsername(username);
+    public boolean isTokenBlackListed(String uuid) {
+        BlacklistedToken blackListedToken = blackListedTokenRepository.getByUUID(uuid);
         if (blackListedToken != null) {
             if (blackListedToken.getExpiredIn() <= (new Date()).getTime())
                 blackListedTokenRepository.delete(blackListedToken);
@@ -25,7 +25,7 @@ public class BlacklistedTokenServiceImpl implements BlacklistedTokenService {
     }
 
     @Override
-    public void saveToken(String username, Long tokenExpiredIn) {
-        blackListedTokenRepository.save(new BlacklistedToken(username, tokenExpiredIn));
+    public void saveToken(String uuid, String username, Long tokenExpiredIn) {
+        blackListedTokenRepository.save(new BlacklistedToken(uuid, username, tokenExpiredIn));
     }
 }

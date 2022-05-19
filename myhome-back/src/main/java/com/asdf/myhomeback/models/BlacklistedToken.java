@@ -17,7 +17,11 @@ public class BlacklistedToken {
     private Long id;
 
     @NonNull
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "uuid", unique = true, nullable = false)
+    private String uuid;
+
+    @NonNull
+    @Column(name = "username", nullable = false)
     private String username;
 
     @NonNull
