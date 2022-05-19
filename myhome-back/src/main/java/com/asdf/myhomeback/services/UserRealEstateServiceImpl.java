@@ -77,44 +77,30 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
         AppUser user = appUserService.getUser(userRealEstateDTO.getUsername());
         if (user == null) throw new Exception("User with given id doesnt exist.");
 
+        RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
+        if (realEstate == null) throw new Exception("Real estate with given id doesnt exist.");
+
         UserRealEstate userRealEstate = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
-        userRealEstate.setRole(UserRoleEnum.valueOf(userRealEstateDTO.getRole()));
+        userRealEstate.setRole(newRole);
         userRealEstateRepository.save(userRealEstate);
 
-        long countOfRoleOwner = findCountOfRole(user.getId(), UserRoleEnum.OWNER); // how many times you are owner
-        long countOfRoleTenant = findCountOfRole(user.getId(), UserRoleEnum.TENANT); // how many times you are tenant
+        user.setRoles(new ArrayList<>()); // empty roles
         UserRole owner = userRoleService.findByName("ROLE_OWNER");
         UserRole tenant = userRoleService.findByName("ROLE_TENANT");
 
-        if(newRole.equals(UserRoleEnum.OWNER)){
-            if (countOfRoleOwner == 1) { // first time owner
-                user.addRole(owner);
-                if (countOfRoleTenant > 0)
-                    user.setUserType("ROLE_BOTH");
-                else {
-                    // remove user role tenant
-                }
-            }
-            else {
-                if (countOfRoleTenant == 0) {
-                    user.removeRole(tenant);
-                    user.setUserType("ROLE_OWNER");
-                }
-            }
+        long countOfRoleOwner = findCountOfRole(user.getId(), UserRoleEnum.OWNER); // how many times you are owner
+        if (countOfRoleOwner >= 1) {
+            user.addRole(owner);
+            user.setUserType("ROLE_OWNER");
+        }
+        long countOfRoleTenant = findCountOfRole(user.getId(), UserRoleEnum.TENANT); // how many times you are tenant
+        if (countOfRoleTenant >= 1) {
+            user.addRole(tenant);
+            user.setUserType("ROLE_TENANT");
         }
 
-        if(newRole.equals(UserRoleEnum.TENANT)) {
-            if (countOfRoleTenant == 1){ // first time tenant
-                user.addRole(tenant);
-                if (countOfRoleOwner > 0)
-                    user.setUserType("ROLE_BOTH");
-            }
-            else {
-                if (countOfRoleOwner == 0) {
-                    user.removeRole(owner);
-                    user.setUserType("ROLE_TENANT");
-                }
-            }
+        if (user.getRoles().size() == 2) {
+            user.setUserType("ROLE_BOTH");
         }
 
         appUserService.save(user);
