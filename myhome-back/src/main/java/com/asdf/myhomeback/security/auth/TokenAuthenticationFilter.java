@@ -62,10 +62,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		} catch (ExpiredJwtException ex) {
 			LOGGER.debug("Token expired!");
 		}
-//		catch (TokenBlacklistedException e){
-//			System.err.println(e.getMessage());
-//			LOGGER.debug(e.getMessage());
-//		}
+		catch (TokenBlacklistedException e){
+			System.err.println(e.getMessage());
+			LOGGER.debug(e.getMessage());
+		}
 
 		chain.doFilter(request, response);
 	}
