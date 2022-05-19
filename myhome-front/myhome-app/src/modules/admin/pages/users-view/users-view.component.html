@@ -10,6 +10,10 @@
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
+            <small *ngIf="(searchFormGroup.controls['searchField'].touched || searchFormGroup.controls['searchField'].dirty) 
+                        &&
+                      searchFormGroup.controls['searchField'].errors?.['invalidUsername']">Invalid username
+            </small>
         </div>
         <div class="col-2" style="border: 1px solid; margin-left: 50px;">
             <label style="color: red; font-weight: bold;">Role</label>

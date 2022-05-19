@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PaginationComponent } from 'src/modules/shared/components/pagination/pagination.component';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
+import { UsernameValidator } from 'src/modules/shared/validators/UsernameValidator';
 import { AppUserDTO } from '../../models/AppUserDTO';
 import { AppUsersService } from '../../services/app-users.service';
 
@@ -30,7 +32,7 @@ export class UsersViewComponent implements AfterViewInit {
     this.currentPage = 1;
     this.totalSize = 1;
     this.searchFormGroup = this.fb.group({
-      searchField: [''],
+      searchField: ['',[UsernameValidator]],
       userType: ['']
     });
    
@@ -73,6 +75,10 @@ export class UsersViewComponent implements AfterViewInit {
 
   onChanges(): void {
     this.searchFormGroup.valueChanges.subscribe(val => {
+      // Ukoliko se ne uklapa u gore prosledjeni validator vrati se nazad
+      if(!this.searchFormGroup.get('searchField')?.valid)
+        return;
+
       this.appUsersService.searchUsers(val.searchField, val.userType, 0, this.pageSize).subscribe((res) => {
         if (res.body != null) {
           this.users = res.body as AppUserDTO[];

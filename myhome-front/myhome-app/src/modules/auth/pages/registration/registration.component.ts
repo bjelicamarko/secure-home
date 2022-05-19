@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
+import { EmailValidator } from 'src/modules/shared/validators/EmailValidator';
+import { MaxLengthValidator } from 'src/modules/shared/validators/MaxLengthValidator';
+import { MinLengthValidator } from 'src/modules/shared/validators/MinLengthValidator';
+import { UsernameValidator } from 'src/modules/shared/validators/UsernameValidator';
 import { RegistrationDTO } from '../../models/RegistrationDTO';
 import { AuthService } from '../../services/auth.service';
 import { MatchValidator } from '../../validators/MatchValidator';
@@ -18,12 +23,12 @@ export class RegistrationComponent implements OnInit {
   constructor( private fb: FormBuilder, private authService: AuthService,
                private router: Router, private snackBarService: SnackBarService) {
     this.form = this.fb.group({
-      username: [null, Validators.required],          
+      username: [null, [Validators.required, UsernameValidator, MinLengthValidator, MaxLengthValidator]],          
       password: new FormControl('', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#&()\-+=<>]).{8,20}$")]),
       repeatPassword: new FormControl('', Validators.required),
-      email: [null, Validators.required],
-      firstname: [null, Validators.required],
-      lastname: [null, Validators.required],
+      email: [null, [Validators.required, EmailValidator]],
+      firstname: [null, [Validators.required, BasicValidator, MinLengthValidator, MaxLengthValidator]],
+      lastname: [null, [Validators.required , BasicValidator, MinLengthValidator, MaxLengthValidator]],
     },
     { validator: MatchValidator('password', 'repeatPassword')});
   }

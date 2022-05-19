@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
+import { MaxLengthValidator } from 'src/modules/shared/validators/MaxLengthValidator';
+import { MinLengthValidator } from 'src/modules/shared/validators/MinLengthValidator';
 import { RealEstateDTO } from '../../models/RealEstateDTO';
 import { RealEstateService } from '../../services/real-estate.service';
 
@@ -18,7 +21,7 @@ export class RealEstateCreationPageComponent implements OnInit {
                private router: Router, private snackBarService: SnackBarService) {
 
     this.form = this.fb.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required, BasicValidator, MinLengthValidator, MaxLengthValidator]],
     });
   }
 
