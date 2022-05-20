@@ -55,7 +55,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable) {
+    public Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable) throws AppUserException {
         if (searchField == null)
             searchField = "";
 
@@ -64,6 +64,10 @@ public class AppUserServiceImpl implements AppUserService {
         }else if (userType.equalsIgnoreCase("all")){
             userType = "";
         }
+
+        AppUserUtils.checkSearchField(searchField);
+        AppUserUtils.checkUserType(userType);
+
         return appUserRepository.searchUsers(searchField, userType, pageable);
     }
 

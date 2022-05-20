@@ -9,13 +9,23 @@ import java.util.regex.Pattern;
 public class PasswordValidator {
 
     private static final String PASSWORD_PATTERN =
-            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–+=<>]).{8,20}$";
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()\\-+=<>])([a-zA-Z0-9!@#&()\\-+=<>]){8,20}$";
 
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
-    public static boolean isValid(final String password) {
+    public static boolean isPasswordValid(final String password) {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    public static boolean isPasswordValidForLogin(String password){
+        String reg = "^[a-zA-Z0-9!@#&()\\-+=<>]{8,20}$";
+        Pattern pat = Pattern.compile(reg);
+
+        if(password == null)
+            return false;
+
+        return pat.matcher(password).matches();
     }
 
     public static boolean isCommon(final String password) throws IOException {

@@ -10,7 +10,8 @@ import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.security.auth.JwtAuthenticationRequest;
 import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
-import com.asdf.myhomeback.util.ControllerUtils;
+import com.asdf.myhomeback.utils.ControllerUtils;
+import com.asdf.myhomeback.utils.AppUserUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +26,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,15 +55,23 @@ public class AppUserController {
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)  {
         Authentication authentication = null;
         try {
+            AppUserUtils.checkLoginUserInfo(authenticationRequest.getUsername(), authenticationRequest.getPassword());
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                             authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            String exception = customLoginFailureHandler.onAuthenticationFailure(authenticationRequest.getUsername());
-            return new ResponseEntity<>(new UserTokenStateDTO(exception), HttpStatus.UNAUTHORIZED);
+            try {
+                String exception = customLoginFailureHandler.onAuthenticationFailure(authenticationRequest.getUsername());
+                return new ResponseEntity<>(new UserTokenStateDTO(exception), HttpStatus.UNAUTHORIZED);
+            } catch (UsernameNotFoundException ex) {
+                return new ResponseEntity<>(new UserTokenStateDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
+            }
         } catch (LockedException e) {
             String exception = "Your account has been locked. Contact administrator for more details.";
             return new ResponseEntity<>(new UserTokenStateDTO(exception), HttpStatus.UNAUTHORIZED);
+        } catch (AppUserException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new UserTokenStateDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
         // Ubaci korisnika u trenutni security kontekst
@@ -113,11 +123,14 @@ public class AppUserController {
             @RequestParam(value = "searchField", required = false) String searchField,
             @RequestParam(value = "userType", required = false) String userType,
             Pageable pageable) {
-        Page<AppUser> users = appUserService.searchUsers(searchField, userType, pageable);
 
-        return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
+        try {
+            Page<AppUser> users = appUserService.searchUsers(searchField, userType, pageable);
+            return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
                     ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
-
+        } catch (AppUserException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

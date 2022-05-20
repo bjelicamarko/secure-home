@@ -91,8 +91,8 @@ export class UsersViewComponent implements AfterViewInit {
         }
       });
     }, (err) => {
-      if (err.error)
-        this.snackBarService.openSnackBar(String(err.console));
+      if(err.status === 400)
+        this.snackBarService.openSnackBar("Invalid search field or user type.");
     });
   }
 

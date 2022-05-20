@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
                private router: Router, private snackBarService: SnackBarService) {
     this.form = this.fb.group({
       username: [null, [Validators.required, UsernameValidator, MinLengthValidator, MaxLengthValidator]],          
-      password: new FormControl('', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#&()\-+=<>]).{8,20}$")]),
+      password: new FormControl('', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#&()\-+=<>])([a-zA-Z0-9!@#&()–+=<>]){8,20}$")]),
       repeatPassword: new FormControl('', Validators.required),
       email: [null, [Validators.required, EmailValidator]],
       firstname: [null, [Validators.required, BasicValidator, MinLengthValidator, MaxLengthValidator]],

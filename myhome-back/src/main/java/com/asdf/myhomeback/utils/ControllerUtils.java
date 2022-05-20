@@ -1,4 +1,4 @@
-package com.asdf.myhomeback.util;
+package com.asdf.myhomeback.utils;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
