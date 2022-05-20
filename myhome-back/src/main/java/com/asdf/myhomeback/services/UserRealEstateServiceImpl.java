@@ -45,6 +45,10 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
         if (realEstate == null) throw new Exception("Real estate with given id doesnt exist.");
 
+        int countOfOwners = userRealEstateRepository.countOwnersOfEstate(userRealEstateDTO.getRealEstateId());
+        if(countOfOwners == 0 && !userRealEstateDTO.getRole().equals("OWNER"))
+            throw new UserRealEstateException("This real estate does not have owner. In order to assign tenant to it, assign owner first.");
+
         UserRealEstate userRealEstate = new UserRealEstate(user, realEstate, role);
         userRealEstateRepository.save(userRealEstate);
 
@@ -82,6 +86,13 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
 
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
         if (realEstate == null) throw new Exception("Real estate with given id doesnt exist.");
+
+        UserRealEstate ure = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
+        if(ure == null) throw new UserRealEstateException("User with given username does not relate with given real estate.");
+
+        int countOfOwners = userRealEstateRepository.countOwnersOfEstate(userRealEstateDTO.getRealEstateId());
+        if(countOfOwners == 1 && !userRealEstateDTO.getRole().equals("OWNER"))
+            throw new UserRealEstateException(user.getUsername() + " is the last owner of this real estate therefore you cannot change it to tenant.");
 
         UserRealEstate userRealEstate = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
         userRealEstate.setRole(newRole);
@@ -141,9 +152,12 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
         RealEstate realEstate = realEstateService.getRealEstateById(ureDTO.getRealEstateId());
         if (realEstate == null) throw new RealEstateException("Real estate with given id does not exist.");
 
-        // Probaj bez provere da li postoji kad ne postoji da vidis exception
         UserRealEstate ure = userRealEstateRepository.findDuplicate(ureDTO.getUsername(), ureDTO.getRealEstateId());
         if(ure == null) throw new UserRealEstateException("User with given username does not relate with given real estate.");
+
+        int countOfOwners = userRealEstateRepository.countOwnersOfEstate(ureDTO.getRealEstateId());
+        if(countOfOwners == 1 && ure.getRole().equals(UserRoleEnum.OWNER))
+            throw new UserRealEstateException(user.getUsername() + " is the last owner of this real estate therefore you cannot remove it.");
 
         userRealEstateRepository.deleteUserRealEstate(user.getId(), ureDTO.getRealEstateId());
 
