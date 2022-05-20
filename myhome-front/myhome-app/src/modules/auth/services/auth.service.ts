@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    if (!localStorage.getItem("user")) {
+    if (!sessionStorage.getItem("user")) {
       return false;
     }
     return true;

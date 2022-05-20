@@ -17,7 +17,7 @@ export class RootLayoutPageComponent {
   }
 
   checkRole() {
-    const item = localStorage.getItem("user");
+    const item = sessionStorage.getItem("user");
 
     if (item) {
       const jwt: JwtHelperService = new JwtHelperService();

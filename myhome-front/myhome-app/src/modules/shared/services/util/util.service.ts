@@ -14,7 +14,7 @@ export class UtilService {
   }
 
   public getLoggedUserRole(): string {
-    const item = localStorage.getItem("user");
+    const item = sessionStorage.getItem("user");
 
     if (item) {
       const jwt: JwtHelperService = new JwtHelperService();

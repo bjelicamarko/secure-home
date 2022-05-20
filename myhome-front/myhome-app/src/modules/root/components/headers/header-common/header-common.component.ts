@@ -20,7 +20,7 @@ export class HeaderCommonComponent implements AfterViewInit {
       console.log(result);
     });
 
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
   }
 
   profile(): void {

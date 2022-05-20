@@ -13,7 +13,7 @@ export class Interceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const item = localStorage.getItem("user");
+    const item = sessionStorage.getItem("user");
     if (item) {
       request = request.clone({
         setHeaders: {
