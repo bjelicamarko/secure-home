@@ -27,7 +27,8 @@ export class AppUsersService {
     return this.http.get<HttpResponse<AppUserDTO[]>>("myhome/api/users/getAllUsersButAdmin", queryParams);
   }
 
-  searchUsers(searchFieldVal: string, userTypeVal: string, pageNum: number, pageSize: number): 
+  searchUsers(searchFieldVal: string, userTypeVal: string, verifiedVal: string, 
+    lockedVal: string, pageNum: number, pageSize: number): 
   Observable<HttpResponse<AppUserDTO[]>> {
     let queryParams = {};
 
@@ -36,6 +37,8 @@ export class AppUsersService {
         params: {
           searchField: searchFieldVal,
           userType: userTypeVal,
+          verified: verifiedVal,
+          locked: lockedVal,
           size: pageSize,
           page: pageNum
         },
@@ -55,5 +58,17 @@ export class AppUsersService {
     };
 
     return this.http.delete<HttpResponse<String>>("myhome/api/users/deleteUser/" + id, queryParams);
+  }
+
+  unlockUser(id: number): Observable<HttpResponse<String>> {
+    let queryParams = {};
+   
+    queryParams = {
+      headers: this.headers,
+      observe: 'response',
+      responseType: 'text'
+    };
+
+    return this.http.put<HttpResponse<String>>("myhome/api/users/unlockUser", id, queryParams);
   }
 }

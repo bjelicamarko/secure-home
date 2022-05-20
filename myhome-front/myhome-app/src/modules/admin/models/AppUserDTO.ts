@@ -6,4 +6,6 @@ export interface AppUserDTO {
     lastName: string;
     role: string;
     profilePhoto: string;
+    verified: boolean;
+    locked: boolean;
 }

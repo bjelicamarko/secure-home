@@ -1,6 +1,6 @@
 package com.asdf.myhomeback.utils;
 
-import com.asdf.myhomeback.Exception.AppUserException;
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.models.AppUser;
 
 import java.io.IOException;
@@ -47,5 +47,10 @@ public class AppUserUtils {
         if(!(userType.equals("ROLE_BOTH") || userType.equals("ROLE_UNASSIGNED") || userType.equals("ROLE_TENANT") ||
            userType.equals("ROLE_OWNER") || userType.equals("")))
             throw new AppUserException("Invalid user type.");
+    }
+
+    public static void checkVerifiedOrLocked(String field) throws AppUserException {
+        if(!(field.equals("true") || field.equals("false") || field.equals("")))
+            throw new AppUserException("Invalid field.");
     }
 }

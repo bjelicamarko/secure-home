@@ -1,4 +1,4 @@
-package com.asdf.myhomeback.Exception;
+package com.asdf.myhomeback.exceptions;
 
 public class RealEstateException extends Exception {
 

@@ -1,6 +1,6 @@
 package com.asdf.myhomeback.controllers;
 
-import com.asdf.myhomeback.Exception.RealEstateException;
+import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.dto.RealEstateToAssignDTO;
 import com.asdf.myhomeback.models.RealEstate;

@@ -40,7 +40,7 @@ public class AppUser implements UserDetails {
     @Column(name = "deleted", nullable=false)
     private boolean deleted;
 
-    @Column(name = "account_non_locked")
+    @Column(name = "account_non_locked", nullable = false)
     private boolean accountNonLocked;
 
     @Column(name = "failed_attempt")
@@ -58,8 +58,6 @@ public class AppUser implements UserDetails {
     @Column(name = "verified", nullable=false)
     private boolean verified;
 
-    @Column(name = "last_password_reset_date")
-    private Timestamp lastPasswordResetDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -102,8 +100,6 @@ public class AppUser implements UserDetails {
     }
 
     public void setPassword(String password) {
-        Timestamp now = new Timestamp(new Date().getTime());
-        this.setLastPasswordResetDate(now);
         this.password = password;
     }
 
@@ -260,14 +256,26 @@ public class AppUser implements UserDetails {
         this.roles.add(role);
     }
 
-    public Timestamp getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
-
     public void removeRole(UserRole role) {this.roles.remove(role);}
 
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", deleted=" + deleted +
+                ", accountNonLocked=" + accountNonLocked +
+                ", failedAttempt=" + failedAttempt +
+                ", lockTime=" + lockTime +
+                ", userType='" + userType + '\'' +
+                ", profilePhoto='" + profilePhoto + '\'' +
+                ", verified=" + verified +
+                ", roles=" + roles +
+                ", realEstates="  +
+                '}';
+    }
 }

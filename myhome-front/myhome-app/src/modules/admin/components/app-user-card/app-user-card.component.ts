@@ -19,7 +19,9 @@ export class AppUserCardComponent {
     email: '',
     username: '',
     role: '',
-    profilePhoto: ''
+    profilePhoto: '',
+    verified: false,
+    locked: false
   };
 
   @Output() renderList: EventEmitter<any> = new EventEmitter();
@@ -49,6 +51,29 @@ export class AppUserCardComponent {
           },
             (err) => {
               this.snackBarService.openSnackBar(err.error as string);
+            })
+      }
+    })
+  }
+
+  unlockUser(): void {
+    this.dialog.open(ConformationDialogComponent, {
+      data:
+      {
+        title: "Unlocking user",
+        message: "You want to unlock " + this.user.firstName + " " + this.user.lastName + " ?"
+      },
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.appUsersService.unlockUser(this.user.id)
+          .subscribe((response) => {
+            this.snackBarService.openSnackBar(response.body as string);
+           // this.renderList.emit(null);
+           this.user.locked = false;
+          },
+            (err) => {
+              console.log(err);
+              //this.snackBarService.openSnackBar(err.error as string);
             })
       }
     })

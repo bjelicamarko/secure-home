@@ -1,6 +1,6 @@
 package com.asdf.myhomeback.security.auth;
 
-import com.asdf.myhomeback.Exception.TokenBlacklistedException;
+import com.asdf.myhomeback.exceptions.TokenBlacklistedException;
 import com.asdf.myhomeback.models.BlacklistedToken;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
@@ -17,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 

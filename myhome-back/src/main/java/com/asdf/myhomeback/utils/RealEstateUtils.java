@@ -1,6 +1,6 @@
 package com.asdf.myhomeback.utils;
 
-import com.asdf.myhomeback.Exception.RealEstateException;
+import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.models.RealEstate;
 
 import static com.asdf.myhomeback.utils.BasicValidator.isValidRealEstateName;

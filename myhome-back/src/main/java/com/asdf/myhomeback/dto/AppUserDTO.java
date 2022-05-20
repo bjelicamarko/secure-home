@@ -10,6 +10,8 @@ public class AppUserDTO {
     private String lastName;
     private String role;
     private String profilePhoto;
+    private boolean verified;
+    private boolean locked;
 
     public AppUserDTO() {}
 
@@ -21,6 +23,8 @@ public class AppUserDTO {
         this.lastName = appUser.getLastname();
         this.role = appUser.getUserType();
         this.profilePhoto = appUser.getProfilePhoto();
+        this.verified = appUser.isVerified();
+        this.locked = !appUser.isAccountNonLocked();
     }
 
     public Long getId() {
@@ -77,5 +81,21 @@ public class AppUserDTO {
 
     public void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

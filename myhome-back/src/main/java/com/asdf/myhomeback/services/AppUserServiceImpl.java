@@ -1,6 +1,6 @@
 package com.asdf.myhomeback.services;
 
-import com.asdf.myhomeback.Exception.AppUserException;
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.dto.RegistrationDTO;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.UserRole;
@@ -55,20 +55,31 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable) throws AppUserException {
+    public Page<AppUser> searchUsers(String searchField, String userType, String verified, String locked,
+                                     Pageable pageable) throws AppUserException {
         if (searchField == null)
             searchField = "";
 
-        if (userType == null){
-            userType = "";
-        }else if (userType.equalsIgnoreCase("all")){
-            userType = "";
-        }
+        userType = this.checkAllFromField(userType);
+        verified = this.checkAllFromField(verified);
+        locked = this.checkAllFromField(locked);
+
 
         AppUserUtils.checkSearchField(searchField);
         AppUserUtils.checkUserType(userType);
+        AppUserUtils.checkVerifiedOrLocked(verified);
+        AppUserUtils.checkVerifiedOrLocked(locked);
 
-        return appUserRepository.searchUsers(searchField, userType, pageable);
+        return appUserRepository.searchUsers(searchField, userType, verified, locked, pageable);
+    }
+
+    private String checkAllFromField(String field) {
+        if (field == null){
+            field = "";
+        }else if (field.equalsIgnoreCase("all")){
+            field = "";
+        }
+        return field;
     }
 
     @Override
@@ -82,15 +93,29 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id) throws AppUserException {
         Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
-        if (user.isPresent()) {
-            AppUser appUser = user.get();
-            appUser.setDeleted(true);
-            appUserRepository.save(appUser);
-        } // else bi trebalo neka greska biti
+        if (user.isEmpty()) throw new AppUserException("Invalid user for deletion.");
+
+        AppUser appUser = user.get();
+        appUser.setDeleted(true);
+        appUserRepository.save(appUser);
+
     }
-    
+
+    @Override
+    public void unlockUser(Long id) throws AppUserException {
+        System.out.println(id);
+        Optional<AppUser> user = appUserRepository.findByIdVerifiedButLocked(id);
+
+        if (user.isEmpty()) throw new AppUserException("Invalid user for unlocking.");
+
+        AppUser appUser = user.get();
+        appUser.setAccountNonLocked(true);
+
+        appUserRepository.save(appUser);
+    }
+
     @Transactional
     public void increaseFailedAttempts(AppUser user) {
         int newFailAttempts = user.getFailedAttempt() + 1;

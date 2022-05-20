@@ -1,7 +1,7 @@
 package com.asdf.myhomeback.services;
 
 import com.asdf.myhomeback.models.AppUser;
-import com.asdf.myhomeback.Exception.AppUserException;
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.dto.RegistrationDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +16,16 @@ public interface AppUserService extends UserDetailsService {
 
     Page<AppUser> getAllUsersButAdmin(Pageable pageable);
 
-    Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable) throws AppUserException;
+    Page<AppUser> searchUsers(String searchField, String userType, String verified, String locked,
+                              Pageable pageable) throws AppUserException;
 
     AppUser getUser(Long id);
 
     AppUser getUser(String username);
 
-    void deleteUser(Long id);
+    void deleteUser(Long id) throws AppUserException;
+
+    void unlockUser(Long id) throws AppUserException;
 
     void increaseFailedAttempts(AppUser user);
 

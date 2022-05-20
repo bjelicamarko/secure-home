@@ -2,7 +2,7 @@ package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.AppUserDTO;
 import com.asdf.myhomeback.controllers.handlers.CustomLoginFailureHandler;
-import com.asdf.myhomeback.Exception.AppUserException;
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.dto.RegistrationDTO;
 import com.asdf.myhomeback.dto.UserTokenStateDTO;
 import com.asdf.myhomeback.models.AppUser;
@@ -119,28 +119,50 @@ public class AppUserController {
     public ResponseEntity<List<AppUserDTO>> searchUsers(
             @RequestParam(value = "searchField", required = false) String searchField,
             @RequestParam(value = "userType", required = false) String userType,
+            @RequestParam(value = "verified", required = false) String verified,
+            @RequestParam(value = "locked", required = false) String locked,
             Pageable pageable) {
 
         try {
-            Page<AppUser> users = appUserService.searchUsers(searchField, userType, pageable);
+            Page<AppUser> users = appUserService.searchUsers(searchField, userType, verified, locked, pageable);
             return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
                     ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
         } catch (AppUserException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping(value = "/deleteUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/deleteUser/{id}")
     @PreAuthorize("hasAuthority('DELETE_USER')")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long id){
         try{
             appUserService.deleteUser(id);
             return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+        } catch (AppUserException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>("Unknown error happened while deleting user!", HttpStatus.BAD_REQUEST);
         }
     }
-    
+
+    @PutMapping(value = "/unlockUser")
+    @PreAuthorize("hasAuthority('UNLOCK_USER')")
+    public ResponseEntity<String> unlockUser(@RequestBody Long id){
+        try{
+            appUserService.unlockUser(id);
+            return new ResponseEntity<>("User unlocked successfully", HttpStatus.OK);
+        } catch (AppUserException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Unknown error happened while unlocking user!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistrationDTO registrationDTO) {
         try {

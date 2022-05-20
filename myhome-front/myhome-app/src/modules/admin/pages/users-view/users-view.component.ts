@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PaginationComponent } from 'src/modules/shared/components/pagination/pagination.component';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
-import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
 import { UsernameValidator } from 'src/modules/shared/validators/UsernameValidator';
 import { AppUserDTO } from '../../models/AppUserDTO';
 import { AppUsersService } from '../../services/app-users.service';
@@ -33,7 +32,9 @@ export class UsersViewComponent implements AfterViewInit {
     this.totalSize = 1;
     this.searchFormGroup = this.fb.group({
       searchField: ['',[UsernameValidator]],
-      userType: ['']
+      userType: [''],
+      verified: [''],
+      locked: [''],
     });
    
   }
@@ -62,7 +63,9 @@ export class UsersViewComponent implements AfterViewInit {
   changePage(newPage: number) {
     this.appUsersService.searchUsers
     (this.searchFormGroup.value.searchField,
-       this.searchFormGroup.value.userType, newPage - 1, this.pageSize).subscribe((res) => {
+       this.searchFormGroup.value.userType, this.searchFormGroup.value.verified,
+       this.searchFormGroup.value.locked,
+       newPage - 1, this.pageSize).subscribe((res) => {
       if (res.body != null) {
         this.users = res.body as AppUserDTO[];
         this.setPagination(res.headers.get('total-elements'), res.headers.get('current-page'));
@@ -79,7 +82,8 @@ export class UsersViewComponent implements AfterViewInit {
       if(!this.searchFormGroup.get('searchField')?.valid)
         return;
 
-      this.appUsersService.searchUsers(val.searchField, val.userType, 0, this.pageSize).subscribe((res) => {
+      this.appUsersService.searchUsers(val.searchField, val.userType, val.verified, val.locked,
+        0, this.pageSize).subscribe((res) => {
         if (res.body != null) {
           this.users = res.body as AppUserDTO[];
           console.log(this.users);
