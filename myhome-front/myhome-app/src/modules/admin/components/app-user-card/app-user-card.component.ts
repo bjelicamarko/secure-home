@@ -25,8 +25,8 @@ export class AppUserCardComponent {
   @Output() renderList: EventEmitter<any> = new EventEmitter();
   @Output() assignEstate: EventEmitter<string> = new EventEmitter();
   @Output() showUserEstate: EventEmitter<string> = new EventEmitter();
-  
-  constructor(public dialog: MatDialog, private appUsersService: AppUsersService, 
+
+  constructor(public dialog: MatDialog, private appUsersService: AppUsersService,
     private snackBarService: SnackBarService) { }
 
   openDialog(): void {
@@ -35,22 +35,21 @@ export class AppUserCardComponent {
 
   removeUser(): void {
     this.dialog.open(ConformationDialogComponent, {
-      data: 
-      { 
+      data:
+      {
         title: "Removing user",
-        message: "You want to remove " + this.user.username + "?"
+        message: "You want to remove " + this.user.firstName + " " + this.user.lastName + " ?"
       },
     }).afterClosed().subscribe(result => {
       if (result) {
         this.appUsersService.deleteUser(this.user.id)
-        .subscribe((response) => {
-          console.log(response);
-          this.snackBarService.openSnackBar(response.body as string);
-          this.renderList.emit(null);
-        },
-        (err) => {
-          this.snackBarService.openSnackBar(err.error as string);
-        })
+          .subscribe((response) => {
+            this.snackBarService.openSnackBar(response.body as string);
+            this.renderList.emit(null);
+          },
+            (err) => {
+              this.snackBarService.openSnackBar(err.error as string);
+            })
       }
     })
   }

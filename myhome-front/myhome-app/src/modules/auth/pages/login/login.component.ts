@@ -47,21 +47,23 @@ export class LoginComponent implements OnInit {
       const role = info.role;
 
       if (role === "ROLE_ADMIN") {
-        this.router.navigate(["mh-app/admin/home-page"]);
+        this.router.navigate(["mh-app/admin/users-view"]);
       }
-      else if (role === "ROLE_OWNER") {  
+      else if (role === "ROLE_OWNER") {
         this.router.navigate(["mh-app/user/user-home-page"]);
       }
-      else if (role === "ROLE_TENANT") {  
+      else if (role === "ROLE_TENANT") {
         this.router.navigate(["mh-app/user/user-home-page"]);
       }
-      else if (role === "ROLE_UNASSIGNED") {  
+      else if (role === "ROLE_UNASSIGNED") {
         this.router.navigate(["mh-app/user/user-home-page"]);
       }
     },
       (err: any) => {
-        if (err.status === 401)
+        if (err.status === 401) {
           this.snackBarService.openSnackBar(err.error.exception);
+          this.form.reset();
+        }
         if (err.status === 403)
           this.snackBarService.openSnackBar("You must verify yor account to login.");
       }
