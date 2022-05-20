@@ -1,9 +1,12 @@
 package com.asdf.myhomeback.services;
 
+import com.asdf.myhomeback.Exception.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.repositories.RealEstateRepository;
+import com.asdf.myhomeback.utils.BasicValidator;
+import com.asdf.myhomeback.utils.RealEstateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,13 @@ public class RealEstateServiceImpl implements RealEstateService {
     }
 
     @Override
-    public void saveRealEstate(RealEstateDTO realEstateDTO) {
+    public void saveRealEstate(RealEstateDTO realEstateDTO) throws RealEstateException {
+        RealEstate realEstate = new RealEstate(realEstateDTO);
+
+        if(realEstateRepository.findByName(realEstate.getName()) != null)
+            throw new RealEstateException("Real estate name is taken, try another one.");
+        RealEstateUtils.checkBasicRealEstateInfo(realEstate);
+
         realEstateRepository.save(new RealEstate(realEstateDTO));
     }
 

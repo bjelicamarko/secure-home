@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
+import { BasicValidatorWithSpace } from 'src/modules/shared/validators/BasicValidatorWithSpace';
 import { MaxLengthValidator } from 'src/modules/shared/validators/MaxLengthValidator';
 import { MinLengthValidator } from 'src/modules/shared/validators/MinLengthValidator';
 import { RealEstateDTO } from '../../models/RealEstateDTO';
@@ -21,7 +22,7 @@ export class RealEstateCreationPageComponent implements OnInit {
                private router: Router, private snackBarService: SnackBarService) {
 
     this.form = this.fb.group({
-      name: [null, [Validators.required, BasicValidator, MinLengthValidator, MaxLengthValidator]],
+      name: [null, [Validators.required, BasicValidatorWithSpace, MinLengthValidator, MaxLengthValidator]],
     });
   }
 
@@ -35,7 +36,7 @@ export class RealEstateCreationPageComponent implements OnInit {
 
     this.realEstateService.createRealEstate(realEstateDTO).subscribe((result: any) => {
       this.snackBarService.openSnackBar(result.body);
-      this.router.navigate(["mh-app/admin/home-page"]);
+      this.router.navigate(["mh-app/admin/users-view"]);
     },
       (err: any) => {
         this.snackBarService.openSnackBar(err.error);

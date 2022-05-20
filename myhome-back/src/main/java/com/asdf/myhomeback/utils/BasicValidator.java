@@ -31,6 +31,13 @@ public class BasicValidator {
         return pat.matcher(username).matches();
     }
 
+    public static boolean isValidRealEstateName(String realEstateName){
+        String reg = "^[a-zA-Z0-9\s]*$";
+        Pattern pat = Pattern.compile(reg);
+
+        return pat.matcher(realEstateName).matches();
+    }
+
     public static boolean isEmailValid(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 

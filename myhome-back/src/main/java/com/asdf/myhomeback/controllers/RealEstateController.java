@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.controllers;
 
+import com.asdf.myhomeback.Exception.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.dto.RealEstateToAssignDTO;
 import com.asdf.myhomeback.models.RealEstate;
@@ -38,8 +39,10 @@ public class RealEstateController {
         try{
             realEstateService.saveRealEstate(realEstateDTO);
             return new ResponseEntity<>("Real estate successfully created", HttpStatus.OK);
+        } catch (RealEstateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>("Bad saving - name must be unique", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Unexpected error happened while saving real estate.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

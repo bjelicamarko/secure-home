@@ -14,7 +14,7 @@
             </small>
             <small id='danger-label-name' class="text-danger danger-label" *ngIf="
             form.controls['name'].touched &&
-            form.controls['name'].errors?.['invalidString']
+            form.controls['name'].errors?.['invalidSpaceString']
             ">
               Name should contain only letters!
             </small>

@@ -15,4 +15,6 @@ public interface RealEstateRepository extends JpaRepository<RealEstate, Long> {
             "(select estate.name from RealEstate estate join UserRealEstate u on estate.id = u.realEstate.id " +
             "where u.user.username = ?1)")
     List<RealEstate> getRealEstateForUserToAssign(String username);
+
+    RealEstate findByName(String name);
 }

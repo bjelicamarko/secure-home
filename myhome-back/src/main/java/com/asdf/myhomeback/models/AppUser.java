@@ -79,6 +79,7 @@ public class AppUser implements UserDetails {
         this.email = resDTO.getEmail();
         this.firstname = resDTO.getFirstname();
         this.lastname = resDTO.getLastname();
+        this.profilePhoto = "/user_profile_photos/default.jpg";
         this.accountNonLocked = true;
         this.failedAttempt = 0;
         this.lockTime = null;
