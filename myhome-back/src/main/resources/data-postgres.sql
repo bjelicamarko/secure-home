@@ -23,7 +23,7 @@ insert into public.system_user (account_non_locked, deleted, email, failed_attem
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, last_password_reset_date, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'charlie@maildrop.cc', 0, 'Charlie', null, 'Sheen', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_TENANT', 'charlie', true);
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, last_password_reset_date, lastname, lock_time, password, profile_photo, usertype, username, verified)
-    values (true, false, 'visnja@maildrop.cc', 0, 'Visnja', null, 'Visnjica', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_TENANT', 'visnjica', true);
+    values (true, false, 'visnja@maildrop.cc', 0, 'Visnja', null, 'Visnjica', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/visnjica.png', 'ROLE_TENANT', 'visnjica', true);
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, last_password_reset_date, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'beli@maildrop.cc', 0, 'Marko', null, 'Bjelica', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/beli.png', 'ROLE_OWNER', 'beli', true);
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, last_password_reset_date, lastname, lock_time, password, profile_photo, usertype, username, verified)
