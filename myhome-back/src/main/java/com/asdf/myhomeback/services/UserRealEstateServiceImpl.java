@@ -1,6 +1,9 @@
 package com.asdf.myhomeback.services;
 
 import com.asdf.myhomeback.dto.UserRealEstateDTO;
+import com.asdf.myhomeback.exceptions.AppUserException;
+import com.asdf.myhomeback.exceptions.RealEstateException;
+import com.asdf.myhomeback.exceptions.UserRealEstateException;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.models.UserRealEstate;
@@ -84,7 +87,13 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
         userRealEstate.setRole(newRole);
         userRealEstateRepository.save(userRealEstate);
 
+        user = updateUserRole(user);
+        appUserService.save(user);
+    }
+
+    private AppUser updateUserRole(AppUser user) {
         user.setRoles(new ArrayList<>()); // empty roles
+
         UserRole owner = userRoleService.findByName("ROLE_OWNER");
         UserRole tenant = userRoleService.findByName("ROLE_TENANT");
 
@@ -93,6 +102,7 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
             user.addRole(owner);
             user.setUserType("ROLE_OWNER");
         }
+
         long countOfRoleTenant = findCountOfRole(user.getId(), UserRoleEnum.TENANT); // how many times you are tenant
         if (countOfRoleTenant >= 1) {
             user.addRole(tenant);
@@ -103,7 +113,13 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
             user.setUserType("ROLE_BOTH");
         }
 
-        appUserService.save(user);
+        if (user.getRoles().size() == 0) {
+            user.setUserType("ROLE_UNASSIGNED");
+            UserRole unassigned = userRoleService.findByName("ROLE_UNASSIGNED");
+            user.addRole(unassigned);
+        }
+
+        return user;
     }
 
     @Override
@@ -114,5 +130,24 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     @Override
     public int findCountOfRole(Long userId, UserRoleEnum role) {
         return userRealEstateRepository.findCountOfUserRole(userId, role);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserRealEstate(UserRealEstateDTO ureDTO) throws AppUserException, RealEstateException, UserRealEstateException {
+        AppUser user = appUserService.getUser(ureDTO.getUsername());
+        if(user == null) throw new AppUserException("User with given username does not exists!");
+
+        RealEstate realEstate = realEstateService.getRealEstateById(ureDTO.getRealEstateId());
+        if (realEstate == null) throw new RealEstateException("Real estate with given id does not exist.");
+
+        // Probaj bez provere da li postoji kad ne postoji da vidis exception
+        UserRealEstate ure = userRealEstateRepository.findDuplicate(ureDTO.getUsername(), ureDTO.getRealEstateId());
+        if(ure == null) throw new UserRealEstateException("User with given username does not relate with given real estate.");
+
+        userRealEstateRepository.deleteUserRealEstate(user.getId(), ureDTO.getRealEstateId());
+
+        user = updateUserRole(user);
+        appUserService.save(user);
     }
 }

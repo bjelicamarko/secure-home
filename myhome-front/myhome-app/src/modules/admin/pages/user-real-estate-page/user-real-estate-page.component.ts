@@ -67,4 +67,23 @@ export class UserRealEstatePageComponent implements OnInit {
     })
   }
 
+  removeUserRealEstate(realEstateId: number): void {
+    let userRealEstateDTO: UserRealEstateDTO = {
+      username: this.username,
+      realEstateId: realEstateId, 
+      role: ""
+    };
+
+    this.userRealEstateService.deleteUserRealEstate(userRealEstateDTO).subscribe((res: any) => {
+      this.snackBarService.openSnackBar(res.body);
+      for(let i = 0; i < this.userEstates.length; i++) {
+        if(this.userEstates[i].realEstateId === realEstateId)
+          this.userEstates.splice(i, 1);
+      }
+    },
+    (error) => {
+      this.snackBarService.openSnackBar(error.error);
+    })
+  }
+
 }

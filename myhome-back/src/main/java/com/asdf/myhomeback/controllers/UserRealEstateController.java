@@ -3,6 +3,9 @@ package com.asdf.myhomeback.controllers;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.dto.UserRealEstateDTO;
 import com.asdf.myhomeback.dto.UserRealEstateToViewDTO;
+import com.asdf.myhomeback.exceptions.AppUserException;
+import com.asdf.myhomeback.exceptions.RealEstateException;
+import com.asdf.myhomeback.exceptions.UserRealEstateException;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.services.UserRealEstateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,21 @@ public class UserRealEstateController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/delete")
+    @PreAuthorize("hasAuthority('DELETE_USER_REAL_ESTATE')")
+    public ResponseEntity<String> deleteUserRealEstate(@RequestBody UserRealEstateDTO userRealEstateDTO){
+        try{
+            userRealEstateService.deleteUserRealEstate(userRealEstateDTO);
+            return new ResponseEntity<>("User real estate successfully deleted", HttpStatus.OK);
+        } catch (AppUserException | RealEstateException | UserRealEstateException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

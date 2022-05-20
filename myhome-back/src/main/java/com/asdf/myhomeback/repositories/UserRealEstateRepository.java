@@ -24,4 +24,8 @@ public interface UserRealEstateRepository extends JpaRepository<UserRealEstate, 
 
     @Query("select count(u) from UserRealEstate u where  u.user.id = :userId and u.role = :role")
     int findCountOfUserRole(Long userId, UserRoleEnum role);
+
+    @Modifying
+    @Query("delete from UserRealEstate u where u.user.id = :userId and u.realEstate.id = :estateId")
+    void deleteUserRealEstate(@Param("userId") Long userId,@Param("estateId") Long estateId);
 }

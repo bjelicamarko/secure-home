@@ -7,6 +7,7 @@
                     <th>Name</th>
                     <th>Role</th>
                     <th>Change role</th>
+                    <th>Remove estate</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,6 +19,9 @@
                     </td>
                     <td *ngIf="userEstate.role==='TENANT'">
                         <button type="button" class="btn btn-primary" (click)="changeToOwner(userEstate.realEstateId)">Change to owner</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="removeUserRealEstate(userEstate.realEstateId)">Remove</button>
                     </td>
                 </tr>
             </tbody>

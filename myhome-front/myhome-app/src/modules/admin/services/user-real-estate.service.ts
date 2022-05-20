@@ -48,4 +48,16 @@ export class UserRealEstateService {
     return this.http.put<HttpResponse<string>>("myhome/api/ownerships", userRealEstateDTO, queryParams);
   }
 
+  deleteUserRealEstate(userRealEstateDTO: UserRealEstateDTO): Observable<HttpResponse<string>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text"
+    };
+
+    return this.http.put<HttpResponse<string>>("myhome/api/ownerships/delete", userRealEstateDTO, queryParams);
+  }
+
 }
