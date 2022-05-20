@@ -1,7 +1,14 @@
 package com.asdf.myhomeback.services;
 
-public interface BlacklistedTokenService {
-    boolean isTokenBlackListed(String uuid);
+import com.asdf.myhomeback.models.BlacklistedToken;
 
-    void saveToken(String uuid, String username, Long tokenExpiredIn);
+public interface BlacklistedTokenService {
+
+    BlacklistedToken getBlackListedToken(String token);
+
+    void saveToken(String token);
+
+    void removeToken(BlacklistedToken token);
+
+    void removeExpiredTokens();
 }

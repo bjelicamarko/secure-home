@@ -92,10 +92,7 @@ public class AppUserController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request)  {
         String authToken = tokenUtils.getToken(request);
-        String username = tokenUtils.getUsernameFromToken(authToken);
-        String uuid = tokenUtils.getUUIDFromToken(authToken);
-        Long tokenExpiredIn = tokenUtils.getExpirationDateFromToken(authToken).getTime();
-        blacklistedTokenService.saveToken(uuid, username, tokenExpiredIn);
+        blacklistedTokenService.saveToken(authToken);
         return new ResponseEntity<>("You have been successfully logged out!", HttpStatus.OK);
     }
 

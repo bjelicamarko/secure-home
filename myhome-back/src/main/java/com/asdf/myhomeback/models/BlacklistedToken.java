@@ -17,14 +17,6 @@ public class BlacklistedToken {
     private Long id;
 
     @NonNull
-    @Column(name = "uuid", unique = true, nullable = false)
-    private String uuid;
-
-    @NonNull
-    @Column(name = "username", nullable = false)
-    private String username;
-
-    @NonNull
-    @Column(name = "expired_in", nullable = false)
-    private Long expiredIn;
+    @Column(columnDefinition="text", length=370, name = "token", unique = true, nullable = false)
+    private String token;
 }
