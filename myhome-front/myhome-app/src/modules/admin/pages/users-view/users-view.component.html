@@ -9,6 +9,10 @@
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
+        <small *ngIf="(searchFormGroup.controls['searchField'].touched || searchFormGroup.controls['searchField'].dirty) 
+                         &&
+                       searchFormGroup.controls['searchField'].errors?.['invalidUsername']">Invalid search input
+        </small>
     </div>
     <div class="col-2" style="margin-left: 50px;">
         <mat-form-field appearance="fill">

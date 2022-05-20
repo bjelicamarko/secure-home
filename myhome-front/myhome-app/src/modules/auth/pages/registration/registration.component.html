@@ -12,6 +12,24 @@
           ">
               Username can't be empty!
             </small>
+            <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidUsername']
+          ">
+            Username should contain only digits and letters!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidMinLength']
+          ">
+            Minimum length is 3 characters!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidMaxLength']
+          ">
+            Maximum length is 20 characters!
+          </small>
           </div>
         </div>
   
@@ -61,8 +79,14 @@
                 <small id='danger-label-email' class="text-danger danger-label" *ngIf="
                 form.controls['email'].touched &&
                 form.controls['email'].errors?.['required']
-            ">
+                ">
                 Email can't be empty!
+                </small>
+                <small id='danger-label-email' class="text-danger danger-label" *ngIf="
+                form.controls['email'].touched &&
+                form.controls['email'].errors?.['invalidEmail']
+                ">
+                Invalid email format!
                 </small>
             </div>
         </div>
@@ -73,8 +97,26 @@
               <small id='danger-label-firstname' class="text-danger danger-label" *ngIf="
               form.controls['firstname'].touched &&
               form.controls['firstname'].errors?.['required']
-            ">
+              ">
                 Firstname can't be empty!
+              </small>
+              <small id='danger-label-firstname' class="text-danger danger-label" *ngIf="
+              form.controls['firstname'].touched &&
+              form.controls['firstname'].errors?.['invalidString']
+              ">
+                Firstname should contain only letters!
+              </small>
+              <small id='danger-label-firstname' class="text-danger danger-label" *ngIf="
+              form.controls['firstname'].touched &&
+              form.controls['firstname'].errors?.['invalidMinLength']
+              ">
+                Minimum length is 3 characters!
+              </small>
+              <small id='danger-label-firstname' class="text-danger danger-label" *ngIf="
+              form.controls['firstname'].touched &&
+              form.controls['firstname'].errors?.['invalidMaxLength']
+              ">
+                Maximum length is 20 characters!
               </small>
             </div>
         </div>
@@ -85,8 +127,26 @@
                 <small id='danger-label-lastname' class="text-danger danger-label" *ngIf="
                 form.controls['lastname'].touched &&
                 form.controls['lastname'].errors?.['required']
-            ">
-                Lastname can't be empty!
+                ">
+                  Lastname can't be empty!
+                </small>
+                <small id='danger-label-lastname' class="text-danger danger-label" *ngIf="
+                form.controls['lastname'].touched &&
+                form.controls['lastname'].errors?.['invalidString']
+                ">
+                  Lastname should contain only letters!
+                </small>
+                <small id='danger-label-lastname' class="text-danger danger-label" *ngIf="
+                form.controls['lastname'].touched &&
+                form.controls['lastname'].errors?.['invalidMinLength']
+                ">
+                  Minimum length is 3 characters!
+                </small>
+                <small id='danger-label-lastname' class="text-danger danger-label" *ngIf="
+                form.controls['lastname'].touched &&
+                form.controls['lastname'].errors?.['invalidMaxLength']
+                ">
+                  Maximum length is 20 characters!
                 </small>
             </div>
         </div>

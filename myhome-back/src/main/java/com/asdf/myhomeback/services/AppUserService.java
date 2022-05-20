@@ -16,7 +16,7 @@ public interface AppUserService extends UserDetailsService {
 
     Page<AppUser> getAllUsersButAdmin(Pageable pageable);
 
-    Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable);
+    Page<AppUser> searchUsers(String searchField, String userType, Pageable pageable) throws AppUserException;
 
     AppUser getUser(Long id);
 

@@ -5,6 +5,12 @@ import { Router } from '@angular/router';
 import { Login } from 'src/modules/shared/models/login';
 import { AuthService } from '../../services/auth.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
+import { PasswordValidator } from 'src/modules/shared/validators/PasswordValidator';
+import { MinLengthValidator } from 'src/modules/shared/validators/MinLengthValidator';
+import { MinLengthPasswordValidator } from 'src/modules/shared/validators/MinLengthPasswordValidator';
+import { MaxLengthValidator } from 'src/modules/shared/validators/MaxLengthValidator';
+import { UsernameValidator } from 'src/modules/shared/validators/UsernameValidator';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +28,8 @@ export class LoginComponent implements OnInit {
     private snackBarService: SnackBarService
   ) {
     this.form = this.fb.group({
-      username: [null, Validators.required],
-      password: [null, Validators.required],
+      username: [null, [Validators.required, UsernameValidator, MinLengthValidator, MaxLengthValidator]],
+      password: [null, [Validators.required, PasswordValidator, MinLengthPasswordValidator, MaxLengthValidator]],
     });
   }
 

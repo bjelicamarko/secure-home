@@ -8,8 +8,26 @@
           <small id='danger-label-username' class="text-danger danger-label" *ngIf="
           form.controls['username'].touched &&
           form.controls['username'].errors?.['required']
-        ">
+          ">
             Username can't be empty!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidUsername']
+          ">
+            Username should contain only digits and letters!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidMinLength']
+          ">
+            Minimum length is 3 characters!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidMaxLength']
+          ">
+            Maximum length is 20 characters!
           </small>
         </div>
       </div>
@@ -21,8 +39,26 @@
           <small id='danger-label-pass' class="text-danger" *ngIf="
           form.controls['password'].touched &&
           form.controls['password'].errors?.['required']
-        ">
+          ">
             Password can't be empty!
+          </small>
+          <small id='danger-label-pass' class="text-danger" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['invalidPassword']
+          ">
+            Invalid characters in password field!
+          </small>
+          <small id='danger-label-pass' class="text-danger danger-label" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['invalidMinLengthPassword']
+          ">
+            Minimum length is 8 characters!
+          </small>
+          <small id='danger-label-pass' class="text-danger danger-label" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['invalidMaxLength']
+          ">
+            Maximum length is 20 characters!
           </small>
         </div>
       </div>
