@@ -24,7 +24,7 @@
     </div>
 </form>
 <div class="row" style="margin-top: 50px; margin-left: 40px;">
-    <h2 *ngIf="users.length == 0"> Nema rezultata pretrage </h2>
+    <h2 *ngIf="users.length == 0"> Search has no results. </h2>
     <div *ngFor="let user of users" class="col">
         <app-app-user-card (renderList)="renderList()" [user]="user" (assignEstate)="assignEstate($event)"
             (showUserEstate)="showUserEstate($event)"></app-app-user-card>
