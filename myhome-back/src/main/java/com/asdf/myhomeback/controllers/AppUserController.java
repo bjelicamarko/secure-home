@@ -6,11 +6,15 @@ import com.asdf.myhomeback.Exception.AppUserException;
 import com.asdf.myhomeback.dto.RegistrationDTO;
 import com.asdf.myhomeback.dto.UserTokenStateDTO;
 import com.asdf.myhomeback.models.AppUser;
+import com.asdf.myhomeback.models.Log;
+import com.asdf.myhomeback.repositories.LogRepository;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.security.auth.JwtAuthenticationRequest;
 import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
 import com.asdf.myhomeback.util.ControllerUtils;
+import lombok.NonNull;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -48,6 +53,9 @@ public class AppUserController {
 
     @Autowired
     private BlacklistedTokenService blacklistedTokenService;
+
+    @Autowired
+    private LogRepository logRepository;
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)  {
@@ -85,6 +93,14 @@ public class AppUserController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
+
+        Log log = new Log(new Date().getTime(),
+                LogLevel.INFO,
+                ProcessHandle.current().pid(),
+                Thread.currentThread().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "User successfully logged in.");
+        logRepository.save(log);
 
         return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
