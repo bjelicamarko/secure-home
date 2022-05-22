@@ -1,7 +1,7 @@
-<div class="row justify-content-center align-items-center loginForm">
+<div class="row justify-content-center align-items-center realEstateCreationForm">
     <form class="col-md-12 box" [formGroup]="form" (ngSubmit)="submit()">
       <fieldset>
-        <p class="login-label">Real estate creation</p>
+        <p class="page-label">Real estate creation</p>
         
         <div class="form-group row">
           <div id="name-div" class="col-md">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="row">
-          <button id="login-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
+          <button id="submit-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
             Add real estate
           </button>
         </div>

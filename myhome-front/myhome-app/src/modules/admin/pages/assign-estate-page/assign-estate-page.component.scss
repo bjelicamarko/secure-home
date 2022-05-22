@@ -1,4 +1,4 @@
-.loginForm {
+.assignEstateForm {
     transform: translate(0%,15%);
     width: 80%;
     position: relative;
@@ -14,26 +14,7 @@
     }
   }
   
-  #name-div {
-    text-align: center;
-  }
-  
-  #name {
-    position: relative;
-    margin: auto;
-    width: 70%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  #login-button {
-    position: relative;
-    margin: auto;
-    width: 15%;
-    margin-top: 10px;
-  }
-  
-  .login-label {
+  .page-label {
     font-size: 50px;
     text-transform: uppercase;
     font-weight: 350;
