@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +32,10 @@ public interface UserRealEstateRepository extends JpaRepository<UserRealEstate, 
     @Modifying
     @Query("delete from UserRealEstate u where u.user.id = :userId and u.realEstate.id = :estateId")
     void deleteUserRealEstate(@Param("userId") Long userId,@Param("estateId") Long estateId);
+
+    @Query("select u.role from UserRealEstate u where u.user.username = ?1 and u.realEstate.id = ?2")
+    String findRoleInRealEstate(String username, Long id);
+
+    @Query("select concat(u.user.firstname, ' ', u.user.lastname, ' - ', u.role) from UserRealEstate u where u.realEstate.name = ?1")
+    List<String> getUsersFromByRealEstateName(String name);
 }

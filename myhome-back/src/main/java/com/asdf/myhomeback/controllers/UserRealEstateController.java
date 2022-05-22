@@ -1,8 +1,6 @@
 package com.asdf.myhomeback.controllers;
 
-import com.asdf.myhomeback.dto.RealEstateDTO;
-import com.asdf.myhomeback.dto.UserRealEstateDTO;
-import com.asdf.myhomeback.dto.UserRealEstateToViewDTO;
+import com.asdf.myhomeback.dto.*;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.exceptions.UserRealEstateException;
@@ -15,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -73,6 +72,19 @@ public class UserRealEstateController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/{name}")
+    @PreAuthorize("hasAuthority('GET_USER_REAL_ESTATE')")
+    public ResponseEntity<RealEstateWithHouseholdAndDevicesDTO> getRealEstate(@PathVariable("name") String name){
+        try{
+            List<String> household = userRealEstateService.getUsersFromByRealEstateName(name);
+            List<String> devices = new ArrayList<>(Arrays.asList("Fridge", "Freezer", "Air conditioner", "Light in bathroom"));
+            return new ResponseEntity<>(new RealEstateWithHouseholdAndDevicesDTO(household, devices),  HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

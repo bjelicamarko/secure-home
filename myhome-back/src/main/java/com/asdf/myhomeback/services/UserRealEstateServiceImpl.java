@@ -11,6 +11,7 @@ import com.asdf.myhomeback.models.UserRole;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
 import com.asdf.myhomeback.repositories.UserRealEstateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -163,5 +164,19 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
 
         user = updateUserRole(user);
         appUserService.save(user);
+    }
+
+    @Override
+    public List<String> findUsersRoleInRealEstates(String username, Page<RealEstate> realEstates) {
+        List<String> roles = new ArrayList<>();
+        for (RealEstate realEstate: realEstates) {
+            roles.add(userRealEstateRepository.findRoleInRealEstate(username, realEstate.getId()));
+        }
+        return  roles;
+    }
+
+    @Override
+    public List<String> getUsersFromByRealEstateName(String name) {
+        return userRealEstateRepository.getUsersFromByRealEstateName(name);
     }
 }

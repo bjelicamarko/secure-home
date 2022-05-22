@@ -6,6 +6,8 @@ import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.repositories.RealEstateRepository;
 import com.asdf.myhomeback.utils.RealEstateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +18,6 @@ public class RealEstateServiceImpl implements RealEstateService {
 
     @Autowired
     private RealEstateRepository realEstateRepository;
-
-    @Autowired
-    private AppUserService appUserService;
 
     @Override
     public RealEstate getRealEstateById(Long id) {
@@ -39,5 +38,10 @@ public class RealEstateServiceImpl implements RealEstateService {
     @Override
     public List<RealEstate> getRealEstateForUserToAssign(String username) {
         return realEstateRepository.getRealEstateForUserToAssign(username);
+    }
+
+    @Override
+    public Page<RealEstate> getRealEstatesOfUser(String username, Pageable pageable) {
+        return realEstateRepository.getRealEstatesOfUser(username, pageable);
     }
 }

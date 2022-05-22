@@ -25,6 +25,9 @@ public class RealEstate {
     @Column(name = "name", unique=true, nullable=false)
     private String name;
 
+    @Column(name = "photo")
+    private String photo;
+
     @OneToMany(mappedBy = "realEstate")
     Set<UserRealEstate> users;
 

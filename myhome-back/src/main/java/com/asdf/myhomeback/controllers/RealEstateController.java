@@ -1,11 +1,16 @@
 package com.asdf.myhomeback.controllers;
 
+import com.asdf.myhomeback.dto.RealEstateWithPhotoAndRoleDTO;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.dto.RealEstateToAssignDTO;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.services.RealEstateService;
+import com.asdf.myhomeback.services.UserRealEstateService;
+import com.asdf.myhomeback.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,9 @@ public class RealEstateController {
 
     @Autowired
     private RealEstateService realEstateService;
+
+    @Autowired
+    private UserRealEstateService userRealEstateService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GET_REAL_ESTATE_BY_ID')")
@@ -55,6 +63,25 @@ public class RealEstateController {
 
             realEstates.forEach(realEstate -> realEstateDTOS.add(new RealEstateToAssignDTO(realEstate)));
             return new ResponseEntity<>(realEstateDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/all/{username}")
+    @PreAuthorize("hasAuthority('GET_USER_REAL_ESTATES')")
+    public ResponseEntity<List<RealEstateWithPhotoAndRoleDTO>> getRealEstatesOfUser(@PathVariable("username") String username, Pageable pageable){
+        try{
+            Page<RealEstate> realEstates = realEstateService.getRealEstatesOfUser(username, pageable);
+            List<String> roles = userRealEstateService.findUsersRoleInRealEstates(username, realEstates);
+
+            List<RealEstateWithPhotoAndRoleDTO> list = new ArrayList<>();
+            List<RealEstate> realEstates1 = realEstates.stream().toList();
+            for (int i = 0; i < realEstates1.size(); i++) {
+                list.add(new RealEstateWithPhotoAndRoleDTO(realEstates1.get(i), roles.get(i)));
+            }
+            return new ResponseEntity<>(list, ControllerUtils.createPageHeaderAttributes(realEstates), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
