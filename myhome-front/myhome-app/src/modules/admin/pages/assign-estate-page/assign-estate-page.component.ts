@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
-import { RealEstateToAssignDTO } from '../../models/RealEstateDTO';
+import { RealEstateToAssignDTO } from '../../../shared/models/RealEstateDTO';
 import { UserRealEstateDTO } from '../../models/UserRealEstateDTO';
 import { RealEstateService } from '../../services/real-estate.service';
 import { UserRealEstateService } from '../../services/user-real-estate.service';

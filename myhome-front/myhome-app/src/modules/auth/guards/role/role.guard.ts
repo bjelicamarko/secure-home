@@ -7,10 +7,10 @@ import { AuthService } from "../../services/auth.service";
   providedIn: "root",
 })
 export class RoleGuard implements CanActivate {
-  constructor(public auth: AuthService, public router: Router) {}
+  constructor(public auth: AuthService, public router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const expectedRoles: string =  route.data["expectedRoles"]; 
+    const expectedRoles: string = route.data["expectedRoles"];
     const token = sessionStorage.getItem("user");
     const jwt: JwtHelperService = new JwtHelperService();
 

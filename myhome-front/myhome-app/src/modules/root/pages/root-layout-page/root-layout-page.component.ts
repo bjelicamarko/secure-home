@@ -12,7 +12,7 @@ export class RootLayoutPageComponent {
 
   public role: string;
 
-  constructor() { 
+  constructor() {
     this.role = "";
   }
 

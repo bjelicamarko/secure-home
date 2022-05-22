@@ -6,7 +6,7 @@ import { BasicValidator } from 'src/modules/shared/validators/BasicValidator';
 import { BasicValidatorWithSpace } from 'src/modules/shared/validators/BasicValidatorWithSpace';
 import { MaxLengthValidator } from 'src/modules/shared/validators/MaxLengthValidator';
 import { MinLengthValidator } from 'src/modules/shared/validators/MinLengthValidator';
-import { RealEstateDTO } from '../../models/RealEstateDTO';
+import { RealEstateDTO } from '../../../shared/models/RealEstateDTO';
 import { RealEstateService } from '../../services/real-estate.service';
 
 @Component({

@@ -68,8 +68,8 @@ export class AppUserCardComponent {
         this.appUsersService.unlockUser(this.user.id)
           .subscribe((response) => {
             this.snackBarService.openSnackBar(response.body as string);
-           // this.renderList.emit(null);
-           this.user.locked = false;
+            // this.renderList.emit(null);
+            this.user.locked = false;
           },
             (err) => {
               console.log(err);

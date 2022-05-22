@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div style="text-align: center; margin-top: 2%; margin-bottom: 5%;">
+            <h1>{{name}}</h1>
+        </div>
+        <h2><span>Household</span></h2>
+        <h5>{{realEstate.household}}</h5>
+        <div style="text-align: center; margin-top: 2%;">
+            <h2><span>Devices</span></h2>
+        </div>
+        <table id="cssTable" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Value - last logged</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let device of realEstate.devices">
+                    <td>{{device}}</td>
+                    <td [ngStyle]="{'background-color': (device != 'Freezer') ? 'GREEN' : 'RED'}">{{device !== "Freezer"
+                        ?
+                        "ON" : "OFF"}}</td>
+                    <td>{{device !== "Light in bathroom" ?
+                        randomNumber() : "Optimal Shining"}} {{device !== "Light in bathroom" ?
+                        "°C" : ""}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
