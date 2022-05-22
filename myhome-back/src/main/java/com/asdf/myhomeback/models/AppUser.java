@@ -1,6 +1,7 @@
 package com.asdf.myhomeback.models;
 
 import com.asdf.myhomeback.dto.RegistrationDTO;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "system_user")
+@Where(clause = "deleted = false")
 public class AppUser implements UserDetails {
 
     @Id

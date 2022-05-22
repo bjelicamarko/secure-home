@@ -66,12 +66,7 @@ export class LoginComponent implements OnInit {
       }
     },
       (err: any) => {
-        if (err.status === 401) {
-          this.snackBarService.openSnackBar(err.error.exception);
-          this.form.reset();
-        }
-        if (err.status === 403)
-          this.snackBarService.openSnackBar("You must verify yor account to login.");
+        this.snackBarService.openSnackBar(err.error.exception);
       }
     );
   }

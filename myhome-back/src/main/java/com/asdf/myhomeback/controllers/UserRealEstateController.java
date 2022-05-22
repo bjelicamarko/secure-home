@@ -67,10 +67,8 @@ public class UserRealEstateController {
             userRealEstateService.deleteUserRealEstate(userRealEstateDTO);
             return new ResponseEntity<>("User real estate successfully deleted", HttpStatus.OK);
         } catch (AppUserException | RealEstateException | UserRealEstateException e) {
-            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

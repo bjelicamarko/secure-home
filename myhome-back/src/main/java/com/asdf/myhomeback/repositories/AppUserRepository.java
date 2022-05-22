@@ -16,23 +16,23 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByUsername(String username);
 
-    @Query("select u from AppUser u where u.id = ?1 and u.userType != 'ROLE_ADMIN' and u.deleted=false" +
+    @Query("select u from AppUser u where u.id = ?1 and u.userType != 'ROLE_ADMIN'" +
             " and u.verified = true and u.accountNonLocked = false")
     Optional<AppUser> findByIdVerifiedButLocked(Long id);
 
-    @Query("select u from AppUser u where u.id = ?1 and not u.userType = 'ROLE_ADMIN' and u.deleted=false" +
+    @Query("select u from AppUser u where u.id = ?1 and not u.userType = 'ROLE_ADMIN' " +
             " and u.verified = true and u.accountNonLocked = false")
     Optional<AppUser> findByIdVerifiedUnlocked(Long id);
 
-    @Query("select u from AppUser u where u.username = ?1 and not u.userType = 'ROLE_ADMIN' and u.deleted=false" +
+    @Query("select u from AppUser u where u.username = ?1 and not u.userType = 'ROLE_ADMIN'" +
             " and u.verified = true and u.accountNonLocked = false")
     Optional<AppUser> findByUsernameVerifiedUnlocked(String username);
 
-    @Query("select u from AppUser u where not u.userType = 'ROLE_ADMIN' and u.deleted=false")
+    @Query("select u from AppUser u where not u.userType = 'ROLE_ADMIN' ")
     Page<AppUser> getAllUsersButAdmin(Pageable pageable);
 
     @Query("select u from AppUser u " +
-            "where u.deleted=false and not u.userType = 'ROLE_ADMIN' and " +
+            "where not u.userType = 'ROLE_ADMIN' and " +
             "( :search = '' " +
             "or lower(u.firstname) like lower(concat('%', :search, '%')) " +
             "or lower(u.lastname) like lower(concat('%', :search, '%'))" +
