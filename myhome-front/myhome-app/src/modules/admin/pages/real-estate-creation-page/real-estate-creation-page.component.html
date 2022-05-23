@@ -1,0 +1,43 @@
+<div class="row justify-content-center align-items-center realEstateCreationForm">
+    <form class="col-md-12 box" [formGroup]="form" (ngSubmit)="submit()">
+      <fieldset>
+        <p class="page-label">Real estate creation</p>
+        
+        <div class="form-group row">
+          <div id="name-div" class="col-md">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name" formControlName="name" />
+            <small id='danger-label-name' class="text-danger danger-label" *ngIf="
+            form.controls['name'].touched &&
+            form.controls['name'].errors?.['required']
+            ">
+              Real estate name can't be empty!
+            </small>
+            <small id='danger-label-name' class="text-danger danger-label" *ngIf="
+            form.controls['name'].touched &&
+            form.controls['name'].errors?.['invalidSpaceString']
+            ">
+              Name should contain only letters!
+            </small>
+            <small id='danger-label-name' class="text-danger danger-label" *ngIf="
+            form.controls['name'].touched &&
+            form.controls['name'].errors?.['invalidMinLength']
+            ">
+              Minimum length is 3 characters!
+            </small>
+            <small id='danger-label-name' class="text-danger danger-label" *ngIf="
+            form.controls['name'].touched &&
+            form.controls['name'].errors?.['invalidMaxLength']
+            ">
+              Maximum length is 20 characters!
+            </small>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="submit-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
+            Add real estate
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>

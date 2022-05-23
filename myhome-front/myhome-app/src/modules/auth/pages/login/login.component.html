@@ -1,0 +1,76 @@
+<div class="row justify-content-center align-items-center loginForm">
+  <form class="col-md-12 box" [formGroup]="form" (ngSubmit)="submit()">
+    <fieldset>
+      <p class="login-label">Login</p>
+      <div class="form-group row">
+        <div id="username-div" class="col-md">
+          <input type="text" class="form-control" id="username" name="username" placeholder="Username" formControlName="username" />
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['required']
+          ">
+            Username can't be empty!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidUsername']
+          ">
+            Username should contain only digits and letters!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidMinLength']
+          ">
+            Minimum length is 3 characters!
+          </small>
+          <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+          form.controls['username'].touched &&
+          form.controls['username'].errors?.['invalidMaxLength']
+          ">
+            Maximum length is 20 characters!
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div id="pass-div" class="col-md">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+            formControlName="password" />
+          <small id='danger-label-pass' class="text-danger" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['required']
+          ">
+            Password can't be empty!
+          </small>
+          <small id='danger-label-pass' class="text-danger" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['invalidPassword']
+          ">
+            Invalid characters in password field!
+          </small>
+          <small id='danger-label-pass' class="text-danger danger-label" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['invalidMinLengthPassword']
+          ">
+            Minimum length is 8 characters!
+          </small>
+          <small id='danger-label-pass' class="text-danger danger-label" *ngIf="
+          form.controls['password'].touched &&
+          form.controls['password'].errors?.['invalidMaxLength']
+          ">
+            Maximum length is 20 characters!
+          </small>
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="login-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
+          Login
+        </button>
+      </div>
+      <div class="row">
+        <a href="/mh-app/auth/registration" style="color: rgba(0, 0, 0, 0.932);">Register</a>
+      </div>
+    </fieldset>
+  </form>
+</div>

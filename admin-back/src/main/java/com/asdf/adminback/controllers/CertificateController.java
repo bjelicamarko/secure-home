@@ -29,6 +29,7 @@ public class CertificateController {
 
 
     @GetMapping(value="/getAliases")
+    // @PreAuthorize("hasAuthority('READ_KEYSTORE')")
     public ResponseEntity<List<String>> getAliases() {
         try {
             return new ResponseEntity<>(keyStoreService.getAliases(), HttpStatus.OK);
@@ -39,12 +40,14 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/getCertificate/{alias}")
+    // @PreAuthorize("hasAuthority('READ_CERTIFICATE')")
     public ResponseEntity<List<CertificateDTO>> getCertificate(@PathVariable String alias) {
         return new ResponseEntity<>(keyStoreService.readCertificateChain(FILE_PATH, PWD, alias)
                 , HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping
+    // @PreAuthorize("hasAuthority('SAVE_CERTIFICATE')")
     public ResponseEntity<String> save(@RequestBody CertificateSigningDTO certificateSigningDTO) {
         try {
             certificateService.createAndWriteLeafCertificate(certificateSigningDTO);
@@ -61,6 +64,7 @@ public class CertificateController {
     }
 
     @PostMapping("/revoke")
+    // @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE')")
     public ResponseEntity<String> revokeCertificate(@RequestBody RevokedCertificateDTO revokedCertificate) {
         try {
             certificateService.revokeCertificate(revokedCertificate.getAlias(), revokedCertificate.getReason());
@@ -72,6 +76,7 @@ public class CertificateController {
     }
 
     @PostMapping("/validate/{alias}")
+    // @PreAuthorize("hasAuthority('VALIDATE_CERTIFICATE')")
     public ResponseEntity<String> validateCertificate(@PathVariable String alias) {
         try {
             certificateService.validateCertificate(alias);

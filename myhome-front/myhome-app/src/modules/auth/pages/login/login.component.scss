@@ -1,0 +1,52 @@
+.loginForm {
+    transform: translate(0%,50%);
+    width: 40%;
+    position: relative;
+    margin: auto;
+    background-color: lightgray;
+    color: rgba($color: black, $alpha: 0.7);
+    border-radius: 18px;
+    padding: 18px;
+  }
+  @media (max-width: 350px) {
+    .myForm {
+      min-width: 90%;
+    }
+  }
+  
+  #username-div, #pass-div {
+    text-align: center;
+  }
+  
+  #username, #password {
+    position: relative;
+    margin: auto;
+    width: 70%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  #login-button, a {
+    position: relative;
+    margin: auto;
+    width: 30%;
+    margin-top: 10px;
+  }
+
+ a {
+    position: relative;
+    margin: auto;
+    width: 13%;
+    margin-top: 10px;
+  }
+  
+  .login-label {
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: 350;
+    letter-spacing: 1px;
+    text-align: center;
+    margin: 20px 0px;
+    font-weight: 400;
+  }
+  

@@ -1,0 +1,31 @@
+<div class="row justify-content-center align-items-center userRealEstateForm">
+    <p class="page-label">{{username}} Real Estates</p>
+    <div class="form-group row">
+        <table id="cssTable" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Change role</th>
+                    <th>Remove estate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let userEstate of userEstates">
+                    <td>{{userEstate.realEstateName}}</td>
+                    <td>{{userEstate.role}}</td>
+                    <td *ngIf="userEstate.role==='OWNER'">
+                        <button type="button" class="btn btn-primary" (click)="changeToTenant(userEstate.realEstateId)">Change to tenant</button>
+                    </td>
+                    <td *ngIf="userEstate.role==='TENANT'">
+                        <button type="button" class="btn btn-primary" (click)="changeToOwner(userEstate.realEstateId)">Change to owner</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="removeUserRealEstate(userEstate.realEstateId)">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

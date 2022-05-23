@@ -1,0 +1,41 @@
+<div class="card" style="width: 18rem;" (click)="openDialog()">
+  <img class="card-img-top" src="myhome/{{user.profilePhoto}}" alt="Card image cap" width="400" height="335">
+  <div class="card-body">
+    <h3 class="card-title" style="font-weight: bold;">{{user.firstName}} {{user.lastName}}</h3>
+    <p class="card-text"><span style="color: red;">{{user.email}}</span>
+      <br>
+      Username: {{user.username}}
+      <br>
+      Role: {{user.role === 'ROLE_ADMIN' ? 'Admin' : 
+      user.role === 'ROLE_OWNER' ? 'Owner' : 
+      user.role === 'ROLE_TENANT' ? 'Tenant' : 
+      user.role === 'ROLE_BOTH' ? 'Owner and Tenant' : 'Unassigned'}}
+      <br>
+      Verification: {{user.verified ? 'Verified' : 'Unverified'}}
+      <br>
+      Locked: {{user.locked ? 'Locked' : 'Non locked'}}
+    </p>
+  </div>
+  <div>
+    <div style="margin-bottom: 20px; margin-left: 15px;">
+      <button mat-fab color="warn" aria-label="Example icon button with a home icon" (click)="removeUser()">
+        <mat-icon matTooltip="Delete user">delete</mat-icon>
+      </button>
+      <button mat-fab color="warn" style="margin-left: 10px;" aria-label="Example icon button with a home icon"
+        (click)="showUserEstatePage(user.username)"
+        *ngIf="user.verified && !user.locked">
+        <mat-icon matTooltip="Show user real estate">account_box</mat-icon>
+      </button>
+      <button mat-fab color="warn" style="margin-left: 10px;" aria-label="Example icon button with a home icon"
+        (click)="showAssignEstatePage(user.username)"
+        *ngIf="user.verified && !user.locked">
+        <mat-icon matTooltip="Assign real estate">account_balance</mat-icon>
+      </button>
+      <button mat-fab color="warn" style="margin-left: 10px;" aria-label="Example icon button with a home icon"
+        (click)="unlockUser()"
+        *ngIf="user.verified && user.locked">
+        <mat-icon matTooltip="Unlock user">lock_open</mat-icon>
+      </button>
+    </div>
+  </div> 
+</div>
