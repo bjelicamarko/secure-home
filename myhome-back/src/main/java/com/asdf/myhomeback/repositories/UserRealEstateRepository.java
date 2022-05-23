@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.repositories;
 
+import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,8 +35,14 @@ public interface UserRealEstateRepository extends JpaRepository<UserRealEstate, 
     void deleteUserRealEstate(@Param("userId") Long userId,@Param("estateId") Long estateId);
 
     @Query("select u.role from UserRealEstate u where u.user.username = ?1 and u.realEstate.id = ?2")
-    String findRoleInRealEstate(String username, Long id);
+    String findRoleInRealEstateById(String username, Long id);
+
+    @Query("select u.role from UserRealEstate u where u.user.username = ?1 and u.realEstate.name = ?2")
+    String findRoleInRealEstateByName(String username, String name);
 
     @Query("select concat(u.user.firstname, ' ', u.user.lastname, ' - ', u.role) from UserRealEstate u where u.realEstate.name = ?1")
     List<String> getUsersFromByRealEstateName(String name);
+
+    @Query("select u from UserRealEstate u where u.user.username = ?1 and u.realEstate.name = ?2")
+    UserRealEstate checkUsernameInRealEstate(String username, String name);
 }

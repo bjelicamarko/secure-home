@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { UtilService } from 'src/modules/shared/services/util/util.service';
 
 @Component({
   selector: 'app-root-layout-page',
@@ -8,21 +9,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class RootLayoutPageComponent {
 
-  // public showFiller: boolean = false;
+  constructor(public utilService: UtilService) { }
 
-  public role: string;
-
-  constructor() {
-    this.role = "";
-  }
-
-  checkRole() {
-    const item = sessionStorage.getItem("user");
-
-    if (item) {
-      const jwt: JwtHelperService = new JwtHelperService();
-      this.role = jwt.decodeToken(item).role;
-    }
+  isRole(role: string): boolean {
+    return this.utilService.isRoleInUserRoles(role);
   }
 
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { RootLayoutPageComponent } from './pages/root-layout-page/root-layout-page.component';
+import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
     ]
   },
   {
+    path: "mh-app/unauthorized",
+    component: UnauthorizedPageComponent,
+    pathMatch: "full"
+  },
+  {
     path: "",
     redirectTo: "mh-app/auth/login",
     pathMatch: "full",
@@ -34,6 +40,7 @@ const routes: Routes = [
     path: "**",
     component: NotFoundPageComponent
   },
+
 ];
 
 @NgModule({

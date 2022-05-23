@@ -21,11 +21,11 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     Optional<AppUser> findByIdVerifiedButLocked(Long id);
 
     @Query("select u from AppUser u where u.id = ?1 and not u.userType = 'ROLE_ADMIN' " +
-            " and u.verified = true and u.accountNonLocked = false")
+            " and u.verified = true and u.accountNonLocked = true")
     Optional<AppUser> findByIdVerifiedUnlocked(Long id);
 
     @Query("select u from AppUser u where u.username = ?1 and not u.userType = 'ROLE_ADMIN'" +
-            " and u.verified = true and u.accountNonLocked = false")
+            " and u.verified = true and u.accountNonLocked = true")
     Optional<AppUser> findByUsernameVerifiedUnlocked(String username);
 
     @Query("select u from AppUser u where not u.userType = 'ROLE_ADMIN' ")

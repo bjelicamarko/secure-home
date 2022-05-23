@@ -36,7 +36,7 @@ export class RealEstateService {
     return this.http.get<HttpResponse<RealEstateDTO[]>>("myhome/api/realEstates/toAssign?username=" + username, queryParams);
   }
 
-  getAllRealEstatesOfUser(username: string, page: number, size: number): Observable<HttpResponse<RealEstateWithPhotoAndRoleDTO[]>> {
+  getAllRealEstatesOfUser(page: number, size: number): Observable<HttpResponse<RealEstateWithPhotoAndRoleDTO[]>> {
 
     let queryParams = {};
 
@@ -48,7 +48,7 @@ export class RealEstateService {
         .append("size", String(size))
         .append("sort", "id"),
     };
-    return this.http.get<HttpResponse<RealEstateWithPhotoAndRoleDTO[]>>("myhome/api/realEstates/all/" + username, queryParams);
+    return this.http.get<HttpResponse<RealEstateWithPhotoAndRoleDTO[]>>("myhome/api/realEstates/all", queryParams);
   }
 
   getRealEstateByName(name: string | null): Observable<HttpResponse<RealEstateWithHouseholdAndDevicesDTO>> {
@@ -59,6 +59,7 @@ export class RealEstateService {
       observe: "response",
       responseType: "json"
     };
+
     return this.http.get<HttpResponse<RealEstateWithHouseholdAndDevicesDTO>>("myhome/api/ownerships/" + name, queryParams);
   }
 

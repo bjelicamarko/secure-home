@@ -50,6 +50,7 @@ INSERT INTO user_role (user_id, role_id) VALUES (4, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (5, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (6, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (7, 3); --  ROLE_TENANT
+INSERT INTO user_role (user_id, role_id) VALUES (8, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (8, 3); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (9, 3); --  ROLE_TENANT
 INSERT INTO user_role (user_id, role_id) VALUES (10, 4); --  ROLE_UNASSIGNED

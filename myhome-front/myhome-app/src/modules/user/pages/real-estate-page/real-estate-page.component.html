@@ -4,8 +4,13 @@
         <div style="text-align: center; margin-top: 2%; margin-bottom: 5%;">
             <h1>{{name}}</h1>
         </div>
-        <h2><span>Household</span></h2>
-        <h5>{{realEstate.household}}</h5>
+        <div *ngIf="realEstate.household.length !== 0">
+            <h2><span>Household</span></h2>
+            <ul>
+                <li *ngFor="let householder of realEstate.household" style="font-size:large; margin-bottom: 1%">
+                    {{householder}}</li>
+            </ul>
+        </div>
         <div style="text-align: center; margin-top: 2%;">
             <h2><span>Devices</span></h2>
         </div>
@@ -20,7 +25,8 @@
             <tbody>
                 <tr *ngFor="let device of realEstate.devices">
                     <td>{{device}}</td>
-                    <td [ngStyle]="{'background-color': (device != 'Freezer') ? '#3bc710' : 'RED'}">{{device !== "Freezer"
+                    <td [ngStyle]="{'background-color': (device != 'Freezer') ? '#3bc710' : 'RED'}">{{device !==
+                        "Freezer"
                         ?
                         "ON" : "OFF"}}</td>
                     <td>{{device !== "Light in bathroom" ?

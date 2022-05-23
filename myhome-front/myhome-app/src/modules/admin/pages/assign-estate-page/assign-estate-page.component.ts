@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { RealEstateToAssignDTO } from '../../../shared/models/RealEstateDTO';
 import { UserRealEstateDTO } from '../../models/UserRealEstateDTO';
@@ -16,19 +16,24 @@ export class AssignEstatePageComponent implements OnInit {
   username: string;
   estates: RealEstateToAssignDTO[];
 
-  constructor(private route: ActivatedRoute, private userRealEstateService: UserRealEstateService,
-              private snackBarSerice: SnackBarService, private realEstateService: RealEstateService) {
+  constructor(private route: ActivatedRoute, private router: Router, private userRealEstateService: UserRealEstateService,
+    private snackBarService: SnackBarService, private realEstateService: RealEstateService) {
     this.username = this.route.snapshot.params['username'];
     this.estates = [];
-   }
+  }
 
   ngOnInit(): void {
     this.realEstateService.getRealEstateForUserToAssign(this.username).subscribe((res: any) => {
       this.estates = res.body;
     },
-    (error) => {
-      this.snackBarSerice.openSnackBar("An error ocured while loading real estates")
-    })
+      (error) => {
+        if (error.status === 400) {
+          this.snackBarService.openSnackBar("Invalid username given.")
+          this.router.navigate(["mh-app/admin/users-view"]);
+        }
+        else
+          this.snackBarService.openSnackBar("An error ocured while loading real estates")
+      })
   }
 
   setOwner(estateId: number): void {
@@ -37,14 +42,14 @@ export class AssignEstatePageComponent implements OnInit {
       realEstateId: estateId,
       role: 'OWNER'
     }
-    
+
     this.userRealEstateService.saveUserRealEstate(userRealEstateDTO).subscribe((result: any) => {
-      this.snackBarSerice.openSnackBar(result.body);
+      this.snackBarService.openSnackBar(result.body);
       this.removeEstateFromTable(estateId);
     },
-    (error) => {
-      this.snackBarSerice.openSnackBar(error.error);
-    });
+      (error) => {
+        this.snackBarService.openSnackBar(error.error);
+      });
   }
 
   setTenant(estateId: number): void {
@@ -55,17 +60,17 @@ export class AssignEstatePageComponent implements OnInit {
     }
 
     this.userRealEstateService.saveUserRealEstate(userRealEstateDTO).subscribe((result: any) => {
-      this.snackBarSerice.openSnackBar(result.body);
+      this.snackBarService.openSnackBar(result.body);
       this.removeEstateFromTable(estateId);
     },
-    (error) => {
-      this.snackBarSerice.openSnackBar(error.error);
-    });
+      (error) => {
+        this.snackBarService.openSnackBar(error.error);
+      });
   }
 
   removeEstateFromTable(id: number) {
-    for(let i = 0; i < this.estates.length; i++) {
-      if(this.estates[i].id === id)
+    for (let i = 0; i < this.estates.length; i++) {
+      if (this.estates[i].id === id)
         this.estates.splice(i, 1);
     }
   }

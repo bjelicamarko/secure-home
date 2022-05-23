@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.services;
 
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.models.RealEstate;
@@ -19,6 +20,9 @@ public class RealEstateServiceImpl implements RealEstateService {
     @Autowired
     private RealEstateRepository realEstateRepository;
 
+    @Autowired
+    private AppUserService appUserService;
+
     @Override
     public RealEstate getRealEstateById(Long id) {
         return realEstateRepository.findById(id).orElse(null);
@@ -36,7 +40,10 @@ public class RealEstateServiceImpl implements RealEstateService {
     }
 
     @Override
-    public List<RealEstate> getRealEstateForUserToAssign(String username) {
+    public List<RealEstate> getRealEstateForUserToAssign(String username) throws AppUserException {
+        if(appUserService.findByUsernameVerifiedUnlocked(username) == null){
+            throw new AppUserException("This user doesnt exist.");
+        }
         return realEstateRepository.getRealEstateForUserToAssign(username);
     }
 

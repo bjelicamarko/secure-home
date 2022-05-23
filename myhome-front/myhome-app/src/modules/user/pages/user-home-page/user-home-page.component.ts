@@ -32,7 +32,7 @@ export class UserHomePageComponent implements OnInit {
 
   ngOnInit(): void {
     let username = this.utilsService.getLoggedUsername();
-    this.realEstateService.getAllRealEstatesOfUser(username, this.currentPage - 1, this.pageSize)
+    this.realEstateService.getAllRealEstatesOfUser(this.currentPage - 1, this.pageSize)
       .subscribe((response) => {
         this.realEstates = response.body as RealEstateWithPhotoAndRoleDTO[];
         this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
@@ -50,7 +50,7 @@ export class UserHomePageComponent implements OnInit {
 
   changePage(newPage: number) {
     let username = this.utilsService.getLoggedUsername();
-    this.realEstateService.getAllRealEstatesOfUser(username, newPage - 1, this.pageSize).subscribe((res) => {
+    this.realEstateService.getAllRealEstatesOfUser(newPage - 1, this.pageSize).subscribe((res) => {
       if (res.body != null) {
         this.realEstates = res.body as RealEstateWithPhotoAndRoleDTO[];
         this.setPagination(res.headers.get('total-elements'), res.headers.get('current-page'));

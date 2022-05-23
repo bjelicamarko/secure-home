@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { retry } from 'rxjs';
 import { RealEstateService } from 'src/modules/admin/services/real-estate.service';
 import { RealEstateWithHouseholdAndDevicesDTO } from 'src/modules/shared/models/RealEstateDTO';
+import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 
 @Component({
   selector: 'app-real-estate-page',
@@ -14,7 +15,7 @@ export class RealEstatePageComponent implements AfterViewInit {
   name: string | null;
   realEstate: RealEstateWithHouseholdAndDevicesDTO;
 
-  constructor(private route: ActivatedRoute, private realEstateService: RealEstateService) {
+  constructor(private route: ActivatedRoute, private router: Router, private realEstateService: RealEstateService, private snackBarService: SnackBarService) {
     this.name = route.snapshot.paramMap.get("name");
     this.realEstate = { household: [], devices: [] }
   }
@@ -26,7 +27,13 @@ export class RealEstatePageComponent implements AfterViewInit {
     this.realEstateService.getRealEstateByName(this.name)
       .subscribe((response) => {
         this.realEstate = response.body as RealEstateWithHouseholdAndDevicesDTO;
-      });
+      },
+        (error) => {
+          if (error.status === 400) {
+            this.snackBarService.openSnackBar("You can't access real estate where you don't belong.")
+            this.router.navigate(["mh-app/user/user-home-page"]);
+          }
+        });
   }
 
   randomNumber() {

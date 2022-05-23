@@ -5,6 +5,7 @@ import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.exceptions.UserRealEstateException;
 import com.asdf.myhomeback.models.UserRealEstate;
+import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.UserRealEstateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,9 @@ public class UserRealEstateController {
 
     @Autowired
     private UserRealEstateService userRealEstateService;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @PostMapping
     @PreAuthorize("hasAuthority('SAVE_USER_REAL_ESTATE')")
@@ -75,9 +80,17 @@ public class UserRealEstateController {
 
     @GetMapping(value = "/{name}")
     @PreAuthorize("hasAuthority('GET_USER_REAL_ESTATE')")
-    public ResponseEntity<RealEstateWithHouseholdAndDevicesDTO> getRealEstate(@PathVariable("name") String name){
-        try{
-            List<String> household = userRealEstateService.getUsersFromByRealEstateName(name);
+    public ResponseEntity<RealEstateWithHouseholdAndDevicesDTO> getOwnerRealEstate(HttpServletRequest request, @PathVariable("name") String name){
+        try {
+            String authToken = tokenUtils.getToken(request);
+            String username = tokenUtils.getUsernameFromToken(authToken);
+            if (userRealEstateService.isUserInRealEstate(username, name)){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            String role = userRealEstateService.findRoleInRealEstateByName(username, name);
+            List<String> household = new ArrayList<>();
+            if(role.equals("OWNER"))
+                household = userRealEstateService.getUsersFromByRealEstateName(name);
             List<String> devices = new ArrayList<>(Arrays.asList("Fridge", "Freezer", "Air conditioner", "Light in bathroom"));
             return new ResponseEntity<>(new RealEstateWithHouseholdAndDevicesDTO(household, devices),  HttpStatus.OK);
         } catch (Exception e) {

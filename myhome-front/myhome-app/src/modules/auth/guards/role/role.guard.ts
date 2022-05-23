@@ -1,13 +1,14 @@
 import { Injectable } from "@angular/core";
 import { Router, ActivatedRouteSnapshot, CanActivate } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { UtilService } from "src/modules/shared/services/util/util.service";
 import { AuthService } from "../../services/auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class RoleGuard implements CanActivate {
-  constructor(public auth: AuthService, public router: Router) { }
+  constructor(public auth: AuthService, public router: Router, public utilService: UtilService) { }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRoles: string = route.data["expectedRoles"];
@@ -19,14 +20,14 @@ export class RoleGuard implements CanActivate {
       return false;
     }
 
-    const info = jwt.decodeToken(token);
+    // const info = jwt.decodeToken(token);
     const roles: string[] = expectedRoles.split("|");
-
-    if (roles.indexOf(info.role) === -1) {
-      //this.router.navigate(["/wine/list"]); oni su stavili redirect mi cemo samo ostati na stranici ako
-      // nije validan role
-      return false;
+    for (let i = 0; i < roles.length; i++) {
+      if (this.utilService.isRoleInUserRoles(roles[i]))
+        return true;
     }
-    return true;
+
+    this.router.navigate(["mh-app/unauthorized"]);
+    return false;
   }
 }

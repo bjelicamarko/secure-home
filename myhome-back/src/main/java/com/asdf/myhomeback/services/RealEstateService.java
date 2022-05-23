@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.services;
 
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.models.RealEstate;
@@ -14,7 +15,7 @@ public interface RealEstateService {
 
     void saveRealEstate(RealEstateDTO realEstateDTO) throws RealEstateException;
 
-    List<RealEstate> getRealEstateForUserToAssign(String username);
+    List<RealEstate> getRealEstateForUserToAssign(String username) throws AppUserException;
 
     Page<RealEstate> getRealEstatesOfUser(String username, Pageable pageable);
 }

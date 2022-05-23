@@ -84,7 +84,7 @@ public class AppUserController {
             return new ResponseEntity<>(new UserTokenStateDTO("You must verified your account before login."), HttpStatus.FORBIDDEN);
 
         String fingerprint = tokenUtils.generateFingerprint();
-        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles().get(0).getName(), fingerprint);
+        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles(), fingerprint);
         int expiresIn = tokenUtils.getExpiredIn();
 
         if (appUser.getFailedAttempt() > 0) {

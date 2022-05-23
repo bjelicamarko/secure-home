@@ -40,8 +40,8 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
                 .findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
         if (userRealEstateDuplicate != null) throw new Exception("(User, Real estate) tuple already exist.");
 
-        AppUser user = appUserService.getUser(userRealEstateDTO.getUsername());
-        if (user == null) throw new Exception("User with given id doesnt exist.");
+        AppUser user = appUserService.findByUsernameVerifiedUnlocked(userRealEstateDTO.getUsername());
+        if (user == null) throw new Exception("User with given id doesnt exist | Real estate can't be assigned to this user.");
 
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
         if (realEstate == null) throw new Exception("Real estate with given id doesnt exist.");
@@ -170,7 +170,7 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     public List<String> findUsersRoleInRealEstates(String username, Page<RealEstate> realEstates) {
         List<String> roles = new ArrayList<>();
         for (RealEstate realEstate: realEstates) {
-            roles.add(userRealEstateRepository.findRoleInRealEstate(username, realEstate.getId()));
+            roles.add(userRealEstateRepository.findRoleInRealEstateById(username, realEstate.getId()));
         }
         return  roles;
     }
@@ -178,5 +178,16 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     @Override
     public List<String> getUsersFromByRealEstateName(String name) {
         return userRealEstateRepository.getUsersFromByRealEstateName(name);
+    }
+
+    @Override
+    public boolean isUserInRealEstate(String username, String name) {
+        UserRealEstate userRealEstate = userRealEstateRepository.checkUsernameInRealEstate(username, name);
+        return userRealEstate == null;
+    }
+
+    @Override
+    public String findRoleInRealEstateByName(String username, String name) {
+        return userRealEstateRepository.findRoleInRealEstateByName(username, name);
     }
 }

@@ -1,6 +1,7 @@
 package com.asdf.myhomeback.security;
 
 import com.asdf.myhomeback.models.AppUser;
+import com.asdf.myhomeback.models.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -47,17 +48,19 @@ public class TokenUtils {
 
 	private final SecureRandom secureRandom = new SecureRandom();
 
-	public String generateToken(String username, String userType, String fingerprint) {
+	public String generateToken(String username, List<UserRole> roles, String fingerprint) {
 		String fingerprintHash = generateFingerprintHash(fingerprint);
+		String[] roleNames = roles.stream().map(UserRole::getName).collect(Collectors.toList()).toArray(String[]::new);
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(username)
 				.setAudience(AUDIENCE_WEB)
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
-				.claim("role", userType)
+				.claim("roles", roleNames)
 				.claim("userFingerprint", fingerprintHash)
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+
 	}
 
 	public String generateFingerprint() {

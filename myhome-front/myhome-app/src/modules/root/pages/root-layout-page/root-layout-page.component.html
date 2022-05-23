@@ -1,16 +1,16 @@
 <div>
   <div class="col">
-    <app-header-admin *ngIf="role === 'ROLE_ADMIN'"></app-header-admin>
+    <app-header-admin *ngIf="isRole('ROLE_ADMIN')"></app-header-admin>
   </div>
   <div class="col">
-    <app-header-user *ngIf="role === 'ROLE_OWNER' || role === 'ROLE_TENANT' || role === 'ROLE_UNASSIGNED'">
+    <app-header-user *ngIf="isRole('ROLE_OWNER') || isRole('ROLE_TENANT') || isRole('ROLE_UNASSIGNED')">
     </app-header-user>
   </div>
 
   <div class="container-fluid" style="height: 100%;">
     <div class="row">
       <div class="col">
-        <router-outlet (activate)="checkRole()"></router-outlet>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@ import { MinLengthValidator } from 'src/modules/shared/validators/MinLengthValid
 import { MinLengthPasswordValidator } from 'src/modules/shared/validators/MinLengthPasswordValidator';
 import { MaxLengthValidator } from 'src/modules/shared/validators/MaxLengthValidator';
 import { UsernameValidator } from 'src/modules/shared/validators/UsernameValidator';
+import { UtilService } from 'src/modules/shared/services/util/util.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private utilService: UtilService
   ) {
     this.form = this.fb.group({
       username: [null, [Validators.required, UsernameValidator, MinLengthValidator, MaxLengthValidator]],
@@ -48,20 +50,16 @@ export class LoginComponent implements OnInit {
       const token = JSON.stringify(result);
       sessionStorage.setItem("user", token);
 
-      const jwt: JwtHelperService = new JwtHelperService();
-      const info = jwt.decodeToken(token);
-      const role = info.role;
-
-      if (role === "ROLE_ADMIN") {
+      if (this.utilService.isRoleInUserRoles("ROLE_ADMIN")) {
         this.router.navigate(["mh-app/admin/users-view"]);
       }
-      else if (role === "ROLE_OWNER") {
+      else if (this.utilService.isRoleInUserRoles("ROLE_OWNER")) {
         this.router.navigate(["mh-app/user/user-home-page"]);
       }
-      else if (role === "ROLE_TENANT") {
+      else if (this.utilService.isRoleInUserRoles("ROLE_TENANT")) {
         this.router.navigate(["mh-app/user/user-home-page"]);
       }
-      else if (role === "ROLE_UNASSIGNED") {
+      else if (this.utilService.isRoleInUserRoles("ROLE_UNASSIGNED")) {
         this.router.navigate(["mh-app/user/user-home-page"]);
       }
     },

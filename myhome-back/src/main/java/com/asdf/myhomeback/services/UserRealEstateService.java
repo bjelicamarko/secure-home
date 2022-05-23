@@ -26,4 +26,8 @@ public interface UserRealEstateService {
     List<String> findUsersRoleInRealEstates(String username, Page<RealEstate> realEstates);
 
     List<String> getUsersFromByRealEstateName(String name);
+
+    boolean isUserInRealEstate(String username, String name);
+
+    String findRoleInRealEstateByName(String username, String name);
 }

@@ -1,10 +1,12 @@
 package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.RealEstateWithPhotoAndRoleDTO;
+import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.dto.RealEstateToAssignDTO;
 import com.asdf.myhomeback.models.RealEstate;
+import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.RealEstateService;
 import com.asdf.myhomeback.services.UserRealEstateService;
 import com.asdf.myhomeback.utils.ControllerUtils;
@@ -17,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class RealEstateController {
 
     @Autowired
     private UserRealEstateService userRealEstateService;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GET_REAL_ESTATE_BY_ID')")
@@ -63,16 +69,21 @@ public class RealEstateController {
 
             realEstates.forEach(realEstate -> realEstateDTOS.add(new RealEstateToAssignDTO(realEstate)));
             return new ResponseEntity<>(realEstateDTOS, HttpStatus.OK);
+        } catch (AppUserException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping(value = "/all/{username}")
+    @GetMapping(value = "/all")
     @PreAuthorize("hasAuthority('GET_USER_REAL_ESTATES')")
-    public ResponseEntity<List<RealEstateWithPhotoAndRoleDTO>> getRealEstatesOfUser(@PathVariable("username") String username, Pageable pageable){
+    public ResponseEntity<List<RealEstateWithPhotoAndRoleDTO>> getRealEstatesOfUser(HttpServletRequest request, Pageable pageable){
         try{
+            String authToken = tokenUtils.getToken(request);
+            String username = tokenUtils.getUsernameFromToken(authToken);
             Page<RealEstate> realEstates = realEstateService.getRealEstatesOfUser(username, pageable);
             List<String> roles = userRealEstateService.findUsersRoleInRealEstates(username, realEstates);
 

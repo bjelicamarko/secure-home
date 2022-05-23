@@ -40,4 +40,6 @@ public interface AppUserService extends UserDetailsService {
     void verify(String username) throws AppUserException;
 
     void save(AppUser user);
+
+    AppUser findByUsernameVerifiedUnlocked(String username);
 }

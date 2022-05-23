@@ -204,4 +204,9 @@ public class AppUserServiceImpl implements AppUserService {
     public void save(AppUser user) {
         appUserRepository.save(user);
     }
+
+    @Override
+    public AppUser findByUsernameVerifiedUnlocked(String username) {
+        return appUserRepository.findByUsernameVerifiedUnlocked(username).orElse(null);
+    }
 }

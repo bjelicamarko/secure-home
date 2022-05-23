@@ -13,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AdminModule } from '../admin/admin.module';
 import { UserModule } from '../user/user.module';
 import { HeaderUserComponent } from './components/headers/header-user/header-user.component';
+import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HeaderUserComponent } from './components/headers/header-user/header-use
     NotFoundPageComponent,
     HeaderCommonComponent,
     HeaderAdminComponent,
-    HeaderUserComponent
+    HeaderUserComponent,
+    UnauthorizedPageComponent
   ],
   imports: [
     BrowserModule,
