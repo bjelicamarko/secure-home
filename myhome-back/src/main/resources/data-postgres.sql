@@ -43,6 +43,10 @@ insert into public.system_user (account_non_locked, deleted, email, failed_attem
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'zivko@maildrop.cc', 0, 'Zivko', 'Zivanovic', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_UNASSIGNED', 'zivko', true);
 
+insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
+    values (true, false, 'uredjaj@maildrop.cc', 0, 'Uredjaj', 'Uredjajic', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_UNASSIGNED', 'devices', true);
+
+
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1); --  ROLE_ADMIN
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (3, 2); --  ROLE_OWNER
@@ -92,3 +96,36 @@ INSERT INTO user_real_estate (user_id, real_estate_id, role) VALUES (8, 5, 'OWNE
 INSERT INTO user_real_estate (user_id, real_estate_id, role) VALUES (9, 7, 'TENANT');
 INSERT INTO user_real_estate (user_id, real_estate_id, role) VALUES (6, 6, 'OWNER');
 INSERT INTO user_real_estate (user_id, real_estate_id, role) VALUES (7, 8, 'TENANT');
+
+
+
+-- tabela device
+INSERT INTO device (name) VALUES ('Air conditioner');
+INSERT INTO device (name) VALUES ('Fridge');
+INSERT INTO device (name) VALUES ('Front door');
+INSERT INTO device (name) VALUES ('Backyard door');
+INSERT INTO device (name) VALUES ('Smoke detector');
+INSERT INTO device (name) VALUES ('Cooker');
+INSERT INTO device (name) VALUES ('Water heater');
+
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 1);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 3);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 6);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (2, 1);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (2, 2);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (2, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (3, 1);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (3, 2);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (3, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (4, 2);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (4, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (5, 2);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (5, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (6, 1);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (6, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (7, 3);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (7, 4);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (7, 7);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (8, 4);
+INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (8, 7);

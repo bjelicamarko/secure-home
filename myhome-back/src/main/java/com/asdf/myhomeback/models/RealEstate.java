@@ -31,6 +31,12 @@ public class RealEstate {
     @OneToMany(mappedBy = "realEstate")
     Set<UserRealEstate> users;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "real_estate_device",
+            joinColumns = @JoinColumn(name = "real_estate_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "id"))
+    Set<Device> devices;
+
     public RealEstate(RealEstateDTO realEstateDTO) {
         this.name = realEstateDTO.getName();
     }
