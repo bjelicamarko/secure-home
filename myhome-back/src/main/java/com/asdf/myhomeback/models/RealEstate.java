@@ -1,6 +1,7 @@
 package com.asdf.myhomeback.models;
 
 import com.asdf.myhomeback.dto.RealEstateDTO;
+import com.asdf.myhomeback.dto.RealEstateWithDevicesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,10 @@ public class RealEstate {
 
     public RealEstate(RealEstateDTO realEstateDTO) {
         this.name = realEstateDTO.getName();
+    }
+
+    public RealEstate(RealEstateWithDevicesDTO realEstateDTO) {
+        this.name = realEstateDTO.getName();
+        this.photo = "/real_estates_photos/house.png";
     }
 }

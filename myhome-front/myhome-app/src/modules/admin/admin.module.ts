@@ -13,6 +13,8 @@ import { SharedModule } from '../shared/shared.module';
 import { RealEstateCreationPageComponent } from './pages/real-estate-creation-page/real-estate-creation-page.component';
 import { AssignEstatePageComponent } from './pages/assign-estate-page/assign-estate-page.component';
 import { UserRealEstatePageComponent } from './pages/user-real-estate-page/user-real-estate-page.component';
+import { RealEstatesPageComponent } from './pages/real-estates-page/real-estates-page.component';
+import { RealEstatePageComponent } from './pages/real-estate-page/real-estate-page.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { UserRealEstatePageComponent } from './pages/user-real-estate-page/user-
     RealEstateCreationPageComponent,
     AssignEstatePageComponent,
     UserRealEstatePageComponent,
+    RealEstatesPageComponent,
+    RealEstatePageComponent,
   ],
   imports: [
     CommonModule,

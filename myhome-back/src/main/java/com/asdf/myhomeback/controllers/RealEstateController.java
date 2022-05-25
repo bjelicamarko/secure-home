@@ -1,10 +1,12 @@
 package com.asdf.myhomeback.controllers;
 
+import com.asdf.myhomeback.dto.RealEstateWithDevicesDTO;
 import com.asdf.myhomeback.dto.RealEstateWithPhotoAndRoleDTO;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.dto.RealEstateDTO;
 import com.asdf.myhomeback.dto.RealEstateToAssignDTO;
+import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.RealEstateService;
@@ -49,7 +51,7 @@ public class RealEstateController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('SAVE_REAL_ESTATE')")
-    public ResponseEntity<String> saveRealEstate(@RequestBody RealEstateDTO realEstateDTO){
+    public ResponseEntity<String> saveRealEstate(@RequestBody RealEstateWithDevicesDTO realEstateDTO){
         try{
             realEstateService.saveRealEstate(realEstateDTO);
             return new ResponseEntity<>("Real estate successfully created", HttpStatus.OK);
@@ -57,6 +59,19 @@ public class RealEstateController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Unexpected error happened while saving real estate.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping
+    @PreAuthorize("hasAuthority('SAVE_REAL_ESTATE')")
+    public ResponseEntity<String> updateRealEstate(@RequestBody RealEstateWithDevicesDTO realEstateDTO){
+        try{
+            realEstateService.updateRealEstate(realEstateDTO);
+            return new ResponseEntity<>("Real estate successfully updated", HttpStatus.OK);
+        } catch (RealEstateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unexpected error happened while updating real estate.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -98,4 +113,36 @@ public class RealEstateController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping()
+    @PreAuthorize("hasAuthority('GET_REAL_ESTATES')")
+    public ResponseEntity<List<RealEstateWithPhotoAndRoleDTO>> getAllRealEstates(Pageable pageable) {
+        try {
+            Page<RealEstate> realEstates = realEstateService.findAll(pageable);
+            List<RealEstateWithPhotoAndRoleDTO> realEstateDTOS = new ArrayList<>();
+            realEstates.forEach((realEstate -> realEstateDTOS.add(new RealEstateWithPhotoAndRoleDTO(realEstate))));
+            return new ResponseEntity<>(realEstateDTOS, ControllerUtils.createPageHeaderAttributes(realEstates), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/deviceNames/{name}")
+    @PreAuthorize("hasAuthority('GET_REAL_ESTATE_DEVICES')")
+    public ResponseEntity<List<String>> findDevicesByRealEstateName(@PathVariable(value = "name") String name) {
+        try {
+            List<Device> devices = realEstateService.findDevicesByRealEstateName(name);
+            List<String> deviceNames = new ArrayList<>();
+            devices.forEach(device -> deviceNames.add(device.getName()));
+            return new ResponseEntity<>(deviceNames, HttpStatus.OK);
+        } catch (RealEstateException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

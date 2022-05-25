@@ -1,0 +1,39 @@
+import { HttpHeaders, HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Device } from '../models/Device';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DeviceService {
+
+  private headers = new HttpHeaders({ "Content-Type": "application/json" });
+
+  constructor(private http: HttpClient) { }
+
+  getAllDevices(): Observable<HttpResponse<Device[]>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "json"
+    };
+
+    return this.http.get<HttpResponse<Device[]>>("myhome/api/devices", queryParams);
+  }
+
+  getAllDeviceNames(): Observable<HttpResponse<String[]>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "json"
+    };
+
+    return this.http.get<HttpResponse<String[]>>("myhome/api/devices/names", queryParams);
+  }
+
+}

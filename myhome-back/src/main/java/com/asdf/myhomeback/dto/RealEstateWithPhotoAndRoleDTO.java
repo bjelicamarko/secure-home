@@ -21,4 +21,10 @@ public class RealEstateWithPhotoAndRoleDTO extends RealEstateDTO {
         this.photo = realEstate.getPhoto();
         this.role = role;
     }
+
+    public RealEstateWithPhotoAndRoleDTO(RealEstate realEstate) {
+        super(realEstate);
+        this.photo = realEstate.getPhoto();
+        this.role = null;
+    }
 }

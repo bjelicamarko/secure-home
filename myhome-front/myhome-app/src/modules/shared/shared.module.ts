@@ -7,22 +7,27 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor.interceptor';
 import { ConformationDialogComponent } from './components/conformation-dialog/conformation-dialog.component';
+import { DeviceService } from './services/device.service';
+import { RealEstateCardComponent } from './components/real-estate-card/real-estate-card.component';
 
 @NgModule({
   declarations: [
     PaginationComponent,
-    ConformationDialogComponent
+    ConformationDialogComponent,
+    RealEstateCardComponent
   ],
   imports: [
     CommonModule,
     MatSnackBarModule
   ],
   exports: [
-    PaginationComponent
+    PaginationComponent,
+    RealEstateCardComponent
   ],
   providers: [
     SnackBarService,
     UtilService,
+    DeviceService,
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
   ]
 })

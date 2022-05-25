@@ -17,6 +17,9 @@ INSERT INTO privilege (name) VALUES ('UNLOCK_USER');
 INSERT INTO privilege (name) VALUES ('DELETE_USER_REAL_ESTATE');
 INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATES');
 INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATE');
+INSERT INTO privilege (name) VALUES ('GET_DEVICES');
+INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATES');
+INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_DEVICES');
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -77,6 +80,9 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 12);
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 13);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 13);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 14);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 15);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 16);
 
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');

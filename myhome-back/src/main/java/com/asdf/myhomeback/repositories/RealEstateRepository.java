@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.repositories;
 
+import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.RealEstate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,9 @@ public interface RealEstateRepository extends JpaRepository<RealEstate, Long> {
 
     @Query("select estate from RealEstate estate join UserRealEstate u on estate.id = u.realEstate.id where u.user.username = ?1")
     Page<RealEstate> getRealEstatesOfUser(String username, Pageable pageable);
+
+    Page<RealEstate> findAll(Pageable pageable);
+
+    @Query("select estate.devices from RealEstate estate where estate.name = ?1")
+    List<Device> findDevicesByRealEstateName(String name);
 }
