@@ -1,15 +1,17 @@
 package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.DeviceDTO;
+import com.asdf.myhomeback.dto.DeviceMessageDTO;
 import com.asdf.myhomeback.models.Device;
+import com.asdf.myhomeback.models.DeviceMessage;
+import com.asdf.myhomeback.services.DeviceMessageService;
 import com.asdf.myhomeback.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,9 @@ public class DeviceController {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    private DeviceMessageService deviceMessageService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('GET_DEVICES')")
@@ -47,6 +52,18 @@ public class DeviceController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> saveDeviceMessage(@RequestBody DeviceMessageDTO deviceMessageDTO) {
+        deviceMessageService.save(new DeviceMessage(deviceMessageDTO));
+        return new ResponseEntity<>("All good.", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> saveAllDeviceMessages(@RequestBody List<DeviceMessageDTO> deviceMessageDTOs) {
+        deviceMessageService.saveAll(deviceMessageDTOs.stream().map(DeviceMessage::new).toList());
+        return new ResponseEntity<>("All good.", HttpStatus.OK);
     }
 
 }
