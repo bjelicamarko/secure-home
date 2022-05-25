@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.models;
 
+import com.asdf.myhomeback.dto.DeviceMessageDTO;
 import com.asdf.myhomeback.models.enums.MessageStatus;
 import lombok.*;
 
@@ -18,7 +19,7 @@ public class DeviceMessage {
     private Long id;
 
     @NonNull
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String deviceName;
 
     @NonNull
@@ -33,4 +34,11 @@ public class DeviceMessage {
     @NonNull
     @Column(name = "message", nullable = false)
     private String message;
+
+    public DeviceMessage(DeviceMessageDTO deviceMessageDTO) {
+        this.deviceName = deviceMessageDTO.getDeviceName();
+        this.timestamp = deviceMessageDTO.getTimestamp();
+        this.messageStatus = MessageStatus.valueOf(deviceMessageDTO.getMessageStatus());
+        this.message = deviceMessageDTO.getMessage();
+    }
 }

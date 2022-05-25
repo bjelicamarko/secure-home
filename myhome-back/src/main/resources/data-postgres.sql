@@ -46,7 +46,6 @@ insert into public.system_user (account_non_locked, deleted, email, failed_attem
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'uredjaj@maildrop.cc', 0, 'Uredjaj', 'Uredjajic', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_UNASSIGNED', 'devices', true);
 
-
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1); --  ROLE_ADMIN
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2); --  ROLE_OWNER
 INSERT INTO user_role (user_id, role_id) VALUES (3, 2); --  ROLE_OWNER
