@@ -2,6 +2,7 @@ package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.DeviceDTO;
 import com.asdf.myhomeback.dto.DeviceMessageDTO;
+import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.DeviceMessage;
 import com.asdf.myhomeback.services.DeviceMessageService;
@@ -66,4 +67,27 @@ public class DeviceController {
         return new ResponseEntity<>("All good.", HttpStatus.OK);
     }
 
+    @GetMapping("/getAllMessagesFromDevice/{deviceName}")
+    @PreAuthorize("hasAuthority('GET_ALL_MESSAGES_FROM_DEVICE')")
+    public ResponseEntity<List<DeviceMessageDTO>> getAllMessagesFromDevice(@PathVariable String deviceName) {
+        List<DeviceMessage> deviceMessages = deviceMessageService.getAllMessagesFromDevice(deviceName);
+        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/filterMessages")
+    @PreAuthorize("hasAuthority('FILTER_ALL_MESSAGES_FROM_DEVICE')")
+    public ResponseEntity<List<DeviceMessageDTO>> filterMessages(
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "selectedStatus", required = false) String selectedStatus
+    ) {
+        try {
+            List<DeviceMessage> deviceMessages = deviceMessageService.filterMessages(startDate, endDate, selectedStatus);
+            if (deviceMessages.size() == 0)
+                return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

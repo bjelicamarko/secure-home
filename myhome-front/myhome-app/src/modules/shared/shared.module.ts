@@ -9,6 +9,7 @@ import { Interceptor } from './interceptors/interceptor.interceptor';
 import { ConformationDialogComponent } from './components/conformation-dialog/conformation-dialog.component';
 import { DeviceService } from './services/device.service';
 import { RealEstateCardComponent } from './components/real-estate-card/real-estate-card.component';
+import { SharedDatePickerService } from './services/shared-data-picker.service';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { RealEstateCardComponent } from './components/real-estate-card/real-esta
     SnackBarService,
     UtilService,
     DeviceService,
+    SharedDatePickerService,
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
   ]
 })

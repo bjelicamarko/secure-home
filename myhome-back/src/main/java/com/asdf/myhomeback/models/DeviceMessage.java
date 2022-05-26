@@ -19,11 +19,11 @@ public class DeviceMessage {
     private Long id;
 
     @NonNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "device_name", nullable = false)
     private String deviceName;
 
     @NonNull
-    @Column(name = "timestamp", nullable = false)
+    @Column(name = "timestamp_value", nullable = false)
     private Long timestamp;
 
     @NonNull

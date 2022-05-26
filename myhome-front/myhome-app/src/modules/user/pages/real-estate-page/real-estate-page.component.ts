@@ -1,10 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { retry } from 'rxjs';
 import { RealEstateService } from 'src/modules/admin/services/real-estate.service';
 import { RealEstateWithHouseholdAndDevicesDTO } from 'src/modules/shared/models/RealEstateDTO';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
-import { DeviceDTO } from '../../models/deviceDTO';
 
 @Component({
   selector: 'app-real-estate-page',
@@ -38,8 +36,7 @@ export class RealEstatePageComponent implements AfterViewInit {
   }
 
   showMore(name: string | null) {
-    alert(name);
-    //this.router.navigate(["mh-app/user/real-estate-page", name]);
+    this.router.navigate(["mh-app/user/real-estate-page/device-messages", name]);
   }
 
 }

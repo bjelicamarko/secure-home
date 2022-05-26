@@ -4,22 +4,24 @@ insert into role (name) VALUES ('ROLE_TENANT');
 insert into role (name) VALUES ('ROLE_UNASSIGNED');
 
 
-INSERT INTO privilege (name) VALUES ('READ_USERS_WITHOUT_ADMIN');
-INSERT INTO privilege (name) VALUES ('SEARCH_USERS');
-INSERT INTO privilege (name) VALUES ('DELETE_USER');
-INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_BY_ID');
-INSERT INTO privilege (name) VALUES ('SAVE_REAL_ESTATE');
-INSERT INTO privilege (name) VALUES ('SAVE_USER_REAL_ESTATE');
-INSERT INTO privilege (name) VALUES ('CHANGE_ROLE_USER_REAL_ESTATE');
-INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATE_TO_ASSIGN');
-INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATES');
-INSERT INTO privilege (name) VALUES ('UNLOCK_USER');
-INSERT INTO privilege (name) VALUES ('DELETE_USER_REAL_ESTATE');
-INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATES');
-INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATE');
-INSERT INTO privilege (name) VALUES ('GET_DEVICES');
-INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATES');
-INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_DEVICES');
+INSERT INTO privilege (name) VALUES ('READ_USERS_WITHOUT_ADMIN'); -- 1
+INSERT INTO privilege (name) VALUES ('SEARCH_USERS'); -- 2
+INSERT INTO privilege (name) VALUES ('DELETE_USER'); -- 3
+INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_BY_ID'); -- 4
+INSERT INTO privilege (name) VALUES ('SAVE_REAL_ESTATE'); -- 5
+INSERT INTO privilege (name) VALUES ('SAVE_USER_REAL_ESTATE'); -- 6
+INSERT INTO privilege (name) VALUES ('CHANGE_ROLE_USER_REAL_ESTATE'); -- 7
+INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATE_TO_ASSIGN'); -- 8
+INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATES'); -- 9
+INSERT INTO privilege (name) VALUES ('UNLOCK_USER'); -- 10
+INSERT INTO privilege (name) VALUES ('DELETE_USER_REAL_ESTATE'); -- 11
+INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATES'); -- 12
+INSERT INTO privilege (name) VALUES ('GET_USER_REAL_ESTATE'); -- 13
+INSERT INTO privilege (name) VALUES ('GET_DEVICES'); -- 14
+INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATES'); -- 15
+INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_DEVICES'); -- 16
+INSERT INTO privilege (name) VALUES ('GET_ALL_MESSAGES_FROM_DEVICE'); -- 17
+INSERT INTO privilege (name) VALUES ('FILTER_ALL_MESSAGES_FROM_DEVICE'); -- 18
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -83,6 +85,12 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 14);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 15);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 16);
 
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 17);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 17);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 18);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 18);
+
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Stan 1', '/real_estates_photos/house.png');
@@ -134,3 +142,21 @@ INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (7, 4);
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (7, 7);
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (8, 4);
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (8, 7);
+
+
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'PANIC', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'WARNING', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'PANIC', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'WARNING', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27

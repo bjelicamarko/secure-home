@@ -2,6 +2,7 @@ import { HttpHeaders, HttpClient, HttpResponse, HttpParams } from '@angular/comm
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Device } from '../models/Device';
+import { DeviceMessageDTO } from '../models/deviceMessageDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +37,33 @@ export class DeviceService {
     return this.http.get<HttpResponse<String[]>>("myhome/api/devices/names", queryParams);
   }
 
+  getAllMessagesFromDevice(deviceName: string): Observable<HttpResponse<DeviceMessageDTO[]>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "json"
+    };
+
+    return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/getAllMessagesFromDevice/" + deviceName, queryParams);
+  }
+
+  filterMessages(startDateVal: string, endDateVal: string, selectedStatusVal: string): Observable<HttpResponse<DeviceMessageDTO[]>> {
+    let queryParams = {};
+
+      queryParams = {
+        headers: this.headers,
+        params: {
+          startDate: startDateVal,
+          endDate: endDateVal,
+          selectedStatus: selectedStatusVal,
+
+        },
+        observe: 'response'
+      };
+
+    console.log(queryParams);
+    return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/filterMessages" , queryParams);
+  }
 }
