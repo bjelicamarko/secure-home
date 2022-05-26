@@ -1,7 +1,7 @@
 <div>
     <div class="row" style="margin-top: 50px; margin-left: 40px;">
         <h2 *ngIf="realEstates.length == 0"> This user has no real estates </h2>
-        <div *ngFor="let realEstate of realEstates" class="col-6">
+        <div *ngFor="let realEstate of realEstates" class="col-3">
             <app-real-estate-card [realEstate]="realEstate" (click)="showMore(realEstate.name)"
                 style="cursor: pointer;"></app-real-estate-card>
         </div>

@@ -105,13 +105,13 @@ INSERT INTO user_real_estate (user_id, real_estate_id, role) VALUES (7, 8, 'TENA
 
 
 -- tabela device
-INSERT INTO device (name) VALUES ('Air conditioner');
-INSERT INTO device (name) VALUES ('Fridge');
-INSERT INTO device (name) VALUES ('Front door');
-INSERT INTO device (name) VALUES ('Backyard door');
-INSERT INTO device (name) VALUES ('Smoke detector');
-INSERT INTO device (name) VALUES ('Cooker');
-INSERT INTO device (name) VALUES ('Water heater');
+INSERT INTO device (name, photo) VALUES ('Air conditioner', '/devices_photos/air_conditioner.png');
+INSERT INTO device (name, photo) VALUES ('Fridge', '/devices_photos/fridge.png');
+INSERT INTO device (name, photo) VALUES ('Front door', '/devices_photos/front_door.png');
+INSERT INTO device (name, photo) VALUES ('Backyard door', '/devices_photos/backyard_doors.jpg');
+INSERT INTO device (name, photo) VALUES ('Smoke detector', '/devices_photos/smoke_detector.png');
+INSERT INTO device (name, photo) VALUES ('Cooker', '/devices_photos/cooker.png');
+INSERT INTO device (name, photo) VALUES ('Water heater', '/devices_photos/water_heater.png');
 
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 1);
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 3);

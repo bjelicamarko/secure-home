@@ -4,6 +4,7 @@ import { retry } from 'rxjs';
 import { RealEstateService } from 'src/modules/admin/services/real-estate.service';
 import { RealEstateWithHouseholdAndDevicesDTO } from 'src/modules/shared/models/RealEstateDTO';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { DeviceDTO } from '../../models/deviceDTO';
 
 @Component({
   selector: 'app-real-estate-page',
@@ -36,8 +37,9 @@ export class RealEstatePageComponent implements AfterViewInit {
         });
   }
 
-  randomNumber() {
-    return Math.round(Math.random() * (25))
+  showMore(name: string | null) {
+    alert(name);
+    //this.router.navigate(["mh-app/user/real-estate-page", name]);
   }
 
 }

@@ -21,4 +21,8 @@ public class Device {
     @NonNull
     @Column(name = "name", unique = true, nullable = false)
     private String name;
+
+    @NonNull
+    @Column(name = "photo", nullable = false)
+    private String photo;
 }

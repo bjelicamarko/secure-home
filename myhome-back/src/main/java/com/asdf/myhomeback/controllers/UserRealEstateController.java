@@ -4,10 +4,12 @@ import com.asdf.myhomeback.dto.*;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.exceptions.UserRealEstateException;
+import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.security.TokenUtils;
+import com.asdf.myhomeback.services.DeviceService;
+import com.asdf.myhomeback.services.RealEstateService;
 import com.asdf.myhomeback.services.UserRealEstateService;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -25,6 +26,9 @@ public class UserRealEstateController {
 
     @Autowired
     private UserRealEstateService userRealEstateService;
+
+    @Autowired
+    private RealEstateService realEstateService;
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -92,7 +96,8 @@ public class UserRealEstateController {
             List<String> household = new ArrayList<>();
             if(role.equals("OWNER"))
                 household = userRealEstateService.getUsersFromByRealEstateName(name);
-            List<String> devices = new ArrayList<>(Arrays.asList("Fridge", "Freezer", "Air conditioner", "Light in bathroom"));
+
+            List<Device> devices = realEstateService.findDevicesByRealEstateName(name);
             return new ResponseEntity<>(new RealEstateWithHouseholdAndDevicesDTO(household, devices),  HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

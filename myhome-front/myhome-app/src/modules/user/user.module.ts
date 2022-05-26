@@ -5,11 +5,13 @@ import { UserRoutes } from './user.routes';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { RealEstatePageComponent } from './pages/real-estate-page/real-estate-page.component';
+import { DeviceCardComponent } from './components/device-card/device-card.component';
 
 @NgModule({
   declarations: [
     UserHomePageComponent,
-    RealEstatePageComponent
+    RealEstatePageComponent,
+    DeviceCardComponent
   ],
   imports: [
     CommonModule,

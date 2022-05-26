@@ -12,9 +12,11 @@ import lombok.Setter;
 @Setter
 public class DeviceDTO {
     private String name;
+    private String photo;
 
     public DeviceDTO(Device device) {
         this.name = device.getName();
+        this.photo = device.getPhoto();
     }
 
 }
