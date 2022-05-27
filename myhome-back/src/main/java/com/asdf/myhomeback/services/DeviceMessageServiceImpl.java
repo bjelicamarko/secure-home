@@ -44,9 +44,19 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
         DeviceUtils.checkMessageStatus(selectedStatus);
         long startDateVal = DeviceUtils.checkStartDate(startDate);
         long endDateVal = DeviceUtils.checkEndDate(endDate);
-        System.out.println("START DATE " + startDateVal);
-        System.out.println("END DATE " + endDateVal);
         return deviceMessageRepository.filterMessages(deviceName, startDateVal, endDateVal, selectedStatus, pageable);
+    }
+
+    @Override
+    public List<DeviceMessage> createReport(String deviceName, String startDate, String endDate, String selectedStatus) throws DeviceException {
+        startDate = this.checkAllFromField(startDate);
+        endDate = this.checkAllFromField(endDate);
+        selectedStatus = this.checkAllFromField(selectedStatus);
+
+        DeviceUtils.checkMessageStatus(selectedStatus);
+        long startDateVal = DeviceUtils.checkStartDate(startDate);
+        long endDateVal = DeviceUtils.checkEndDate(endDate);
+        return deviceMessageRepository.createReport(deviceName, startDateVal, endDateVal, selectedStatus);
     }
 
     private String checkAllFromField(String field) {

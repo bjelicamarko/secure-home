@@ -103,6 +103,26 @@ export class ReportsDialogComponent implements AfterViewInit {
         });
   }
 
+  createReport(): void {
+    this.deviceService.createReport(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus)
+    .subscribe((response) => {
+      if (response.body != null) {
+        console.log(response.body);
+        let blob = new Blob([response.body], { type: 'text' });
+        let pdfUrl = window.URL.createObjectURL(blob);
+
+        var text_link = document.createElement('a');
+        text_link.href = pdfUrl;
+
+        //   TO OPEN PDF ON BROWSER IN NEW TAB
+        window.open(pdfUrl, '_blank');
+
+        //   TO DOWNLOAD PDF TO YOUR COMPUTER
+        text_link.download = 'reports' + ".txt";
+        text_link.click();
+      }
+    })
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }

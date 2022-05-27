@@ -2,6 +2,7 @@ package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.DeviceDTO;
 import com.asdf.myhomeback.dto.DeviceMessageDTO;
+import com.asdf.myhomeback.dto.ReportDTO;
 import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.DeviceMessage;
@@ -96,6 +97,25 @@ public class DeviceController {
                     ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/createReport")
+    @PreAuthorize("hasAuthority('CREATE_REPORT')")
+    public ResponseEntity<String> createReport(
+            @RequestParam(value = "deviceName", required = false) String deviceName,
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "selectedStatus", required = false) String selectedStatus
+    ) {
+        try {
+            List<DeviceMessage> deviceMessages = deviceMessageService.createReport(deviceName, startDate, endDate, selectedStatus);
+            if (deviceMessages.size() == 0)
+                return  new ResponseEntity<>("Empty list", HttpStatus.NOT_FOUND);
+            ReportDTO report = new ReportDTO(deviceName, startDate, endDate, selectedStatus, deviceMessages);
+            return new ResponseEntity<>(report.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

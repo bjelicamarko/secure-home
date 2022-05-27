@@ -71,4 +71,24 @@ export class DeviceService {
 
     return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/filterMessages" , queryParams);
   }
+
+  createReport(deviceNameVal: string, startDateVal: string, endDateVal: string, selectedStatusVal: string) 
+    : Observable<HttpResponse<string>> {
+      let queryParams = {};
+
+      queryParams = {
+        headers: this.headers,
+        params: {
+          deviceName: deviceNameVal,
+          startDate: startDateVal,
+          endDate: endDateVal,
+          selectedStatus: selectedStatusVal,
+        },
+        observe: 'response',
+        responseType: "text"
+      };
+
+    return this.http.get<HttpResponse<string>>("myhome/api/devices/createReport" , queryParams);
+  }
+  
 }

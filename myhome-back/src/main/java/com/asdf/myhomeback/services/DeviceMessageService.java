@@ -17,4 +17,6 @@ public interface DeviceMessageService {
 
     Page<DeviceMessage> filterMessages(String deviceName,
                                        String startDate, String endDate, String selectedStatus, Pageable pageable) throws DeviceException;
+
+    List<DeviceMessage> createReport(String deviceName, String startDate, String endDate, String selectedStatus) throws DeviceException;
 }

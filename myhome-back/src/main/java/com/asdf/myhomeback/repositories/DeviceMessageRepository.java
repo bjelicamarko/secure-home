@@ -18,4 +18,9 @@ public interface DeviceMessageRepository extends JpaRepository<DeviceMessage, Lo
             "d.timestamp < ?3 and (cast(d.messageStatus as string) like ?4 or ?4 = '') " +
             "order by d.id desc")
     Page<DeviceMessage> filterMessages(String deviceName, long startDate, long endDate, String status, Pageable pageable);
+
+    @Query("select d from DeviceMessage d where d.deviceName = ?1 and d.timestamp >= ?2 and " +
+            "d.timestamp < ?3 and (cast(d.messageStatus as string) like ?4 or ?4 = '') " +
+            "order by d.id desc")
+    List<DeviceMessage> createReport(String deviceName, long startDate, long endDate, String status);
 }
