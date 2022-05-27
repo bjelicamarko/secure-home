@@ -10,13 +10,15 @@ import { DeviceMessagesPageComponent } from './pages/device-messages-page/device
 
 import { MaterialExampleModule } from 'src/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReportsDialogComponent } from './components/reports-dialog/reports-dialog.component';
 
 @NgModule({
   declarations: [
     UserHomePageComponent,
     RealEstatePageComponent,
     DeviceCardComponent,
-    DeviceMessagesPageComponent
+    DeviceMessagesPageComponent,
+    ReportsDialogComponent
   ],
   imports: [
     CommonModule,

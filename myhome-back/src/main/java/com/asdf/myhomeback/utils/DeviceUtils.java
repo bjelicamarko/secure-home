@@ -1,20 +1,19 @@
 package com.asdf.myhomeback.utils;
 
-import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.DeviceException;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 public class DeviceUtils {
 
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 
     public static void checkMessageStatus(String selectedStatus) throws DeviceException {
-        if(!(selectedStatus.equals("REGULAR") || selectedStatus.equals("WARNING")  ||
-                selectedStatus.equals("PANIC") || selectedStatus.equals("")))
+        if(!(selectedStatus.equals("REGULAR") || selectedStatus.equals("SUSPICIOUS")  ||
+                selectedStatus.equals("")))
             throw new DeviceException("Invalid message status.");
     }
 
@@ -24,7 +23,7 @@ public class DeviceUtils {
             return Long.MIN_VALUE;
         try {
             LocalDate startDateLD = LocalDate.parse(startDate, formatter);
-            return startDateLD.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+            return startDateLD.atStartOfDay(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
         } catch (Exception e) {
             throw new DeviceException("Invalid start date.");
         }
@@ -36,7 +35,7 @@ public class DeviceUtils {
         try {
             LocalDate endDateLD = LocalDate.parse(endDate, formatter);
             endDateLD = endDateLD.plusDays(1); // pomjerimo za jedan dan
-            return endDateLD.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
+            return endDateLD.atStartOfDay(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
         } catch (Exception e) {
             throw new DeviceException("Invalid end date.");
         }

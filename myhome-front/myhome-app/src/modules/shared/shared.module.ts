@@ -15,7 +15,7 @@ import { SharedDatePickerService } from './services/shared-data-picker.service';
   declarations: [
     PaginationComponent,
     ConformationDialogComponent,
-    RealEstateCardComponent
+    RealEstateCardComponent,
   ],
   imports: [
     CommonModule,

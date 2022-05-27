@@ -7,7 +7,10 @@ import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.DeviceMessage;
 import com.asdf.myhomeback.services.DeviceMessageService;
 import com.asdf.myhomeback.services.DeviceService;
+import com.asdf.myhomeback.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -69,23 +72,28 @@ public class DeviceController {
 
     @GetMapping("/getAllMessagesFromDevice/{deviceName}")
     @PreAuthorize("hasAuthority('GET_ALL_MESSAGES_FROM_DEVICE')")
-    public ResponseEntity<List<DeviceMessageDTO>> getAllMessagesFromDevice(@PathVariable String deviceName) {
-        List<DeviceMessage> deviceMessages = deviceMessageService.getAllMessagesFromDevice(deviceName);
-        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(), HttpStatus.OK);
+    public ResponseEntity<List<DeviceMessageDTO>> getAllMessagesFromDevice(@PathVariable String deviceName, Pageable pageable) {
+        Page<DeviceMessage> deviceMessages = deviceMessageService.getAllMessagesFromDevice(deviceName, pageable);
+        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+                ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
     }
 
     @GetMapping("/filterMessages")
     @PreAuthorize("hasAuthority('FILTER_ALL_MESSAGES_FROM_DEVICE')")
     public ResponseEntity<List<DeviceMessageDTO>> filterMessages(
+            @RequestParam(value = "deviceName", required = false) String deviceName,
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
-            @RequestParam(value = "selectedStatus", required = false) String selectedStatus
+            @RequestParam(value = "selectedStatus", required = false) String selectedStatus,
+            Pageable pageable
     ) {
         try {
-            List<DeviceMessage> deviceMessages = deviceMessageService.filterMessages(startDate, endDate, selectedStatus);
-            if (deviceMessages.size() == 0)
+            Page<DeviceMessage> deviceMessages = deviceMessageService.filterMessages(deviceName, startDate, endDate, selectedStatus,
+                    pageable);
+            if (deviceMessages.getContent().size() == 0)
                 return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(), HttpStatus.OK);
+            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+                    ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
         }

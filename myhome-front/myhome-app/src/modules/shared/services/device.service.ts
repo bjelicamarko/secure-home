@@ -37,33 +37,38 @@ export class DeviceService {
     return this.http.get<HttpResponse<String[]>>("myhome/api/devices/names", queryParams);
   }
 
-  getAllMessagesFromDevice(deviceName: string): Observable<HttpResponse<DeviceMessageDTO[]>> {
+  getAllMessagesFromDevice(deviceName: string, page: number, size: number): Observable<HttpResponse<DeviceMessageDTO[]>> {
     let queryParams = {};
 
     queryParams = {
       headers: this.headers,
       observe: "response",
-      responseType: "json"
+      responseType: "json",
+      params: new HttpParams()
+        .set("page", String(page))
+        .append("size", String(size))
     };
 
     return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/getAllMessagesFromDevice/" + deviceName, queryParams);
   }
 
-  filterMessages(startDateVal: string, endDateVal: string, selectedStatusVal: string): Observable<HttpResponse<DeviceMessageDTO[]>> {
+  filterMessages(deviceNameVal: string, startDateVal: string, endDateVal: string, selectedStatusVal: string,
+    page: number, size: number): Observable<HttpResponse<DeviceMessageDTO[]>> {
     let queryParams = {};
 
       queryParams = {
         headers: this.headers,
         params: {
+          deviceName: deviceNameVal,
           startDate: startDateVal,
           endDate: endDateVal,
           selectedStatus: selectedStatusVal,
-
+          page: String(page),
+          size: String(size)
         },
         observe: 'response'
       };
 
-    console.log(queryParams);
     return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/filterMessages" , queryParams);
   }
 }

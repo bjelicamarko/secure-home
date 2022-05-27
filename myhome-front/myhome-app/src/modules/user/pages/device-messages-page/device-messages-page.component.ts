@@ -3,10 +3,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { PaginationComponent } from 'src/modules/shared/components/pagination/pagination.component';
 import { DeviceMessageDTO } from 'src/modules/shared/models/deviceMessageDTO';
 import { DeviceService } from 'src/modules/shared/services/device.service';
 import { SharedDatePickerService } from 'src/modules/shared/services/shared-data-picker.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+
+import { interval } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportsDialogComponent } from '../../components/reports-dialog/reports-dialog.component';
 
 @Component({
   selector: 'app-device-messages-page',
@@ -17,8 +22,8 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
 
   name: string | null;
 
-  deviceMessages: DeviceMessageDTO[] = [];
-  dataSource = new MatTableDataSource(this.deviceMessages);
+  deviceMessages: DeviceMessageDTO[];
+  dataSource;
   displayedColumns: string[] = ['deviceName', 'timestamp', 'messageStatus', 'message'];
   _liveAnnouncer: any;
 
@@ -26,14 +31,26 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
   startDate: string = '';
   endDate: string = '';
 
+  closedDialog: boolean = true;
+
   public range = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
   });
   
-  constructor(private route: ActivatedRoute, private deviceService: DeviceService, 
+  @ViewChild(PaginationComponent) pagination?: PaginationComponent;
+  pageSize: number;
+  currentPage: number;
+  totalSize: number;
+  
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private deviceService: DeviceService, 
     private sharedDatePickerService: SharedDatePickerService, private snackBarService: SnackBarService) { 
     this.name = route.snapshot.paramMap.get("deviceName");
+    this.pageSize = 20;
+    this.currentPage = 1;
+    this.totalSize = 1;
+    this.deviceMessages = [];
+    this.dataSource = new MatTableDataSource(this.deviceMessages);
   }
 
   @ViewChild(MatSort)
@@ -44,14 +61,19 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
 
     this.name = decodeURIComponent(this.name);
 
-    console.log(this.name);
-    this.deviceService.getAllMessagesFromDevice(this.name)
+    this.deviceService.getAllMessagesFromDevice(this.name, this.currentPage - 1, this.pageSize)
     .subscribe((response : any) => {
       this.deviceMessages = response.body as DeviceMessageDTO[];
       this.dataSource = new MatTableDataSource(this.deviceMessages);
       this.dataSource.sort = this.sort;
-      console.log(this.deviceMessages);
+      this.totalSize = Number(response.headers.get("total-elements"));
+      this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
     })
+
+    interval(2000 * 60).subscribe(() => {
+      if (this.closedDialog)
+         window.location.reload();
+    });
   }
 
   announceSortChange(sortState: Sort) {
@@ -62,6 +84,34 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
     }
   }
   
+  setPagination(totalItemsHeader: string | null, currentPageHeader: string | null) {
+    if (totalItemsHeader) {
+      this.totalSize = parseInt(totalItemsHeader);
+    }
+    if (currentPageHeader) {
+      this.currentPage = parseInt(currentPageHeader);
+    }
+  }
+
+  changePage(newPage: number) {
+    if (!this.name) return;
+
+    this.name = decodeURIComponent(this.name);
+
+    this.deviceService.getAllMessagesFromDevice(this.name, newPage - 1, this.pageSize)
+      .subscribe((response) => {
+          if (response.body != null) {
+            this.deviceMessages = response.body as DeviceMessageDTO[];
+            this.dataSource = new MatTableDataSource(this.deviceMessages);
+            this.dataSource.sort = this.sort;
+            this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+          }
+        }, (err) => {
+          if (err.error)
+            this.snackBarService.openSnackBar(String(err.console));
+        });
+  }
+
   changeDate(): void {
     this.startDate = this.sharedDatePickerService.checkDate(this.range.value.start);
     this.endDate = this.sharedDatePickerService.checkDate(this.range.value.end);
@@ -71,20 +121,18 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
   }
 
   filterMessages(): void {
-    if (!this.startDate)
-      this.startDate = '';
-    if (!this.endDate)
-      this.endDate = '';
+    if (!this.name) return;
+
+    this.name = decodeURIComponent(this.name);
     
-    this.deviceService.filterMessages(this.startDate, this.endDate, this.selectedStatus)
-      .subscribe((response : any) => {
-        this.deviceMessages = response.body as DeviceMessageDTO[];
-        this.dataSource = new MatTableDataSource(this.deviceMessages);
-        this.dataSource.sort = this.sort;
-        console.log(this.deviceMessages);
-    }, (error) => {
-        console.log(error);
-        this.snackBarService.openSnackBar("Empty list");
-    })
+    this.closedDialog = false;
+    const dialogRef = this.dialog.open(ReportsDialogComponent, {
+      width: '100%',
+      data: {deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate},
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.closedDialog = true;
+    });
   }
 }

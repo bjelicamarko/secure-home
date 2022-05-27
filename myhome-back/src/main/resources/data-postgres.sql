@@ -147,16 +147,52 @@ INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (8, 7);
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'PANIC', 1653516000000); -- 2022-05-26
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'WARNING', 1653516000000); -- 2022-05-26
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
+
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'PANIC', 1653602400000); -- 2022-05-27
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'WARNING', 1653602400000); -- 2022-05-27
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
