@@ -6,4 +6,6 @@ public interface LogService {
     void generateWarnLog(String logMessage);
 
     void generateErrLog(String logMessage);
+
+    void generateErrLog(String logMessage, String stackTrace);
 }

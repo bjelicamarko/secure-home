@@ -3,6 +3,7 @@ package com.asdf.myhomeback.controllers.handlers;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,7 @@ public class CustomLoginFailureHandler {
     @Autowired
     private AppUserService appUserService;
 
-    public String onAuthenticationFailure(String username) {
+    public String onAuthenticationFailure(String username) throws UsernameNotFoundException {
         AppUser user = (AppUser) appUserService.loadUserByUsername(username);
         String exception = "";
         if (user != null) {
@@ -32,6 +33,9 @@ public class CustomLoginFailureHandler {
                 }
             }
 
+        }
+        else {
+            throw new UsernameNotFoundException("Non-existent username.");
         }
         return exception;
     }

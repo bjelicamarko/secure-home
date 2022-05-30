@@ -41,4 +41,13 @@ public class LogServiceImpl implements LogService {
 
         logRepository.save(log);
     }
+
+    @Override
+    public void generateErrLog(String logMessage, String stackTrace) {
+        Long dateTime = new Date().getTime();
+        String loggerName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        Log log = new Log(dateTime, LogLevel.ERROR, loggerName, logMessage, stackTrace);
+
+        logRepository.save(log);
+    }
 }

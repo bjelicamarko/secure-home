@@ -240,4 +240,9 @@ public class TokenUtils {
 		String fingerprintFromToken = getFingerprintFromToken(token);
 		return fingerprintFromToken.equals(fingerprintHash);
 	}
+
+	public String getUsernameFromRequest(HttpServletRequest request) {
+		String token = this.getToken(request);
+		return this.getUsernameFromToken(token);
+	}
 }
