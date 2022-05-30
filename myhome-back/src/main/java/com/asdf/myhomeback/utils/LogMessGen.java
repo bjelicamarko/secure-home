@@ -56,8 +56,34 @@ public class LogMessGen {
         return String.format("While doing registration for username: '%s' exception is triggered with message: '%s'", username, exceptionMessage);
     }
 
-    public static String internalServerError() {
-        return "An unknown error happened";
+    public static String internalServerError(String username) {
+        return String.format("User with username: '%s' triggered an unknown error", username);
     }
+
+    public static String internalServerError() {
+        return "Unknown error happened";
+    }
+
+    public static String successfulRealEstateCreation(String username, String realEstateName) {
+        return String.format("User with username: '%s' successfully added new real estate with name '%s'", username, realEstateName);
+    }
+
+    public static String successfulRealEstateUpdate(String username, String realEstateName) {
+        return String.format("User with username: '%s' successfully updated real estate with name '%s'", username, realEstateName);
+    }
+
+    public static String successfulUserRealEstateCreation(String username, String user, Long realEstateId, String role) {
+        return String.format("User with username: '%s' successfully added new user real estate triplet (%s, %s, %s)", username, user, realEstateId, role);
+    }
+
+    public static String successfulUserRealEstateRoleChange(String username, String user, Long realEstateId, String role) {
+        return String.format("User with username: '%s' successfully changed role in user real estate (%s, %s) to '%s'", username, user, realEstateId, role);
+    }
+
+    public static String successfulUserRealEstateDelete(String username, String user, Long realEstateId, String role) {
+        return String.format("User with username: '%s' successfully deleted user real estate triplet (%s, %s,%s)", username, user, realEstateId, role);
+    }
+
+
 
 }

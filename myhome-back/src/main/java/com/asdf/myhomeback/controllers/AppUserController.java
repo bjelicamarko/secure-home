@@ -151,7 +151,8 @@ public class AppUserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            logService.generateErrLog(LogMessGen.internalServerError(), Arrays.toString(e.getStackTrace()));
+            String username = tokenUtils.getUsernameFromRequest(request);
+            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -159,19 +160,18 @@ public class AppUserController {
     @DeleteMapping(value = "/deleteUser/{id}")
     @PreAuthorize("hasAuthority('DELETE_USER')")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long id, HttpServletRequest request){
+        String username = tokenUtils.getUsernameFromRequest(request);
         try{
             appUserService.deleteUser(id);
-            String username = tokenUtils.getUsernameFromRequest(request);
             logService.generateInfoLog(LogMessGen.successfulDeleteUser(username, id));
             return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
         } catch (AppUserException e) {
             e.printStackTrace();
-            String username = tokenUtils.getUsernameFromRequest(request);
             logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            logService.generateErrLog(LogMessGen.internalServerError(), Arrays.toString(e.getStackTrace()));
+            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
             return new ResponseEntity<>("Unknown error happened while deleting user!", HttpStatus.BAD_REQUEST);
         }
     }
@@ -179,19 +179,18 @@ public class AppUserController {
     @PutMapping(value = "/unlockUser")
     @PreAuthorize("hasAuthority('UNLOCK_USER')")
     public ResponseEntity<String> unlockUser(@RequestBody Long id, HttpServletRequest request){
+        String username = tokenUtils.getUsernameFromRequest(request);
         try{
             appUserService.unlockUser(id);
-            String username = tokenUtils.getUsernameFromRequest(request);
             logService.generateInfoLog(LogMessGen.successfulUnlockUser(username, id));
             return new ResponseEntity<>("User unlocked successfully", HttpStatus.OK);
         } catch (AppUserException e) {
             e.printStackTrace();
-            String username = tokenUtils.getUsernameFromRequest(request);
             logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            logService.generateErrLog(LogMessGen.internalServerError(), Arrays.toString(e.getStackTrace()));
+            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
             return new ResponseEntity<>("Unknown error happened while unlocking user!", HttpStatus.BAD_REQUEST);
         }
     }

@@ -84,13 +84,13 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     }
 
     @Override
-    public void changeRoleInUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception {
+    public void changeRoleInUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws AppUserException, RealEstateException, UserRealEstateException {
         UserRoleEnum newRole = UserRoleEnum.valueOf(userRealEstateDTO.getRole());
         AppUser user = appUserService.getUser(userRealEstateDTO.getUsername());
-        if (user == null) throw new Exception("User with given id doesnt exist.");
+        if (user == null) throw new AppUserException("User with given id doesnt exist.");
 
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
-        if (realEstate == null) throw new Exception("Real estate with given id doesnt exist.");
+        if (realEstate == null) throw new RealEstateException("Real estate with given id doesnt exist.");
 
         UserRealEstate ure = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
         if(ure == null) throw new UserRealEstateException("User with given username does not relate with given real estate.");
