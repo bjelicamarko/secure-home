@@ -1,8 +1,9 @@
-package com.asdf.myhomeback.services;
+package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.models.BlacklistedToken;
 import com.asdf.myhomeback.repositories.BlackListedTokenRepository;
 import com.asdf.myhomeback.security.TokenUtils;
+import com.asdf.myhomeback.services.BlacklistedTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

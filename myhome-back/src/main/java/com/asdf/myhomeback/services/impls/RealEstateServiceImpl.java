@@ -1,4 +1,4 @@
-package com.asdf.myhomeback.services;
+package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.dto.RealEstateWithDevicesDTO;
 import com.asdf.myhomeback.exceptions.AppUserException;
@@ -6,6 +6,9 @@ import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.repositories.RealEstateRepository;
+import com.asdf.myhomeback.services.AppUserService;
+import com.asdf.myhomeback.services.DeviceService;
+import com.asdf.myhomeback.services.RealEstateService;
 import com.asdf.myhomeback.utils.RealEstateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

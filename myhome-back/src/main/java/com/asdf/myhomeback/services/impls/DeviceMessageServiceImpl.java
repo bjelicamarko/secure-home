@@ -1,9 +1,10 @@
-package com.asdf.myhomeback.services;
+package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.DeviceMessage;
 import com.asdf.myhomeback.repositories.DeviceMessageRepository;
+import com.asdf.myhomeback.services.DeviceMessageService;
 import com.asdf.myhomeback.utils.DeviceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,10 +1,12 @@
-package com.asdf.myhomeback.services;
+package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.dto.RegistrationDTO;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.UserRole;
 import com.asdf.myhomeback.repositories.AppUserRepository;
+import com.asdf.myhomeback.services.AppUserService;
+import com.asdf.myhomeback.services.UserRoleService;
 import com.asdf.myhomeback.utils.AppUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +30,8 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     private AppUserRepository appUserRepository;
 
-    @Autowired UserRoleService userRoleService;
+    @Autowired
+    UserRoleService userRoleService;
 
     @Autowired
     private ApplicationContext context;

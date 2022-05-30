@@ -1,4 +1,4 @@
-package com.asdf.myhomeback.services;
+package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.dto.UserRealEstateDTO;
 import com.asdf.myhomeback.exceptions.AppUserException;
@@ -10,6 +10,10 @@ import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.models.UserRole;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
 import com.asdf.myhomeback.repositories.UserRealEstateRepository;
+import com.asdf.myhomeback.services.AppUserService;
+import com.asdf.myhomeback.services.RealEstateService;
+import com.asdf.myhomeback.services.UserRealEstateService;
+import com.asdf.myhomeback.services.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

@@ -12,8 +12,10 @@ import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.security.auth.JwtAuthenticationRequest;
 import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
+import com.asdf.myhomeback.services.LogService;
 import com.asdf.myhomeback.utils.AppUserUtils;
 import com.asdf.myhomeback.utils.ControllerUtils;
+import com.asdf.myhomeback.utils.LogMessageGeneratorUtils;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,7 +58,7 @@ public class AppUserController {
     private BlacklistedTokenService blacklistedTokenService;
 
     @Autowired
-    private LogRepository logRepository;
+    private LogService logService;
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)  {
@@ -69,14 +71,18 @@ public class AppUserController {
         } catch (BadCredentialsException e) {
             try {
                 String exception = customLoginFailureHandler.onAuthenticationFailure(authenticationRequest.getUsername());
+                logService.generateErrLog(LogMessageGeneratorUtils.genBadCredentialLoginMess(authenticationRequest.getUsername()));
                 return new ResponseEntity<>(new UserTokenStateDTO(exception), HttpStatus.UNAUTHORIZED);
             } catch (UsernameNotFoundException ex) {
+                logService.generateErrLog(LogMessageGeneratorUtils.genUserNotFoundLoginMess(authenticationRequest.getUsername()));
                 return new ResponseEntity<>(new UserTokenStateDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
             }
         } catch (LockedException e) {
+            logService.generateErrLog(LogMessageGeneratorUtils.genAccountLockedLoginMess(authenticationRequest.getUsername()));
             String exception = "Your account has been locked. Contact administrator for more details.";
             return new ResponseEntity<>(new UserTokenStateDTO(exception), HttpStatus.UNAUTHORIZED);
         } catch (AppUserException e) {
+            // Sta cemo sa ovim greskama koje nemaju jasnu poruku vec je puko program ??
             e.printStackTrace();
             return new ResponseEntity<>(new UserTokenStateDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
@@ -87,8 +93,10 @@ public class AppUserController {
         // Kreiraj token za tog korisnika
         AppUser appUser = (AppUser) authentication.getPrincipal();
 
-        if(!appUser.isVerified())
+        if(!appUser.isVerified()) {
+            logService.generateErrLog(LogMessageGeneratorUtils.genAccountUnverifiedLoginMess(authenticationRequest.getUsername()));
             return new ResponseEntity<>(new UserTokenStateDTO("You must verified your account before login."), HttpStatus.FORBIDDEN);
+        }
 
         String fingerprint = tokenUtils.generateFingerprint();
         String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles(), fingerprint);
@@ -99,18 +107,10 @@ public class AppUserController {
         }
 
         String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
 
-        Log log = new Log(new Date().getTime(),
-                LogLevel.INFO,
-                ProcessHandle.current().pid(),
-                Thread.currentThread().getName(),
-                Thread.currentThread().getStackTrace()[1].getMethodName(),
-                "User successfully logged in.");
-        logRepository.save(log);
-
+        logService.generateInfoLog(LogMessageGeneratorUtils.genSuccessfulLoginMess(appUser.getUsername()));
         return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
 
@@ -118,13 +118,20 @@ public class AppUserController {
     public ResponseEntity<String> logout(HttpServletRequest request)  {
         String authToken = tokenUtils.getToken(request);
         blacklistedTokenService.saveToken(authToken);
+
+        String username = tokenUtils.getUsernameFromToken(authToken);
+        logService.generateInfoLog(LogMessageGeneratorUtils.genSuccessfulLogoutMess(username));
         return new ResponseEntity<>("You have been successfully logged out!", HttpStatus.OK);
     }
 
+    // OVA METODA JE POSLEDNJA ODRADJENA
     @GetMapping(value = "/getAllUsersButAdmin", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('READ_USERS_WITHOUT_ADMIN')")
-    public ResponseEntity<List<AppUserDTO>> getAllUsersButAdmin(Pageable pageable) {
+    public ResponseEntity<List<AppUserDTO>> getAllUsersButAdmin(Pageable pageable, HttpServletRequest request) {
         Page<AppUser> users = appUserService.getAllUsersButAdmin(pageable);
+
+        String username = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        logService.generateInfoLog(LogMessageGeneratorUtils.genSuccessfulPathOperationMess(username, request.getRequestURI()));
         return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
                 ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
     }
@@ -183,11 +190,10 @@ public class AppUserController {
         try {
             appUserService.register(registrationDTO);
             return new ResponseEntity<>("Registration successfully finished. Check your email to verify it.", HttpStatus.OK);
-        }catch (AppUserException ex) {
+        } catch (AppUserException ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>("There was an unknown error with your registration", HttpStatus.INTERNAL_SERVER_ERROR);
         }

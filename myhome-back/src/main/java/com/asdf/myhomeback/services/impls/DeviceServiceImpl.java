@@ -1,7 +1,8 @@
-package com.asdf.myhomeback.services;
+package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.repositories.DeviceRepository;
+import com.asdf.myhomeback.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

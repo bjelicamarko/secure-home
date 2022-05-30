@@ -25,10 +25,6 @@ public class Log {
     @NonNull
     private LogLevel logLevel;
     @NonNull
-    private Long processId;
-    @NonNull
-    private String threadName;
-    @NonNull
     private String loggerName;
     @NonNull
     private String logMessage;
