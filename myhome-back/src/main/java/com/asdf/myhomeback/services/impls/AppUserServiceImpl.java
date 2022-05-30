@@ -96,18 +96,17 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void deleteUser(Long id) throws AppUserException {
+    public AppUser deleteUser(Long id) throws AppUserException {
         Optional<AppUser> user = appUserRepository.findByIdAndDeleted(id, false);
         if (user.isEmpty()) throw new AppUserException("Invalid user for deletion.");
 
         AppUser appUser = user.get();
         appUser.setDeleted(true);
-        appUserRepository.save(appUser);
-
+        return appUserRepository.save(appUser);
     }
 
     @Override
-    public void unlockUser(Long id) throws AppUserException {
+    public AppUser unlockUser(Long id) throws AppUserException {
         System.out.println(id);
         Optional<AppUser> user = appUserRepository.findByIdVerifiedButLocked(id);
 
@@ -116,7 +115,7 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser appUser = user.get();
         appUser.setAccountNonLocked(true);
 
-        appUserRepository.save(appUser);
+        return appUserRepository.save(appUser);
     }
 
     @Transactional

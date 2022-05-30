@@ -1,7 +1,5 @@
 package com.asdf.myhomeback.utils;
 
-import com.asdf.myhomeback.models.AppUser;
-
 public class LogMessGen {
 
     public static String successfulLogin(String username) {
@@ -32,12 +30,12 @@ public class LogMessGen {
 //        return String.format("User with username: '%s' successfully finished operation on url path: '%s'", username, urlPath);
 //    }
 
-    public static String successfulDeleteUser(String username, Long userId) {
-        return String.format("User with username: '%s' successfully deleted user with id: '%s'", username, userId);
+    public static String successfulDeleteUser(String username, String userToDelete) {
+        return String.format("User with username: '%s' successfully deleted user with username: '%s'", username, userToDelete);
     }
 
-    public static String successfulUnlockUser(String username, Long userId) {
-        return String.format("User with username: '%s' successfully unlocked user with id: '%s'", username, userId);
+    public static String successfulUnlockUser(String username, String userToDelete) {
+        return String.format("User with username: '%s' successfully unlocked user with username: '%s'", username, userToDelete);
     }
 
     public static String successfulRegistration(String username) {
@@ -72,18 +70,20 @@ public class LogMessGen {
         return String.format("User with username: '%s' successfully updated real estate with name '%s'", username, realEstateName);
     }
 
-    public static String successfulUserRealEstateCreation(String username, String user, Long realEstateId, String role) {
-        return String.format("User with username: '%s' successfully added new user real estate triplet (%s, %s, %s)", username, user, realEstateId, role);
+    public static String successfulUserRealEstateCreation(String username, String user, String realEstateName, String role) {
+        return String.format("User with username: '%s' successfully added new user real estate triplet (%s, %s, %s)", username, user, realEstateName, role);
     }
 
-    public static String successfulUserRealEstateRoleChange(String username, String user, Long realEstateId, String role) {
-        return String.format("User with username: '%s' successfully changed role in user real estate (%s, %s) to '%s'", username, user, realEstateId, role);
+    public static String successfulUserRealEstateRoleChange(String username, String user, String realEstateName, String role) {
+        return String.format("User with username: '%s' successfully changed role in user real estate (%s, %s) to '%s'", username, user, realEstateName, role);
     }
 
-    public static String successfulUserRealEstateDelete(String username, String user, Long realEstateId, String role) {
-        return String.format("User with username: '%s' successfully deleted user real estate triplet (%s, %s,%s)", username, user, realEstateId, role);
+    public static String successfulUserRealEstateDelete(String username, String user, String realEstateName) {
+        return String.format("User with username: '%s' successfully deleted user real estate relation (%s, %s)", username, user, realEstateName);
     }
 
-
+    public static String userNotInRealEstate(String username, String realEstateName) {
+        return String.format("User with username: '%s' is not owner in '%s'", username, realEstateName);
+    }
 
 }

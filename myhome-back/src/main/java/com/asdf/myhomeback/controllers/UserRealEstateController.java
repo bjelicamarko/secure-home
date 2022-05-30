@@ -5,6 +5,7 @@ import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.exceptions.UserRealEstateException;
 import com.asdf.myhomeback.models.Device;
+import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.DeviceService;
@@ -44,10 +45,15 @@ public class UserRealEstateController {
     public ResponseEntity<String> saveUserRealEstate(@RequestBody UserRealEstateDTO realEstateDTO, HttpServletRequest req){
         String username = tokenUtils.getUsernameFromRequest(req);
         try{
-            userRealEstateService.saveUserRealEstate(realEstateDTO);
-            String logMess = LogMessGen.successfulUserRealEstateCreation(username, realEstateDTO.getUsername(), realEstateDTO.getRealEstateId(), realEstateDTO.getRole());
+            UserRealEstate ure = userRealEstateService.saveUserRealEstate(realEstateDTO);
+            String realEstateName = ure.getRealEstate().getName();
+            String logMess = LogMessGen.successfulUserRealEstateCreation(username, realEstateDTO.getUsername(), realEstateName, realEstateDTO.getRole());
             logService.generateInfoLog(logMess);
             return new ResponseEntity<>("New ownership successfully added", HttpStatus.OK);
+        } catch (AppUserException | RealEstateException | UserRealEstateException e) {
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
             logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
@@ -60,8 +66,9 @@ public class UserRealEstateController {
     public ResponseEntity<String> changeRoleInUserRealEstate(@RequestBody UserRealEstateDTO realEstateDTO, HttpServletRequest req){
         String username = tokenUtils.getUsernameFromRequest(req);
         try{
-            userRealEstateService.changeRoleInUserRealEstate(realEstateDTO);
-            String logMess = LogMessGen.successfulUserRealEstateRoleChange(username, realEstateDTO.getUsername(), realEstateDTO.getRealEstateId(), realEstateDTO.getRole());
+            UserRealEstate ure = userRealEstateService.changeRoleInUserRealEstate(realEstateDTO);
+            String realEstateName = ure.getRealEstate().getName();
+            String logMess = LogMessGen.successfulUserRealEstateRoleChange(username, realEstateDTO.getUsername(), realEstateName, realEstateDTO.getRole());
             logService.generateInfoLog(logMess);
             return new ResponseEntity<>("Role successfully changed", HttpStatus.OK);
         } catch (AppUserException | RealEstateException | UserRealEstateException e) {
@@ -98,7 +105,9 @@ public class UserRealEstateController {
         String username = tokenUtils.getUsernameFromRequest(req);
         try{
             userRealEstateService.deleteUserRealEstate(userRealEstateDTO);
-            String logMess = LogMessGen.successfulUserRealEstateDelete(username, userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId(), userRealEstateDTO.getRole());
+            RealEstate re = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
+            String realEstateName = re.getName();
+            String logMess = LogMessGen.successfulUserRealEstateDelete(username, userRealEstateDTO.getUsername(), realEstateName);
             logService.generateInfoLog(logMess);
             return new ResponseEntity<>("User real estate successfully deleted", HttpStatus.OK);
         } catch (AppUserException | RealEstateException | UserRealEstateException e) {
@@ -118,15 +127,15 @@ public class UserRealEstateController {
         try {
             String authToken = tokenUtils.getToken(request);
             String username = tokenUtils.getUsernameFromToken(authToken);
+
             if (userRealEstateService.isUserInRealEstate(username, name)){
+                logService.generateErrLog(LogMessGen.userNotInRealEstate(username, name));
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            String role = userRealEstateService.findRoleInRealEstateByName(username, name);
-            List<String> household = new ArrayList<>();
-            if(role.equals("OWNER"))
-                household = userRealEstateService.getUsersFromByRealEstateName(name);
 
+            List<String> household = userRealEstateService.getUsersFromByRealEstateName(username, name);
             List<Device> devices = realEstateService.findDevicesByRealEstateName(name);
+
             return new ResponseEntity<>(new RealEstateWithHouseholdAndDevicesDTO(household, devices),  HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

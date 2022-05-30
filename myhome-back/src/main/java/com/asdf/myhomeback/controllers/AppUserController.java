@@ -82,6 +82,10 @@ public class AppUserController {
             e.printStackTrace();
             logService.generateErrLog(LogMessGen.exMessUser(authenticationRequest.getUsername(), e.getMessage()));
             return new ResponseEntity<>(new UserTokenStateDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.internalServerError(authenticationRequest.getUsername()), Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Ubaci korisnika u trenutni security kontekst
@@ -106,7 +110,7 @@ public class AppUserController {
         String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
-
+        
         logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
         return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
@@ -162,8 +166,8 @@ public class AppUserController {
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") Long id, HttpServletRequest request){
         String username = tokenUtils.getUsernameFromRequest(request);
         try{
-            appUserService.deleteUser(id);
-            logService.generateInfoLog(LogMessGen.successfulDeleteUser(username, id));
+            AppUser user = appUserService.deleteUser(id);
+            logService.generateInfoLog(LogMessGen.successfulDeleteUser(username, user.getUsername()));
             return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
         } catch (AppUserException e) {
             e.printStackTrace();
@@ -181,8 +185,8 @@ public class AppUserController {
     public ResponseEntity<String> unlockUser(@RequestBody Long id, HttpServletRequest request){
         String username = tokenUtils.getUsernameFromRequest(request);
         try{
-            appUserService.unlockUser(id);
-            logService.generateInfoLog(LogMessGen.successfulUnlockUser(username, id));
+            AppUser appUser = appUserService.unlockUser(id);
+            logService.generateInfoLog(LogMessGen.successfulUnlockUser(username, appUser.getUsername()));
             return new ResponseEntity<>("User unlocked successfully", HttpStatus.OK);
         } catch (AppUserException e) {
             e.printStackTrace();

@@ -40,7 +40,7 @@ public class RealEstateServiceImpl implements RealEstateService {
     public void saveRealEstate(RealEstateWithDevicesDTO realEstateDTO) throws RealEstateException {
         RealEstate realEstate = new RealEstate(realEstateDTO);
         if(realEstateRepository.findByName(realEstate.getName()) != null)
-            throw new RealEstateException("Real estate name is taken, try another one.");
+            throw new RealEstateException(String.format("Real estate name '%s' is taken, try another one.", realEstate.getName()));
         RealEstateUtils.checkBasicRealEstateInfo(realEstate);
 
         Set<Device> devices = deviceService.findAllByNameInList(realEstateDTO.getDevices());
@@ -53,7 +53,7 @@ public class RealEstateServiceImpl implements RealEstateService {
     public void updateRealEstate(RealEstateWithDevicesDTO realEstateDTO) throws RealEstateException {
         RealEstate realEstate = realEstateRepository.findByName(realEstateDTO.getName());
         if(realEstate == null)
-            throw new RealEstateException("Real estate with given name does not exist in database.");
+            throw new RealEstateException(String.format("Real estate with name '%s' does not exist in database.", realEstateDTO.getName()));
 
         Set<Device> devices = deviceService.findAllByNameInList(realEstateDTO.getDevices());
         realEstate.setDevices(devices);
@@ -65,7 +65,7 @@ public class RealEstateServiceImpl implements RealEstateService {
     @Override
     public List<RealEstate> getRealEstateForUserToAssign(String username) throws AppUserException {
         if(appUserService.findByUsernameVerifiedUnlocked(username) == null){
-            throw new AppUserException("This user doesnt exist.");
+            throw new AppUserException(String.format("User with username '%s' doesnt exist.", username));
         }
         return realEstateRepository.getRealEstateForUserToAssign(username);
     }
@@ -83,7 +83,7 @@ public class RealEstateServiceImpl implements RealEstateService {
     @Override
     public List<Device> findDevicesByRealEstateName(String name) throws RealEstateException {
         if(realEstateRepository.findByName(name) == null)
-            throw new RealEstateException("Real estate with given name does not exist.");
+            throw new RealEstateException(String.format("Real estate with name '%s' does not exist.", name));
 
         return realEstateRepository.findDevicesByRealEstateName(name);
     }

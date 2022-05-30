@@ -38,26 +38,28 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     private UserRoleService userRoleService;
 
     @Override
-    public void saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception {
+    public UserRealEstate saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception {
         UserRoleEnum role = UserRoleEnum.valueOf(userRealEstateDTO.getRole());
         UserRealEstate userRealEstateDuplicate = userRealEstateRepository
                 .findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
         if (userRealEstateDuplicate != null) throw new Exception("(User, Real estate) tuple already exist.");
 
         AppUser user = appUserService.findByUsernameVerifiedUnlocked(userRealEstateDTO.getUsername());
-        if (user == null) throw new Exception("User with given id doesnt exist | Real estate can't be assigned to this user.");
+        if (user == null) throw new AppUserException(String.format("User with username '%s' doesnt exist | Unverified/locked/deleted user.", user.getUsername()));
 
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
-        if (realEstate == null) throw new Exception("Real estate with given id doesnt exist.");
+        if (realEstate == null) throw new RealEstateException(String.format("Real estate with name '%s' doesnt exist.", realEstate.getName()));
 
         int countOfOwners = userRealEstateRepository.countOwnersOfEstate(userRealEstateDTO.getRealEstateId());
         if(countOfOwners == 0 && !userRealEstateDTO.getRole().equals("OWNER"))
-            throw new UserRealEstateException("This real estate does not have owner. In order to assign tenant to it, assign owner first.");
+            throw new UserRealEstateException(String.format("Real estate '%s' does not have owner. In order to assign tenant to it, assign owner first.", realEstate.getName()));
 
         UserRealEstate userRealEstate = new UserRealEstate(user, realEstate, role);
-        userRealEstateRepository.save(userRealEstate);
+        UserRealEstate ret = userRealEstateRepository.save(userRealEstate);
 
         changeUserRoles(user, role);
+
+        return ret;
     }
 
     private void changeUserRoles(AppUser user, UserRoleEnum role) {
@@ -84,16 +86,20 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     }
 
     @Override
-    public void changeRoleInUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws AppUserException, RealEstateException, UserRealEstateException {
+    public UserRealEstate changeRoleInUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws AppUserException, RealEstateException, UserRealEstateException {
         UserRoleEnum newRole = UserRoleEnum.valueOf(userRealEstateDTO.getRole());
-        AppUser user = appUserService.getUser(userRealEstateDTO.getUsername());
-        if (user == null) throw new AppUserException("User with given id doesnt exist.");
+
+        AppUser user = appUserService.findByUsernameVerifiedUnlocked(userRealEstateDTO.getUsername());
+        if (user == null) throw new AppUserException(String.format("User with username '%s' doesnt exist | Unverified/locked/deleted user.", user.getUsername()));
 
         RealEstate realEstate = realEstateService.getRealEstateById(userRealEstateDTO.getRealEstateId());
-        if (realEstate == null) throw new RealEstateException("Real estate with given id doesnt exist.");
+        if (realEstate == null) throw new RealEstateException(String.format("Real estate with name '%s' doesnt exist.", realEstate.getName()));
 
         UserRealEstate ure = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
-        if(ure == null) throw new UserRealEstateException("User with given username does not relate with given real estate.");
+        if(ure == null) {
+            String ex = String.format("User with username '%s' does not relate with '%s' real estate.", user.getUsername(), realEstate.getName());
+            throw new UserRealEstateException(ex);
+        }
 
         int countOfOwners = userRealEstateRepository.countOwnersOfEstate(userRealEstateDTO.getRealEstateId());
         if(countOfOwners == 1 && !userRealEstateDTO.getRole().equals("OWNER"))
@@ -101,10 +107,12 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
 
         UserRealEstate userRealEstate = userRealEstateRepository.findDuplicate(userRealEstateDTO.getUsername(), userRealEstateDTO.getRealEstateId());
         userRealEstate.setRole(newRole);
-        userRealEstateRepository.save(userRealEstate);
+        UserRealEstate ret = userRealEstateRepository.save(userRealEstate);
 
         user = updateUserRole(user);
         appUserService.save(user);
+
+        return ret;
     }
 
     private AppUser updateUserRole(AppUser user) {
@@ -151,18 +159,21 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     @Override
     @Transactional
     public void deleteUserRealEstate(UserRealEstateDTO ureDTO) throws AppUserException, RealEstateException, UserRealEstateException {
-        AppUser user = appUserService.getUser(ureDTO.getUsername());
-        if(user == null) throw new AppUserException("User with given username does not exists!");
+        AppUser user = appUserService.findByUsernameVerifiedUnlocked(ureDTO.getUsername());
+        if (user == null) throw new AppUserException(String.format("User with username '%s' doesnt exist | Unverified/locked/deleted user.", user.getUsername()));
 
         RealEstate realEstate = realEstateService.getRealEstateById(ureDTO.getRealEstateId());
-        if (realEstate == null) throw new RealEstateException("Real estate with given id does not exist.");
+        if (realEstate == null) throw new RealEstateException(String.format("Real estate with name '%s' doesnt exist.", realEstate.getName()));
 
         UserRealEstate ure = userRealEstateRepository.findDuplicate(ureDTO.getUsername(), ureDTO.getRealEstateId());
-        if(ure == null) throw new UserRealEstateException("User with given username does not relate with given real estate.");
+        if(ure == null) {
+            String ex = String.format("User with username '%s' does not relate with '%s' real estate.", user.getUsername(), realEstate.getName());
+            throw new UserRealEstateException(ex);
+        }
 
         int countOfOwners = userRealEstateRepository.countOwnersOfEstate(ureDTO.getRealEstateId());
         if(countOfOwners == 1 && ure.getRole().equals(UserRoleEnum.OWNER))
-            throw new UserRealEstateException(user.getUsername() + " is the last owner of this real estate therefore you cannot remove it.");
+            throw new UserRealEstateException(String.format("'%s' is the last owner of real estate '%s' therefore you cannot remove it.", user.getUsername(), realEstate.getName()));
 
         userRealEstateRepository.deleteUserRealEstate(user.getId(), ureDTO.getRealEstateId());
 
@@ -180,8 +191,14 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     }
 
     @Override
-    public List<String> getUsersFromByRealEstateName(String name) {
-        return userRealEstateRepository.getUsersFromByRealEstateName(name);
+    public List<String> getUsersFromByRealEstateName(String username, String name) {
+        String role = findRoleInRealEstateByName(username, name);
+        List<String> household = new ArrayList<>();
+
+        if(role.equals("OWNER"))
+            household = userRealEstateRepository.getUsersFromByRealEstateName(name);
+
+        return household;
     }
 
     @Override

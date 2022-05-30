@@ -83,7 +83,7 @@ public class RealEstateController {
         String username = tokenUtils.getUsernameFromRequest(req);
         try{
             realEstateService.updateRealEstate(realEstateDTO);
-            logService.generateInfoLog(LogMessGen.successfulRealEstateCreation(username, realEstateDTO.getName()));
+            logService.generateInfoLog(LogMessGen.successfulRealEstateUpdate(username, realEstateDTO.getName()));
             return new ResponseEntity<>("Real estate successfully updated", HttpStatus.OK);
         } catch (RealEstateException e) {
             e.printStackTrace();

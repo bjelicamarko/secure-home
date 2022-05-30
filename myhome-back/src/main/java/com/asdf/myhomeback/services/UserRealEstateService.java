@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface UserRealEstateService {
 
-    void saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception;
+    UserRealEstate saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception;
 
-    void changeRoleInUserRealEstate(UserRealEstateDTO realEstateDTO) throws Exception;
+    UserRealEstate changeRoleInUserRealEstate(UserRealEstateDTO realEstateDTO) throws Exception;
 
     List<UserRealEstate> getUserRealEstatesFromUser(String username);
 
@@ -25,7 +25,7 @@ public interface UserRealEstateService {
 
     List<String> findUsersRoleInRealEstates(String username, Page<RealEstate> realEstates);
 
-    List<String> getUsersFromByRealEstateName(String name);
+    List<String> getUsersFromByRealEstateName(String username, String name);
 
     boolean isUserInRealEstate(String username, String name);
 
