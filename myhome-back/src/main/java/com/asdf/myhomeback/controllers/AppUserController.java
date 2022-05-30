@@ -13,7 +13,7 @@ import com.asdf.myhomeback.security.auth.JwtAuthenticationRequest;
 import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
 import com.asdf.myhomeback.utils.AppUserUtils;
-import com.asdf.myhomeback.util.ControllerUtils;
+import com.asdf.myhomeback.utils.ControllerUtils;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
