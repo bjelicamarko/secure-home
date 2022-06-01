@@ -28,6 +28,8 @@ public class Log {
 
     private String stackTrace;
 
+    public Log() {}
+
     public Log(Long dateTime, LogLevel logLevel, String loggerName, String logMessage) {
         this.dateTime = dateTime;
         this.logLevel = logLevel;
