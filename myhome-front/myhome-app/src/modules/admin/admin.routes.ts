@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
 import { RoleGuard } from "../auth/guards/role/role.guard";
 import { AssignEstatePageComponent } from "./pages/assign-estate-page/assign-estate-page.component";
-import { HomePageComponent } from "./pages/home-page/home-page.component";
+import { LogsViewComponent } from "./pages/logs-view/logs-view.component";
 import { RealEstateCreationPageComponent } from "./pages/real-estate-creation-page/real-estate-creation-page.component";
 import { RealEstatePageComponent } from "./pages/real-estate-page/real-estate-page.component";
 import { RealEstatesPageComponent } from "./pages/real-estates-page/real-estates-page.component";
@@ -9,13 +9,6 @@ import { UserRealEstatePageComponent } from "./pages/user-real-estate-page/user-
 import { UsersViewComponent } from "./pages/users-view/users-view.component";
 
 export const AdminRoutes: Routes = [
-  {
-    path: "home-page",
-    pathMatch: "full",
-    component: HomePageComponent,
-    canActivate: [RoleGuard],
-    data: { expectedRoles: "ROLE_ADMIN" },
-  },
   {
     path: "users-view",
     pathMatch: "full",
@@ -58,4 +51,11 @@ export const AdminRoutes: Routes = [
     canActivate: [RoleGuard],
     data: { expectedRoles: "ROLE_ADMIN" },
   },
+  {
+    path: "logs-view",
+    pathMatch: "full",
+    component: LogsViewComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: "ROLE_ADMIN" }
+  }
 ];

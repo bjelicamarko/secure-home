@@ -37,14 +37,14 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
     start: new FormControl(),
     end: new FormControl(),
   });
-  
+
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
   pageSize: number;
   currentPage: number;
   totalSize: number;
-  
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private deviceService: DeviceService, 
-    private sharedDatePickerService: SharedDatePickerService, private snackBarService: SnackBarService) { 
+
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private deviceService: DeviceService,
+    private sharedDatePickerService: SharedDatePickerService, private snackBarService: SnackBarService) {
     this.name = route.snapshot.paramMap.get("deviceName");
     this.pageSize = 20;
     this.currentPage = 1;
@@ -55,24 +55,24 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
 
   @ViewChild(MatSort)
   sort: MatSort = new MatSort;
-  
+
   ngAfterViewInit(): void {
     if (!this.name) return;
 
     this.name = decodeURIComponent(this.name);
 
     this.deviceService.getAllMessagesFromDevice(this.name, this.currentPage - 1, this.pageSize)
-    .subscribe((response : any) => {
-      this.deviceMessages = response.body as DeviceMessageDTO[];
-      this.dataSource = new MatTableDataSource(this.deviceMessages);
-      this.dataSource.sort = this.sort;
-      this.totalSize = Number(response.headers.get("total-elements"));
-      this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
-    })
+      .subscribe((response: any) => {
+        this.deviceMessages = response.body as DeviceMessageDTO[];
+        this.dataSource = new MatTableDataSource(this.deviceMessages);
+        this.dataSource.sort = this.sort;
+        this.totalSize = Number(response.headers.get("total-elements"));
+        this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+      })
 
     interval(2000 * 60).subscribe(() => {
       if (this.closedDialog)
-         window.location.reload();
+        window.location.reload();
     });
   }
 
@@ -83,7 +83,7 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
-  
+
   setPagination(totalItemsHeader: string | null, currentPageHeader: string | null) {
     if (totalItemsHeader) {
       this.totalSize = parseInt(totalItemsHeader);
@@ -100,16 +100,16 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
 
     this.deviceService.getAllMessagesFromDevice(this.name, newPage - 1, this.pageSize)
       .subscribe((response) => {
-          if (response.body != null) {
-            this.deviceMessages = response.body as DeviceMessageDTO[];
-            this.dataSource = new MatTableDataSource(this.deviceMessages);
-            this.dataSource.sort = this.sort;
-            this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
-          }
-        }, (err) => {
-          if (err.error)
-            this.snackBarService.openSnackBar(String(err.console));
-        });
+        if (response.body != null) {
+          this.deviceMessages = response.body as DeviceMessageDTO[];
+          this.dataSource = new MatTableDataSource(this.deviceMessages);
+          this.dataSource.sort = this.sort;
+          this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+        }
+      }, (err) => {
+        if (err.error)
+          this.snackBarService.openSnackBar(String(err.console));
+      });
   }
 
   changeDate(): void {
@@ -124,11 +124,11 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
     if (!this.name) return;
 
     this.name = decodeURIComponent(this.name);
-    
+
     this.closedDialog = false;
     const dialogRef = this.dialog.open(ReportsDialogComponent, {
       width: '100%',
-      data: {deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate},
+      data: { deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate },
     });
 
     dialogRef.afterClosed().subscribe(() => {
