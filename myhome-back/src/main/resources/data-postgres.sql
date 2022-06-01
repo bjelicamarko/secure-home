@@ -23,6 +23,8 @@ INSERT INTO privilege (name) VALUES ('GET_REAL_ESTATE_DEVICES'); -- 16
 INSERT INTO privilege (name) VALUES ('GET_ALL_MESSAGES_FROM_DEVICE'); -- 17
 INSERT INTO privilege (name) VALUES ('FILTER_ALL_MESSAGES_FROM_DEVICE'); -- 18
 INSERT INTO privilege (name) VALUES ('CREATE_REPORT'); -- 19
+INSERT INTO privilege (name) VALUES ('READ_LOGS'); -- 20
+INSERT INTO privilege (name) VALUES ('FILTER_ALL_LOGS'); -- 21
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -94,6 +96,9 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 18);
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 19);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 19);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 20);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 21);
 
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');

@@ -1,6 +1,7 @@
-<h3 md-dialog-title>{{titleMessage.title}}</h3>
-<div md-dialog-content>{{titleMessage.message}}</div>
+<h3 md-dialog-title>{{dialogContent.title}}</h3>
+<div md-dialog-content>{{dialogContent.body}}</div>
 <div md-dialog-actions style="margin-top: 20px;">
-  <button id='confirm-button' mat-flat-button color="primary" (click)="dialogRef.close(true)" style="margin-right: 10px;">Confirm</button>
+  <button id='confirm-button' mat-flat-button color="primary" (click)="dialogRef.close(true)"
+    style="margin-right: 10px;">Confirm</button>
   <button mat-flat-button color="warn" (click)="dialogRef.close(false)">Cancel</button>
 </div>

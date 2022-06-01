@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomePageComponent } from './pages/home-page/home-page.component';
 import { RouterModule } from '@angular/router';
 import { AdminRoutes } from './admin.routes';
 import { UsersViewComponent } from './pages/users-view/users-view.component';
@@ -15,10 +14,11 @@ import { AssignEstatePageComponent } from './pages/assign-estate-page/assign-est
 import { UserRealEstatePageComponent } from './pages/user-real-estate-page/user-real-estate-page.component';
 import { RealEstatesPageComponent } from './pages/real-estates-page/real-estates-page.component';
 import { RealEstatePageComponent } from './pages/real-estate-page/real-estate-page.component';
+import { LogsViewComponent } from './pages/logs-view/logs-view.component';
+import { StackTraceComponent } from './components/stack-trace/stack-trace.component';
 
 @NgModule({
   declarations: [
-    HomePageComponent,
     UsersViewComponent,
     AppUserCardComponent,
     RealEstateCreationPageComponent,
@@ -26,6 +26,8 @@ import { RealEstatePageComponent } from './pages/real-estate-page/real-estate-pa
     UserRealEstatePageComponent,
     RealEstatesPageComponent,
     RealEstatePageComponent,
+    LogsViewComponent,
+    StackTraceComponent,
   ],
   imports: [
     CommonModule,
