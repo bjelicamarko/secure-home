@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface LogService {
+
+    void saveLog(Log log);
+
     void generateInfoLog(String logMessage);
 
     void generateWarnLog(String logMessage);

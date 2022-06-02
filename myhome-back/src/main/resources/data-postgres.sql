@@ -205,3 +205,5 @@ insert into device_message (device_name, message, message_status, timestamp_valu
 ('Air conditioner', 'Temperature is optimal', 'SUSPICIOUS', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+
+insert into alarm_rule (rule_pattern, alarm_type) values ('locked account', 'LOG');

@@ -73,6 +73,9 @@ public class AppUserController {
             } catch (UsernameNotFoundException ex) {
                 logService.generateErrLog(LogMessGen.userNotFoundLogin(authenticationRequest.getUsername()));
                 return new ResponseEntity<>(new UserTokenStateDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
+            } catch (LockedException exp) {
+                logService.generateErrLog(LogMessGen.accountLockedLogin(authenticationRequest.getUsername()));
+                return new ResponseEntity<>(new UserTokenStateDTO(exp.getMessage()), HttpStatus.UNAUTHORIZED);
             }
         } catch (LockedException e) {
             logService.generateErrLog(LogMessGen.accountLockedLogin(authenticationRequest.getUsername()));

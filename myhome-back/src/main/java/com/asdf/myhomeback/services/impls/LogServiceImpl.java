@@ -1,8 +1,13 @@
 package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.exceptions.LogException;
+import com.asdf.myhomeback.models.AlarmNotification;
+import com.asdf.myhomeback.models.AlarmRule;
 import com.asdf.myhomeback.models.Log;
+import com.asdf.myhomeback.models.enums.AlarmType;
 import com.asdf.myhomeback.repositories.mongo.LogRepository;
+import com.asdf.myhomeback.services.AlarmNotificationService;
+import com.asdf.myhomeback.services.AlarmRuleService;
 import com.asdf.myhomeback.services.LogService;
 import com.asdf.myhomeback.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class LogServiceImpl implements LogService {
@@ -19,13 +25,32 @@ public class LogServiceImpl implements LogService {
     @Autowired
     private LogRepository logRepository;
 
+    @Autowired
+    private AlarmRuleService alarmRuleService;
+
+    @Autowired
+    private AlarmNotificationService alarmNotificationService;
+
+    @Override
+    public void saveLog(Log log){
+        // check if some alarm rule will trigger notification
+        List<AlarmRule> alarmRules = alarmRuleService.findAllByType(AlarmType.LOG);
+        alarmRules.forEach(alarmRule -> {
+            if (log.getLogMessage().contains(alarmRule.getRulePattern())){
+                alarmNotificationService.save(
+                        new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null));
+            }
+        });
+        this.logRepository.save(log);
+    }
+
     @Override
     public void generateInfoLog(String logMessage) {
         Long dateTime = new Date().getTime();
         String loggerName = Thread.currentThread().getStackTrace()[2].getMethodName();
         Log log = new Log(dateTime, LogLevel.INFO, loggerName, logMessage);
 
-        logRepository.save(log);
+        saveLog(log);
     }
 
     @Override
@@ -34,7 +59,7 @@ public class LogServiceImpl implements LogService {
         String loggerName = Thread.currentThread().getStackTrace()[2].getMethodName();
         Log log = new Log(dateTime, LogLevel.WARN, loggerName, logMessage);
 
-        logRepository.save(log);
+        saveLog(log);
     }
 
     @Override
@@ -43,7 +68,7 @@ public class LogServiceImpl implements LogService {
         String loggerName = Thread.currentThread().getStackTrace()[2].getMethodName();
         Log log = new Log(dateTime, LogLevel.ERROR, loggerName, logMessage);
 
-        logRepository.save(log);
+        saveLog(log);
     }
 
     @Override
@@ -52,7 +77,7 @@ public class LogServiceImpl implements LogService {
         String loggerName = Thread.currentThread().getStackTrace()[2].getMethodName();
         Log log = new Log(dateTime, LogLevel.ERROR, loggerName, logMessage, stackTrace);
 
-        logRepository.save(log);
+        saveLog(log);
     }
 
     @Override

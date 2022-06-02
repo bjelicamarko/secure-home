@@ -3,6 +3,7 @@ package com.asdf.myhomeback.controllers.handlers;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,7 @@ public class CustomLoginFailureHandler {
                             + " more " + (user.getFailedAttempt() == 2 ? "attempt" : "attempts");
                 } else {
                     appUserService.lock(user);
-                    exception = "Your account has been locked due to 3 failed attempts."
-                            + " It will be unlocked after 24 hours.";
+                    throw new LockedException("Your account has been locked. Contact administrator for more details.");
                 }
             } else if (!user.isAccountNonLocked()) {
                 if (appUserService.unlockWhenTimeExpired(user)) {
