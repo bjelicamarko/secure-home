@@ -21,7 +21,6 @@ public class AlarmRuleController {
             alarmRuleService.save(alarmRuleDTO);
             return new ResponseEntity<>("Rule successfully added", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }
