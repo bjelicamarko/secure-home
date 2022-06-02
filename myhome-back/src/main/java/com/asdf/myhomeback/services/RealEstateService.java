@@ -26,4 +26,6 @@ public interface RealEstateService {
     Page<RealEstate> findAll(Pageable pageable);
 
     List<Device> findDevicesByRealEstateName(String name) throws RealEstateException;
+
+    List<RealEstate> getRealEstatesByDeviceName(String deviceName);
 }

@@ -27,4 +27,7 @@ public interface RealEstateRepository extends JpaRepository<RealEstate, Long> {
 
     @Query("select estate.devices from RealEstate estate where estate.name = ?1")
     List<Device> findDevicesByRealEstateName(String name);
+
+    @Query("select estate from RealEstate estate join fetch estate.devices d where d.name = ?1")
+    List<RealEstate> getRealEstatesByDeviceName(String deviceName);
 }

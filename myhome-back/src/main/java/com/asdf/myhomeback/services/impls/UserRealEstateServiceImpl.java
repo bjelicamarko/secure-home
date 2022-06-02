@@ -211,4 +211,9 @@ public class UserRealEstateServiceImpl implements UserRealEstateService {
     public String findRoleInRealEstateByName(String username, String name) {
         return userRealEstateRepository.findRoleInRealEstateByName(username, name);
     }
+
+    @Override
+    public List<AppUser> getUsersFromRealEstate(String realEstateName) {
+        return userRealEstateRepository.getUsersFromRealEstate(realEstateName);
+    }
 }

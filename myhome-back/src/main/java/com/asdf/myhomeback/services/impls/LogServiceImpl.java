@@ -10,12 +10,14 @@ import com.asdf.myhomeback.services.AlarmNotificationService;
 import com.asdf.myhomeback.services.AlarmRuleService;
 import com.asdf.myhomeback.services.LogService;
 import com.asdf.myhomeback.utils.LogUtils;
+import com.asdf.myhomeback.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,17 +33,27 @@ public class LogServiceImpl implements LogService {
     @Autowired
     private AlarmNotificationService alarmNotificationService;
 
+    @Autowired
+    private WebSocketService webSocketService;
+
     @Override
     public void saveLog(Log log){
         // check if some alarm rule will trigger notification
         List<AlarmRule> alarmRules = alarmRuleService.findAllByType(AlarmType.LOG);
+        List<AlarmNotification> alarmNotifications = new ArrayList<>();
         alarmRules.forEach(alarmRule -> {
             if (log.getLogMessage().contains(alarmRule.getRulePattern())){
-                alarmNotificationService.save(
-                        new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null));
+                alarmNotifications.add(new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null, "admin"));
             }
         });
-        this.logRepository.save(log);
+
+        // save all notifications
+        alarmNotificationService.saveAll(alarmNotifications);
+
+        // send all notifications
+        webSocketService.sendNotifications(alarmNotifications, AlarmType.LOG);
+
+        logRepository.save(log);
     }
 
     @Override

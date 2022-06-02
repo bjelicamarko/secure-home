@@ -1,13 +1,12 @@
 package com.asdf.myhomeback.repositories;
 
-import com.asdf.myhomeback.models.RealEstate;
+import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,4 +44,7 @@ public interface UserRealEstateRepository extends JpaRepository<UserRealEstate, 
 
     @Query("select u from UserRealEstate u where u.user.username = ?1 and u.realEstate.name = ?2")
     UserRealEstate checkUsernameInRealEstate(String username, String name);
+
+    @Query("select u.user from UserRealEstate u where u.realEstate.name = ?1 and u.user.accountNonLocked = true and u.user.deleted = false and u.user.verified = true")
+    List<AppUser> getUsersFromRealEstate(String realEstateName);
 }

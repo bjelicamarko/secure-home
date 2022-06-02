@@ -32,11 +32,15 @@ public class AlarmNotification {
     @Column(name = "timestamp", nullable = false)
     private Long timestamp;
 
-    public AlarmNotification(String message, AlarmType alarmType, String deviceName){
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    public AlarmNotification(String message, AlarmType alarmType, String deviceName, String username){
         this.message = message;
         this.alarmType = alarmType;
         this.deviceName = deviceName;
         this.timestamp = (new Date()).getTime();
+        this.username = username;
     }
 
 }

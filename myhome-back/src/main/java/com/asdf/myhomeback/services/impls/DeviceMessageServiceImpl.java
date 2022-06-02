@@ -1,16 +1,12 @@
 package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.exceptions.DeviceException;
-import com.asdf.myhomeback.models.AlarmNotification;
-import com.asdf.myhomeback.models.AlarmRule;
-import com.asdf.myhomeback.models.Device;
-import com.asdf.myhomeback.models.DeviceMessage;
+import com.asdf.myhomeback.models.*;
 import com.asdf.myhomeback.models.enums.AlarmType;
 import com.asdf.myhomeback.repositories.DeviceMessageRepository;
-import com.asdf.myhomeback.services.AlarmNotificationService;
-import com.asdf.myhomeback.services.AlarmRuleService;
-import com.asdf.myhomeback.services.DeviceMessageService;
+import com.asdf.myhomeback.services.*;
 import com.asdf.myhomeback.utils.DeviceUtils;
+import com.asdf.myhomeback.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +29,15 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
     @Autowired
     private AlarmNotificationService alarmNotificationService;
 
+    @Autowired
+    private RealEstateService realEstateService;
+
+    @Autowired
+    private UserRealEstateService userRealEstateService;
+
+    @Autowired
+    private WebSocketService webSocketService;
+
     @Override
     public void save(DeviceMessage deviceMessage) {
         deviceMessageRepository.save(deviceMessage);
@@ -40,15 +46,35 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
     @Override
     public void saveAll(List<DeviceMessage> deviceMessages) {
         List<AlarmRule> alarmRules = alarmRuleService.findAllByType(AlarmType.DEVICE);
+        List<AlarmNotification> alarmNotifications = new ArrayList<>();
         alarmRules.forEach(alarmRule -> {
             deviceMessages.forEach(deviceMessage -> {
                 // if deviceMessage->message contains pattern from rule
                 // and alarmRule->deviceName is equals to deviceMessage->deviceName
-                if (deviceMessage.getMessage().contains(alarmRule.getRulePattern()) && deviceMessage.getDeviceName().equals(alarmRule.getDeviceName()))
-                    alarmNotificationService.save(new AlarmNotification(deviceMessage.getMessage(), AlarmType.DEVICE, deviceMessage.getDeviceName()));
+                if (deviceMessage.getMessage().contains(alarmRule.getRulePattern()) && deviceMessage.getDeviceName().equals(alarmRule.getDeviceName())) {
+                    List<RealEstate> realEstates = realEstateService.getRealEstatesByDeviceName(alarmRule.getDeviceName());
+                    realEstates.forEach(realEstate -> {
+                        List<AppUser> usersFromRealEstate = userRealEstateService.getUsersFromRealEstate(realEstate.getName());
+                        usersFromRealEstate.forEach(user -> {
+                            String message = generateMessage(deviceMessage.getMessage(), alarmRule.getDeviceName(), realEstate.getName());
+                            alarmNotifications.add(new AlarmNotification(message, AlarmType.DEVICE, deviceMessage.getDeviceName(), user.getUsername()));
+                        });
+                    });
+                }
             });
         });
+
+        // save all notifications
+        alarmNotificationService.saveAll(alarmNotifications);
+
+        // send all notifications
+        webSocketService.sendNotifications(alarmNotifications, AlarmType.DEVICE);
+
         deviceMessageRepository.saveAll(deviceMessages);
+    }
+
+    private String generateMessage(String message, String deviceName, String name) {
+        return String.format("From %s in %s arrived message - %s", deviceName, name, message);
     }
 
     @Override

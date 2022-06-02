@@ -87,4 +87,9 @@ public class RealEstateServiceImpl implements RealEstateService {
 
         return realEstateRepository.findDevicesByRealEstateName(name);
     }
+
+    @Override
+    public List<RealEstate> getRealEstatesByDeviceName(String deviceName) {
+        return realEstateRepository.getRealEstatesByDeviceName(deviceName);
+    }
 }

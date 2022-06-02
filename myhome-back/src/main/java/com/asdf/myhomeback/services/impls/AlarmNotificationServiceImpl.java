@@ -6,6 +6,8 @@ import com.asdf.myhomeback.services.AlarmNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AlarmNotificationServiceImpl implements AlarmNotificationService {
 
@@ -15,5 +17,10 @@ public class AlarmNotificationServiceImpl implements AlarmNotificationService {
     @Override
     public void save(AlarmNotification alarmNotification) {
         alarmNotificationRepository.save(alarmNotification);
+    }
+
+    @Override
+    public void saveAll(List<AlarmNotification> alarmNotifications) {
+        alarmNotificationRepository.saveAll(alarmNotifications);
     }
 }

@@ -4,6 +4,7 @@ import com.asdf.myhomeback.dto.UserRealEstateDTO;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.exceptions.UserRealEstateException;
+import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
@@ -30,4 +31,6 @@ public interface UserRealEstateService {
     boolean isUserInRealEstate(String username, String name);
 
     String findRoleInRealEstateByName(String username, String name);
+
+    List<AppUser> getUsersFromRealEstate(String realEstateName);
 }
