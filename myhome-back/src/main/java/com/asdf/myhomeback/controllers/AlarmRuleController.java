@@ -2,7 +2,6 @@ package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.AlarmRuleDTO;
 import com.asdf.myhomeback.exceptions.AlarmRuleException;
-import com.asdf.myhomeback.models.AlarmRule;
 import com.asdf.myhomeback.services.AlarmRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,13 @@ public class AlarmRuleController {
 
     @PostMapping
     public ResponseEntity<String> createAlarmRule(@RequestBody AlarmRuleDTO alarmRuleDTO){
-        alarmRuleService.save(new AlarmRule(alarmRuleDTO));
-        return new ResponseEntity<>("Rule successfully added", HttpStatus.OK);
+        try {
+            alarmRuleService.save(alarmRuleDTO);
+            return new ResponseEntity<>("Rule successfully added", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @PutMapping

@@ -11,4 +11,6 @@ import java.util.List;
 public interface AlarmRuleRepository extends JpaRepository<AlarmRule, Long> {
 
     List<AlarmRule> findAlarmRulesByAlarmType(AlarmType alarmType);
+
+    Boolean existsAlarmRuleByRulePatternAndAlarmTypeAndDeviceName(String rulePattern, AlarmType alarmType, String deviceName);
 }

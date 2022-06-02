@@ -22,12 +22,25 @@ public class AlarmRuleServiceImpl implements AlarmRuleService {
     }
 
     @Override
-    public void save(AlarmRule alarmRule) {
-        if (alarmRule.getDeviceName().equals("LOG"))
+    public void save(AlarmRuleDTO alarmRuleDTO) throws Exception {
+        AlarmRule alarmRule = new AlarmRule();
+        if (alarmRuleDTO.getRulePattern() == null || alarmRuleDTO.getRulePattern().equals(""))
+            throw new Exception("Rule has no string pattern.");
+        alarmRule.setRulePattern(alarmRuleDTO.getRulePattern());
+        if (alarmRuleDTO.getDeviceName().equals("") || (alarmRuleDTO.getDeviceName() == null) || alarmRuleDTO.getDeviceName().equals("LOG"))
             alarmRule.setAlarmType(AlarmType.LOG);
-        else
+        else {
+            alarmRule.setDeviceName(alarmRuleDTO.getDeviceName());
             alarmRule.setAlarmType(AlarmType.DEVICE);
+        }
+        if (checkIfAlarmRuleExist(alarmRule))
+            throw new Exception("Alarm rule already exist.");
         alarmRuleRepository.save(alarmRule);
+    }
+
+    private Boolean checkIfAlarmRuleExist(AlarmRule alarmRule) {
+        return alarmRuleRepository.existsAlarmRuleByRulePatternAndAlarmTypeAndDeviceName(
+                alarmRule.getRulePattern(), alarmRule.getAlarmType(), alarmRule.getDeviceName());
     }
 
     @Override

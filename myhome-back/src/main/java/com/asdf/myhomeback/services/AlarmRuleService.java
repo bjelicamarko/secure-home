@@ -11,7 +11,7 @@ public interface AlarmRuleService {
 
     AlarmRule findOne(Long id);
 
-    void save(AlarmRule alarmRule);
+    void save(AlarmRuleDTO alarmRule) throws Exception;
 
     void update(AlarmRuleDTO alarmRuleDTO) throws AlarmRuleException;
 

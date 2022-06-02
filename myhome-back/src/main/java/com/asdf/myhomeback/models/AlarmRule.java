@@ -29,10 +29,4 @@ public class AlarmRule {
     @Column(name = "device_name")
     private String deviceName;
 
-    public AlarmRule(AlarmRuleDTO alarmRuleDTO){
-        this.rulePattern = alarmRuleDTO.getRulePattern();
-        this.alarmType = AlarmType.valueOf(alarmRuleDTO.getAlarmType());
-        this.deviceName = alarmRuleDTO.getDeviceName();
-    }
-
 }

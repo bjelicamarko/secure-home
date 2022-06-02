@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { RoleGuard } from "../auth/guards/role/role.guard";
+import { AlarmsViewComponent } from "./pages/alarms-view/alarms-view.component";
 import { AssignEstatePageComponent } from "./pages/assign-estate-page/assign-estate-page.component";
 import { LogsViewComponent } from "./pages/logs-view/logs-view.component";
 import { RealEstateCreationPageComponent } from "./pages/real-estate-creation-page/real-estate-creation-page.component";
@@ -55,6 +56,13 @@ export const AdminRoutes: Routes = [
     path: "logs-view",
     pathMatch: "full",
     component: LogsViewComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: "ROLE_ADMIN" }
+  },
+  {
+    path: "alarms-view",
+    pathMatch: "full",
+    component: AlarmsViewComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: "ROLE_ADMIN" }
   }

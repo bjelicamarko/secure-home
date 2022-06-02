@@ -1,0 +1,22 @@
+<form [formGroup]="alarmRuleForm" (keydown.enter)="$event.preventDefault()">
+    <div class="row justify-content-center" style="margin-top: 2%;">
+        <div class="col-2">
+            <mat-form-field class="example-form-field" appearance="fill" style="width: 100%;">
+                <mat-label>Rule pattern</mat-label>
+                <input id="rulePatternInput" matInput type="text" formControlName="rulePattern">
+            </mat-form-field>
+        </div>
+        <div class="col-2">
+            <mat-form-field style="width: 100%;" appearance="fill">
+                <mat-label>Device name</mat-label>
+                <mat-select formControlName="deviceName">
+                    <mat-option *ngFor="let option of deviceNames" [value]="option">{{option}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button class="btn btn-success" type="submit" (click)="onSubmit()" style="width: 10%; margin-top: 1%;">Save
+            rule</button>
+    </div>
+</form>

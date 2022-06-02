@@ -16,6 +16,7 @@ import { RealEstatesPageComponent } from './pages/real-estates-page/real-estates
 import { RealEstatePageComponent } from './pages/real-estate-page/real-estate-page.component';
 import { LogsViewComponent } from './pages/logs-view/logs-view.component';
 import { StackTraceComponent } from './components/stack-trace/stack-trace.component';
+import { AlarmsViewComponent } from './pages/alarms-view/alarms-view.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { StackTraceComponent } from './components/stack-trace/stack-trace.compon
     RealEstatePageComponent,
     LogsViewComponent,
     StackTraceComponent,
+    AlarmsViewComponent,
   ],
   imports: [
     CommonModule,
