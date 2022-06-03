@@ -13,13 +13,14 @@ import { UpdateBadgeService } from '../../services/update-badge.service';
 })
 export class NotificationsPageComponent implements OnInit {
 
-  displayedColumns: string[] = ['deviceName', 'message', 'timestamp'];
+  displayedColumns: string[];
 
   pageSize: number;
   currentPage: number;
   totalSize: number;
   notificationsList: AlarmNotification[];
   dataSource: MatTableDataSource<AlarmNotification>;
+  userRole: string;
 
   constructor(private notificationService: NotificationService, private snackBarService: SnackBarService,
               private uitilService: UtilService, private updateBadgeService: UpdateBadgeService) { 
@@ -28,6 +29,8 @@ export class NotificationsPageComponent implements OnInit {
     this.pageSize = 10;
     this.currentPage = 1;
     this.totalSize = 1;
+    this.userRole = this.uitilService.getLoggedUserRoles()[0];
+    this.displayedColumns = (this.userRole !== 'ROLE_ADMIN') ? ['deviceName', 'message', 'timestamp'] : ['message', 'timestamp'];
   }
 
   ngOnInit(): void {

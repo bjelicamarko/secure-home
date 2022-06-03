@@ -21,7 +21,7 @@ def main():
         status = post_data_list(token, cookie, request_body)
         print("Server responded with status " + str(status))
 
-    every(5).seconds.do(job)
+    every(10).seconds.do(job)
 
     while True:
         run_pending()
