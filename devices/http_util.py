@@ -3,7 +3,7 @@ import json
 
 
 def login(username, password):
-    print(50 * "-" + "   LOGIN   " + 50 * "-")
+    print(42 * "-" + "   LOGIN   " + 42 * "-")
 
     res = requests.post(
         "http://localhost:8081/api/users/login",
@@ -21,7 +21,7 @@ def login(username, password):
 
 
 def post_data(token, cookie, request_body):
-    print(50 * "-" + "   POST_DATA   " + 50 * "-" + "\n")
+    print(40 * "-" + "   POST_DATA   " + 40 * "-" + "\n")
     res = requests.post(
         "http://localhost:8081/api/devices",
         headers={
@@ -35,7 +35,7 @@ def post_data(token, cookie, request_body):
 
 
 def post_data_list(token, cookie, request_body):
-    print(50 * "-" + "   POST_DATA   " + 50 * "-" + "\n")
+    print(40 * "-" + "   POST_DATA   " + 40 * "-" + "\n")
     res = requests.post(
         "http://localhost:8081/api/devices/all",
         headers={
