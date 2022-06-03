@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { SocketService } from 'src/modules/shared/services/socket.service';
 import { UtilService } from 'src/modules/shared/services/util/util.service';
 
 @Component({
@@ -9,7 +9,13 @@ import { UtilService } from 'src/modules/shared/services/util/util.service';
 })
 export class RootLayoutPageComponent {
 
-  constructor(public utilService: UtilService) { }
+  constructor(public utilService: UtilService, private webSocketService: SocketService) {}
+
+  connectSocket(): void {
+    let username = this.utilService.getLoggedUsername();
+    if (username !== "")
+      this.webSocketService.connect(username);
+  }
 
   isRole(role: string): boolean {
     return this.utilService.isRoleInUserRoles(role);
