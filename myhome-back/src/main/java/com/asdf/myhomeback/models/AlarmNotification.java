@@ -35,12 +35,16 @@ public class AlarmNotification {
     @Column(name = "username", nullable = false)
     private String username;
 
+    @Column(name = "seen", nullable = false)
+    private Boolean seen;
+
     public AlarmNotification(String message, AlarmType alarmType, String deviceName, String username){
         this.message = message;
         this.alarmType = alarmType;
         this.deviceName = deviceName;
         this.timestamp = (new Date()).getTime();
         this.username = username;
+        this.seen = false;
     }
 
 }

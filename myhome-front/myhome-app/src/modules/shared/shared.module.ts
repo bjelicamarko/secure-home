@@ -10,12 +10,14 @@ import { ConformationDialogComponent } from './components/conformation-dialog/co
 import { DeviceService } from './services/device.service';
 import { RealEstateCardComponent } from './components/real-estate-card/real-estate-card.component';
 import { SharedDatePickerService } from './services/shared-data-picker.service';
+import { DateFormatPipe } from './pipes/date-format.pipe';
 
 @NgModule({
   declarations: [
     PaginationComponent,
     ConformationDialogComponent,
     RealEstateCardComponent,
+    DateFormatPipe
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { SharedDatePickerService } from './services/shared-data-picker.service';
   ],
   exports: [
     PaginationComponent,
-    RealEstateCardComponent
+    RealEstateCardComponent,
+    DateFormatPipe
   ],
   providers: [
     SnackBarService,
