@@ -14,8 +14,8 @@ import { AdminModule } from '../admin/admin.module';
 import { UserModule } from '../user/user.module';
 import { HeaderUserComponent } from './components/headers/header-user/header-user.component';
 import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
-import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
-import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,6 @@ import { MatTableModule } from '@angular/material/table';
     HeaderAdminComponent,
     HeaderUserComponent,
     UnauthorizedPageComponent,
-    NotificationsPageComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +36,8 @@ import { MatTableModule } from '@angular/material/table';
     SharedModule,
     AdminModule,
     UserModule,
-    MatTableModule
+    MatIconModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

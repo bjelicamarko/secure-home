@@ -1,0 +1,35 @@
+<div div *ngIf="notificationsList.length != 0">
+  <div style="margin-top: 2%;" class="row align-items-center justify-content-center">
+    <table id="notifications" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!-- Name Column -->
+      <ng-container class="mat-column-timestamp" matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef> Date time </th>
+        <td mat-cell *matCellDef="let element"> {{ element.timestamp | dateFormat: 'DD.MM.yyyy HH:mm'}} </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container class="mat-column-deviceName" matColumnDef="deviceName">
+        <th mat-header-cell *matHeaderCellDef> Device name </th>
+        <td mat-cell *matCellDef="let element"> {{element.deviceName}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container class="mat-column-message" matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef> Message </th>
+        <td mat-cell *matCellDef="let element"> {{element.message}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        style="background-color: rgba(29, 29, 29, 0.15); cursor: initial;">
+      </tr>
+    </table>
+  </div>
+  <app-pagination style="margin-top: 2%;" [totalItems]="totalSize" [pageSize]="pageSize" (pageSelected)="changePage($event)" class="pagination">
+  </app-pagination>
+</div>
+
+<div style="text-align: center; text-transform: uppercase;">
+  <h2 *ngIf="notificationsList.length == 0"> There are no alarm notifications to display </h2>
+</div>

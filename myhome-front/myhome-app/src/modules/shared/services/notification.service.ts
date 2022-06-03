@@ -30,6 +30,17 @@ export class NotificationService {
     return this.httpClient.get<HttpResponse<AlarmNotification[]>>(`myhome/api/alarmNotifications`, queryParams);
   }
 
+  countNotSeenForUser(username: string): Observable<HttpResponse<number>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: new HttpHeaders({ "Content-Type": 'application/json' }),
+      observe: 'response'
+    };
+
+    return this.httpClient.get<HttpResponse<number>>(`myhome/api/alarmNotifications/countNotSeen`, queryParams);
+  }
+
   sendNotification(message: any): void {
     this.notificationMessageSource.next(message);
   }

@@ -4,6 +4,7 @@ import { AlarmNotification } from 'src/modules/shared/models/AlarmNotification';
 import { NotificationService } from 'src/modules/shared/services/notification.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { UtilService } from 'src/modules/shared/services/util/util.service';
+import { UpdateBadgeService } from '../../services/update-badge.service';
 
 @Component({
   selector: 'app-notifications-page',
@@ -21,10 +22,10 @@ export class NotificationsPageComponent implements OnInit {
   dataSource: MatTableDataSource<AlarmNotification>;
 
   constructor(private notificationService: NotificationService, private snackBarService: SnackBarService,
-              private uitilService: UtilService) { 
+              private uitilService: UtilService, private updateBadgeService: UpdateBadgeService) { 
     this.notificationsList = [];
     this.dataSource = new MatTableDataSource(this.notificationsList)
-    this.pageSize = 2;
+    this.pageSize = 10;
     this.currentPage = 1;
     this.totalSize = 1;
   }
@@ -35,12 +36,14 @@ export class NotificationsPageComponent implements OnInit {
       this.notificationsList = response.body;
       this.dataSource = new MatTableDataSource(this.notificationsList);
       this.totalSize = Number(response.headers.get("total-elements"));
+
+      this.updateBadgeService.sendNotif();
     },
     (error) => {
       if(error.status === 403)
         this.snackBarService.openSnackBar("Could not read notifications. Invalid username.");
-        if(error.status === 500)
-          this.snackBarService.openSnackBar("Unexpected error ocured while loading notifications");
+      if(error.status === 500)
+        this.snackBarService.openSnackBar("Unexpected error ocured while loading notifications");
     })
   }
 
@@ -50,6 +53,8 @@ export class NotificationsPageComponent implements OnInit {
       this.notificationsList = response.body;
       this.dataSource = new MatTableDataSource(this.notificationsList);
       this.totalSize = Number(response.headers.get("total-elements"));
+
+      this.updateBadgeService.sendNotif();
     });
   }
 

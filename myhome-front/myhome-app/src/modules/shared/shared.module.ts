@@ -11,22 +11,27 @@ import { DeviceService } from './services/device.service';
 import { RealEstateCardComponent } from './components/real-estate-card/real-estate-card.component';
 import { SharedDatePickerService } from './services/shared-data-picker.service';
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { NotificationsPageComponent } from './components/notifications-page/notifications-page.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
     PaginationComponent,
     ConformationDialogComponent,
     RealEstateCardComponent,
-    DateFormatPipe
+    DateFormatPipe,
+    NotificationsPageComponent
   ],
   imports: [
     CommonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule
   ],
   exports: [
     PaginationComponent,
     RealEstateCardComponent,
-    DateFormatPipe
+    DateFormatPipe,
+    NotificationsPageComponent
   ],
   providers: [
     SnackBarService,

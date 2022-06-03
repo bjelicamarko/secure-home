@@ -52,8 +52,6 @@ export class LoginComponent implements OnInit {
       const token = JSON.stringify(result);
       sessionStorage.setItem("user", token);
 
-      let webSocketNeeded = true;
-
       if (this.utilService.isRoleInUserRoles("ROLE_ADMIN")) {
         this.router.navigate(["mh-app/admin/users-view"]);
       }
@@ -65,14 +63,9 @@ export class LoginComponent implements OnInit {
       }
       else if (this.utilService.isRoleInUserRoles("ROLE_UNASSIGNED")) {
         this.router.navigate(["mh-app/user/user-home-page"]);
-        webSocketNeeded = false;
+
       }
 
-      if (webSocketNeeded) {
-        let username = this.utilService.getLoggedUsername();
-        if (username !== "")
-          this.webSocketService.connect(username);
-      }
     },
       (err: any) => {
         this.snackBarService.openSnackBar(err.error.exception);
