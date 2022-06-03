@@ -118,4 +118,16 @@ public class DeviceController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(value = "/{name}")
+    @PreAuthorize("hasAuthority('GET_DEVICE')")
+    public ResponseEntity<DeviceDTO> getDeviceByName(@PathVariable String name) {
+        try {
+            Device device = deviceService.findOneByName(name);
+            return new ResponseEntity<>(new DeviceDTO(device), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

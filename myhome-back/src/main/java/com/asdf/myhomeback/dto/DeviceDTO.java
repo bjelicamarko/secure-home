@@ -13,10 +13,12 @@ import lombok.Setter;
 public class DeviceDTO {
     private String name;
     private String photo;
+    private Integer readPeriod;
 
     public DeviceDTO(Device device) {
         this.name = device.getName();
         this.photo = device.getPhoto();
+        this.readPeriod = device.getReadPeriod();
     }
 
 }

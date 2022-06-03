@@ -13,7 +13,9 @@ public interface AlarmRuleService {
 
     void save(AlarmRuleDTO alarmRule) throws Exception;
 
-    void update(AlarmRuleDTO alarmRuleDTO) throws AlarmRuleException;
-
     List<AlarmRule> findAllByType(AlarmType alarmRuleType);
+
+    List<AlarmRule> findAll();
+
+    void delete(Long id) throws Exception;
 }

@@ -15,4 +15,6 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
 
     @Query("select device from Device device where device.name in ?1")
     Set<Device> findAllByNameInList(List<String> names);
+
+    Device findByName(String name);
 }

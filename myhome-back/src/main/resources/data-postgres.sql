@@ -25,6 +25,10 @@ INSERT INTO privilege (name) VALUES ('FILTER_ALL_MESSAGES_FROM_DEVICE'); -- 18
 INSERT INTO privilege (name) VALUES ('CREATE_REPORT'); -- 19
 INSERT INTO privilege (name) VALUES ('READ_LOGS'); -- 20
 INSERT INTO privilege (name) VALUES ('FILTER_ALL_LOGS'); -- 21
+INSERT INTO privilege (name) VALUES ('CREATE_ALARM_RULE'); -- 22
+INSERT INTO privilege (name) VALUES ('GET_ALARM_RULES'); -- 23
+INSERT INTO privilege (name) VALUES ('DELETE_ALARM_RULE'); -- 24
+INSERT INTO privilege (name) VALUES ('GET_DEVICE'); -- 25
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -103,6 +107,12 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 19);
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 20);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 21);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 22);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 23);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 24);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 25);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 25);
 
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');
@@ -126,13 +136,13 @@ INSERT INTO user_real_estate (user_id, real_estate_id, role) VALUES (7, 8, 'TENA
 
 
 -- tabela device
-INSERT INTO device (name, photo) VALUES ('Air conditioner', '/devices_photos/air_conditioner.png');
-INSERT INTO device (name, photo) VALUES ('Fridge', '/devices_photos/fridge.png');
-INSERT INTO device (name, photo) VALUES ('Front door', '/devices_photos/front_door.png');
-INSERT INTO device (name, photo) VALUES ('Backyard door', '/devices_photos/backyard_doors.jpg');
-INSERT INTO device (name, photo) VALUES ('Smoke detector', '/devices_photos/smoke_detector.png');
-INSERT INTO device (name, photo) VALUES ('Cooker', '/devices_photos/cooker.png');
-INSERT INTO device (name, photo) VALUES ('Water heater', '/devices_photos/water_heater.png');
+INSERT INTO device (name, photo, read_period) VALUES ('Air conditioner', '/devices_photos/air_conditioner.png', 10000);
+INSERT INTO device (name, photo, read_period) VALUES ('Fridge', '/devices_photos/fridge.png', 10000);
+INSERT INTO device (name, photo, read_period) VALUES ('Front door', '/devices_photos/front_door.png', 10000);
+INSERT INTO device (name, photo, read_period) VALUES ('Backyard door', '/devices_photos/backyard_doors.jpg', 10000);
+INSERT INTO device (name, photo, read_period) VALUES ('Smoke detector', '/devices_photos/smoke_detector.png', 10000);
+INSERT INTO device (name, photo, read_period) VALUES ('Cooker', '/devices_photos/cooker.png', 10000);
+INSERT INTO device (name, photo, read_period) VALUES ('Water heater', '/devices_photos/water_heater.png', 10000);
 
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 1);
 INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (1, 3);

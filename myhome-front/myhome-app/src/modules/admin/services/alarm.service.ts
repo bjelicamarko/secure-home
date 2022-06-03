@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AlarmRuleDTO } from '../models/AlarmRuleDTO';
+import { AlarmRuleDTO, AlarmRuleExtendedDTO } from '../models/AlarmRuleDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +21,15 @@ export class AlarmService {
       responseType: "text"
     };
     return this.http.post<HttpResponse<string>>("myhome/api/alarmRules", alarmRuleDTO, queryParams);
+  }
+
+  getAllExistingAlarmRules(): Observable<HttpResponse<AlarmRuleExtendedDTO>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response"
+    };
+    return this.http.get<HttpResponse<AlarmRuleExtendedDTO>>("myhome/api/alarmRules", queryParams);
   }
 }

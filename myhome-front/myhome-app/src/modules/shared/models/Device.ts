@@ -1,4 +1,5 @@
 export interface Device {
     name: string,
-    photo: string
+    photo: string,
+    readPeriod: number
 }

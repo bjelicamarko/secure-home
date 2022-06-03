@@ -9,9 +9,11 @@ import { DeviceService } from 'src/modules/shared/services/device.service';
 import { SharedDatePickerService } from 'src/modules/shared/services/shared-data-picker.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 
-import { interval } from 'rxjs';
+import { ConnectableObservable, interval } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportsDialogComponent } from '../../components/reports-dialog/reports-dialog.component';
+import { DeviceDTO } from '../../models/deviceDTO';
+import { Device } from 'src/modules/shared/models/Device';
 
 @Component({
   selector: 'app-device-messages-page',
@@ -21,6 +23,7 @@ import { ReportsDialogComponent } from '../../components/reports-dialog/reports-
 export class DeviceMessagesPageComponent implements AfterViewInit {
 
   name: string | null;
+  device: Device | null;
 
   deviceMessages: DeviceMessageDTO[];
   dataSource;
@@ -46,6 +49,7 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private deviceService: DeviceService,
     private sharedDatePickerService: SharedDatePickerService, private snackBarService: SnackBarService) {
     this.name = route.snapshot.paramMap.get("deviceName");
+    this.device = null;
     this.pageSize = 20;
     this.currentPage = 1;
     this.totalSize = 1;
@@ -70,10 +74,14 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
         this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
       })
 
-    interval(2000 * 60).subscribe(() => {
-      if (this.closedDialog)
-        window.location.reload();
-    });
+    if (this.name)
+      this.deviceService.getOneByName(this.name).subscribe((response) => {
+        this.device = response.body as Device;
+        interval(this.device.readPeriod).subscribe(() => {
+          if (this.closedDialog)
+            window.location.reload();
+        });
+      })
   }
 
   announceSortChange(sortState: Sort) {

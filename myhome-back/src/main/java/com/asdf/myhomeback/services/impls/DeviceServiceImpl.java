@@ -25,4 +25,9 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceRepository.findAllByNameInList(names);
     }
 
+    @Override
+    public Device findOneByName(String name) {
+        return deviceRepository.findByName(name);
+    }
+
 }
