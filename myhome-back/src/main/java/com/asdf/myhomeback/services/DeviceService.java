@@ -10,4 +10,6 @@ public interface DeviceService {
     List<Device> findAll();
 
     Set<Device> findAllByNameInList(List<String> names);
+
+    Device findOneByName(String name);
 }

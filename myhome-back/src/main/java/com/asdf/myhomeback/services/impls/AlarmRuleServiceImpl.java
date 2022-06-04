@@ -44,16 +44,20 @@ public class AlarmRuleServiceImpl implements AlarmRuleService {
     }
 
     @Override
-    public void update(AlarmRuleDTO alarmRuleDTO) throws AlarmRuleException {
-        if (alarmRuleDTO.getId() == null)
-            throw new AlarmRuleException("AlarmRule id is null.");
-        AlarmRule alarmRule = findOne(alarmRuleDTO.getId());
-        alarmRule.setRulePattern(alarmRuleDTO.getRulePattern());
-        alarmRuleRepository.save(alarmRule);
+    public List<AlarmRule> findAllByType(AlarmType alarmRuleType) {
+        return alarmRuleRepository.findAlarmRulesByAlarmType(alarmRuleType);
     }
 
     @Override
-    public List<AlarmRule> findAllByType(AlarmType alarmRuleType) {
-        return alarmRuleRepository.findAlarmRulesByAlarmType(alarmRuleType);
+    public List<AlarmRule> findAll() {
+        return alarmRuleRepository.findAll();
+    }
+
+    @Override
+    public void delete(Long id) throws Exception {
+        if (id == null){
+            throw new Exception("Alarm rule id is null.");
+        }
+        alarmRuleRepository.delete(findOne(id));
     }
 }

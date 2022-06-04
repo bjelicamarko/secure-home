@@ -25,4 +25,7 @@ public class Device {
     @NonNull
     @Column(name = "photo", nullable = false)
     private String photo;
+
+    @Column(name = "read_period", nullable = false)
+    private Integer readPeriod;
 }

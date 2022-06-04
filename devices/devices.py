@@ -29,4 +29,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # TODO mozemo da napravimo da otezinimo REGULAR-WARNING-PANIC... I da proslijedimo neki parametar i tako podesimo PANIC stanje

@@ -1,8 +1,9 @@
-import { HttpHeaders, HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Device } from '../models/Device';
-import { DeviceMessageDTO } from '../models/deviceMessageDTO';
+import { HttpHeaders, HttpClient, HttpResponse, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { Device } from "../models/Device";
+import { DeviceMessageDTO } from "../models/deviceMessageDTO";
+
 
 @Injectable({
   providedIn: 'root'
@@ -56,39 +57,63 @@ export class DeviceService {
     page: number, size: number): Observable<HttpResponse<DeviceMessageDTO[]>> {
     let queryParams = {};
 
-      queryParams = {
-        headers: this.headers,
-        params: {
-          deviceName: deviceNameVal,
-          startDate: startDateVal,
-          endDate: endDateVal,
-          selectedStatus: selectedStatusVal,
-          page: String(page),
-          size: String(size)
-        },
-        observe: 'response'
-      };
+    queryParams = {
+      headers: this.headers,
+      params: {
+        deviceName: deviceNameVal,
+        startDate: startDateVal,
+        endDate: endDateVal,
+        selectedStatus: selectedStatusVal,
+        page: String(page),
+        size: String(size)
+      },
+      observe: 'response'
+    };
 
-    return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/filterMessages" , queryParams);
+    return this.http.get<HttpResponse<DeviceMessageDTO[]>>("myhome/api/devices/filterMessages", queryParams);
   }
 
-  createReport(deviceNameVal: string, startDateVal: string, endDateVal: string, selectedStatusVal: string) 
+  createReport(deviceNameVal: string, startDateVal: string, endDateVal: string, selectedStatusVal: string)
     : Observable<HttpResponse<string>> {
-      let queryParams = {};
+    let queryParams = {};
 
-      queryParams = {
-        headers: this.headers,
-        params: {
-          deviceName: deviceNameVal,
-          startDate: startDateVal,
-          endDate: endDateVal,
-          selectedStatus: selectedStatusVal,
-        },
-        observe: 'response',
-        responseType: "text"
-      };
+    queryParams = {
+      headers: this.headers,
+      params: {
+        deviceName: deviceNameVal,
+        startDate: startDateVal,
+        endDate: endDateVal,
+        selectedStatus: selectedStatusVal,
+      },
+      observe: 'response',
+      responseType: "text"
+    };
 
-    return this.http.get<HttpResponse<string>>("myhome/api/devices/createReport" , queryParams);
+    return this.http.get<HttpResponse<string>>("myhome/api/devices/createReport", queryParams);
   }
-  
+
+  getOneByName(name: string): Observable<HttpResponse<Device>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "json"
+    };
+
+    return this.http.get<HttpResponse<Device>>("myhome/api/devices/" + name, queryParams);
+  }
+
+  deleteAlarmRule(id: number): Observable<HttpResponse<string>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text",
+    };
+
+    return this.http.delete<HttpResponse<string>>("myhome/api/alarmRules/" + id, queryParams);
+  }
+
 }
