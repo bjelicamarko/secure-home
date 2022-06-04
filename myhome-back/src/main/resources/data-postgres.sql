@@ -29,7 +29,8 @@ INSERT INTO privilege (name) VALUES ('CREATE_ALARM_RULE'); -- 22
 INSERT INTO privilege (name) VALUES ('GET_ALARM_RULES'); -- 23
 INSERT INTO privilege (name) VALUES ('DELETE_ALARM_RULE'); -- 24
 INSERT INTO privilege (name) VALUES ('GET_DEVICE'); -- 25
-INSERT INTO privilege (name) VALUES ('GET_NOTIFICATIONS'); -- 22
+INSERT INTO privilege (name) VALUES ('GET_NOTIFICATIONS'); -- 26
+INSERT INTO privilege (name) VALUES ('UPDATE_DEVICE'); -- 27
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -118,6 +119,9 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 25);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 22);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 22);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 22);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 26);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 27);
 
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');

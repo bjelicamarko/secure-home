@@ -1,8 +1,10 @@
 package com.asdf.myhomeback.services.impls;
 
+import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.repositories.DeviceRepository;
 import com.asdf.myhomeback.services.DeviceService;
+import com.asdf.myhomeback.utils.DeviceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,16 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device findOneByName(String name) {
         return deviceRepository.findByName(name);
+    }
+
+    @Override
+    public void updateDeviceReadPeriod(Device d) throws DeviceException {
+        DeviceUtils.checkReadPeriod(d.getReadPeriod());
+        Device device = deviceRepository.findByName(d.getName());
+        if (device == null)
+            throw new DeviceException("Null device");
+        device.setReadPeriod(d.getReadPeriod());
+        deviceRepository.save(device);
     }
 
 }

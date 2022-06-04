@@ -1,1 +1,21 @@
-<p>devices-view works!</p>
+<div class="reactiveForm">
+    <div class="form-group row my_margin">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Read period</th>
+            </tr>
+            <tr *ngFor="let device of devices; index as i; first as isFirst">
+                <td>{{i+1}}</td>
+                <td>{{device.name}}</td>
+                <td>
+                <b>{{device.readPeriod}}</b>
+                <input style="margin-left: 50px;" id={{i}} type="number"
+                    [ngModel]="device.readPeriod" />
+                    <button class="submit" (click)='changeReadPeriod(i, device)'>Change</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

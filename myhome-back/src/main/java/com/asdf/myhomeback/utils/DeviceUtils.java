@@ -17,6 +17,10 @@ public class DeviceUtils {
             throw new DeviceException("Invalid message status.");
     }
 
+    public static void checkReadPeriod(int value) throws DeviceException {
+        if (value <= 0)
+            throw new DeviceException("Invalid read period.");
+    }
 
     public static long checkStartDate(String startDate) throws DeviceException {
         if (startDate.equals(""))

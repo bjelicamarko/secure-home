@@ -130,4 +130,16 @@ public class DeviceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping(value = "/updateDeviceReadPeriod")
+    @PreAuthorize("hasAuthority('UPDATE_DEVICE')")
+    public ResponseEntity<String> updateDeviceReadPeriod(@RequestBody Device d) {
+        try {
+            deviceService.updateDeviceReadPeriod(d);
+            return new ResponseEntity<>("Device updated successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 }

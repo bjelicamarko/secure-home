@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.services;
 
+import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.Device;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface DeviceService {
     Set<Device> findAllByNameInList(List<String> names);
 
     Device findOneByName(String name);
+
+    void updateDeviceReadPeriod(Device d) throws DeviceException;
 }

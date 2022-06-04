@@ -116,4 +116,16 @@ export class DeviceService {
     return this.http.delete<HttpResponse<string>>("myhome/api/alarmRules/" + id, queryParams);
   }
 
+  updateDeviceReadPeriod(temp: Device): 
+  Observable<HttpResponse<string>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text",
+    };
+
+    return this.http.post<HttpResponse<string>>("myhome/api/devices/updateDeviceReadPeriod", temp, queryParams);
+  }
 }
