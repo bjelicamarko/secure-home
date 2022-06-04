@@ -3,6 +3,7 @@ import { RoleGuard } from "../auth/guards/role/role.guard";
 import { NotificationsPageComponent } from "../shared/components/notifications-page/notifications-page.component";
 import { AlarmsViewComponent } from "./pages/alarms-view/alarms-view.component";
 import { AssignEstatePageComponent } from "./pages/assign-estate-page/assign-estate-page.component";
+import { DevicesViewComponent } from "./pages/devices-view/devices-view.component";
 import { LogsViewComponent } from "./pages/logs-view/logs-view.component";
 import { RealEstateCreationPageComponent } from "./pages/real-estate-creation-page/real-estate-creation-page.component";
 import { RealEstatePageComponent } from "./pages/real-estate-page/real-estate-page.component";
@@ -71,6 +72,13 @@ export const AdminRoutes: Routes = [
     path: "notifications",
     pathMatch: "full",
     component: NotificationsPageComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: "ROLE_ADMIN" }
+  },
+  {
+    path: "devices-view",
+    pathMatch: "full",
+    component: DevicesViewComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: "ROLE_ADMIN" }
   }
