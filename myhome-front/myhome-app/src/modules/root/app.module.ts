@@ -14,6 +14,8 @@ import { AdminModule } from '../admin/admin.module';
 import { UserModule } from '../user/user.module';
 import { HeaderUserComponent } from './components/headers/header-user/header-user.component';
 import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,7 @@ import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorize
     HeaderCommonComponent,
     HeaderAdminComponent,
     HeaderUserComponent,
-    UnauthorizedPageComponent
+    UnauthorizedPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,9 @@ import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorize
     AuthModule,
     SharedModule,
     AdminModule,
-    UserModule
+    UserModule,
+    MatIconModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

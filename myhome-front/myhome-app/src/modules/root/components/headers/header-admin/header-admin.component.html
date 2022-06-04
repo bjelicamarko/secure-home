@@ -25,6 +25,11 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" [routerLink]="'/mh-app/admin/alarms-view'">Alarms</a>
         </li>
+        <li class="nav-item">
+          <a [matBadgeHidden]="notSeenCount===0" class="nav-link" matBadge="{{notSeenCount}}" aria-current="page" [routerLink]="'/mh-app/admin/notifications'">
+            Notifications
+          </a>
+        </li>
       </ul>
       <app-header-common></app-header-common>
     </div>

@@ -29,6 +29,7 @@ INSERT INTO privilege (name) VALUES ('CREATE_ALARM_RULE'); -- 22
 INSERT INTO privilege (name) VALUES ('GET_ALARM_RULES'); -- 23
 INSERT INTO privilege (name) VALUES ('DELETE_ALARM_RULE'); -- 24
 INSERT INTO privilege (name) VALUES ('GET_DEVICE'); -- 25
+INSERT INTO privilege (name) VALUES ('GET_NOTIFICATIONS'); -- 22
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -113,6 +114,10 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 24);
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 25);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 25);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 22);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 22);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 22);
 
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');
@@ -221,3 +226,36 @@ insert into device_message (device_name, message, message_status, timestamp_valu
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
 
 insert into alarm_rule (rule_pattern, alarm_type) values ('locked account', 'LOG');
+
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
+insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
+    ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);

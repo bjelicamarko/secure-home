@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { AlarmNotification } from '../models/AlarmNotification';
 import { Notification } from '../models/notification';
 
 @Injectable({
@@ -13,17 +14,32 @@ export class NotificationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // getAllNotifications(employeeId: number): Observable<HttpResponse<Notification[]>> {
+  findAllForUser(username: string, page: number, size: number): Observable<HttpResponse<AlarmNotification[]>> {
 
-  //   let queryParams = {};
+    let queryParams = {};
 
-  //   queryParams = {
-  //     headers: new HttpHeaders({ "Content-Type": 'application/json' }),
-  //     observe: 'response'
-  //   };
+    queryParams = {
+      headers: new HttpHeaders({ "Content-Type": 'application/json' }),
+      observe: 'response',
+      params: new HttpParams()
+        .set("page", String(page))
+        .append("size", String(size))
+        .append("sort", "id,desc")
+    };
 
-  //   return this.httpClient.get<HttpResponse<Notification[]>>(`restaurant/api/orderNotifications/` + employeeId, queryParams);
-  // }
+    return this.httpClient.get<HttpResponse<AlarmNotification[]>>(`myhome/api/alarmNotifications`, queryParams);
+  }
+
+  countNotSeenForUser(username: string): Observable<HttpResponse<number>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: new HttpHeaders({ "Content-Type": 'application/json' }),
+      observe: 'response'
+    };
+
+    return this.httpClient.get<HttpResponse<number>>(`myhome/api/alarmNotifications/countNotSeen`, queryParams);
+  }
 
   sendNotification(message: any): void {
     this.notificationMessageSource.next(message);
