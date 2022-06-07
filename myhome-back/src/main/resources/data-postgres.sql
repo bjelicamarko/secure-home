@@ -121,6 +121,8 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 22);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 22);
 
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 26);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 26);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 26);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 27);
 
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
