@@ -6,6 +6,8 @@ import * as SockJS from 'sockjs-client';
 import { SnackBarService } from './snack-bar.service';
 import { NotificationService } from './notification.service';
 import { Notification } from '../models/notification';
+import { UpdateSideNotificationsService } from './update-side-notifications.service';
+import { AlarmNotification } from '../models/AlarmNotification';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class SocketService {
   private stompClient: any;
   initialized: boolean = false;
 
-  constructor(private snackBarService: SnackBarService, private notificationService: NotificationService) { }
+  constructor(private snackBarService: SnackBarService, private notificationService: NotificationService, 
+              private sideNotificationService: UpdateSideNotificationsService) { }
 
   connect(username: any): void {
     if (this.initialized) {
@@ -54,10 +57,11 @@ export class SocketService {
 
   subscribeToLocalSocket(username: any): void {
     this.stompClient.subscribe("/socket-publisher/" + username, (message: { body: string; }) => {
-      this.showMessage(message);
+      // this.showMessage(message);
       let notification = JSON.parse(message.body);
 
       this.notificationService.sendNotification(notification as Notification);
+      this.sideNotificationService.sendNotif(notification as AlarmNotification);
     });
   }
 

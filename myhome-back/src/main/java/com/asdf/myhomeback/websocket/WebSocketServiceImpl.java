@@ -21,7 +21,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
         for(AlarmNotification an : alarmNotifications) {
             Map<String, String> message = new HashMap<>();
+            message.put("deviceName", an.getDeviceName());
             message.put("message", an.getMessage());
+            message.put("timestamp", an.getTimestamp().toString());
 
             this.simpMessagingTemplate.convertAndSend(String.format("/socket-publisher/%s", an.getUsername()), message);
         }

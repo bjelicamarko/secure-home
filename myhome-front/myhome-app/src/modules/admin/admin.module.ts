@@ -19,6 +19,7 @@ import { StackTraceComponent } from './components/stack-trace/stack-trace.compon
 import { AlarmsViewComponent } from './pages/alarms-view/alarms-view.component';
 import { AdminNotificationsPageComponent } from './pages/admin-notifications-page/admin-notifications-page.component';
 import { DevicesViewComponent } from './pages/devices-view/devices-view.component';
+import { AdminTemplatePageComponent } from './pages/admin-template-page/admin-template-page.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DevicesViewComponent } from './pages/devices-view/devices-view.componen
     AlarmsViewComponent,
     AdminNotificationsPageComponent,
     DevicesViewComponent,
+    AdminTemplatePageComponent,
   ],
   imports: [
     CommonModule,

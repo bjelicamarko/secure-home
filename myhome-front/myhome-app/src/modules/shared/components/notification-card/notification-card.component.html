@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-header btn-text-right">
+      <a (click)="dissmisNotification()" style="cursor: pointer;">Dismiss</a>
+    </div>
+    <div class="card-body">
+      <h5 *ngIf="deviceName" class="card-title">{{deviceName}}</h5>
+      <h5 *ngIf="!deviceName" class="card-title">Log</h5>
+      <p class="card-text">{{message}}</p>
+    </div>
+</div>

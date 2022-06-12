@@ -1,0 +1,8 @@
+<div class="container">
+
+  <div class="row" *ngFor="let notification of notifications; let idx=index;">
+    <app-notification-card [idx]="idx" [deviceName]="notification.deviceName" [message]="notification.message">
+    </app-notification-card>
+  </div>
+
+</div>

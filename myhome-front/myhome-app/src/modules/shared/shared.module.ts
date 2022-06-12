@@ -13,6 +13,8 @@ import { SharedDatePickerService } from './services/shared-data-picker.service';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { NotificationsPageComponent } from './components/notifications-page/notifications-page.component';
 import { MatTableModule } from '@angular/material/table';
+import { NotificationsContainerComponent } from './components/notifications-container/notifications-container.component';
+import { NotificationCardComponent } from './components/notification-card/notification-card.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { MatTableModule } from '@angular/material/table';
     ConformationDialogComponent,
     RealEstateCardComponent,
     DateFormatPipe,
-    NotificationsPageComponent
+    NotificationsPageComponent,
+    NotificationsContainerComponent,
+    NotificationCardComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +35,8 @@ import { MatTableModule } from '@angular/material/table';
     PaginationComponent,
     RealEstateCardComponent,
     DateFormatPipe,
-    NotificationsPageComponent
+    NotificationsPageComponent,
+    NotificationsContainerComponent
   ],
   providers: [
     SnackBarService,
