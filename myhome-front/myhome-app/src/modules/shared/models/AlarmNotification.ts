@@ -1,5 +1,6 @@
 export interface AlarmNotification {
-    message: string,
+    id: number;
+    message: string;
     deviceName: string;
     timestamp: number;
 }

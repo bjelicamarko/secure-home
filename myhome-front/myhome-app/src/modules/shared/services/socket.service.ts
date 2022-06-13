@@ -61,7 +61,7 @@ export class SocketService {
       let notification = JSON.parse(message.body);
 
       this.notificationService.sendNotification(notification as Notification);
-      this.sideNotificationService.sendNotif(notification as AlarmNotification);
+      // this.sideNotificationService.sendNotif(notification as AlarmNotification);
     });
   }
 

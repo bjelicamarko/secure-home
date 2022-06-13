@@ -33,7 +33,7 @@ export class HeaderAdminComponent implements OnInit {
   }
 
   countNotifications(username: string) {
-    this.notificationService.countNotSeenForUser(username).subscribe((response: any) => {
+    this.notificationService.countNotSeenForUser().subscribe((response: any) => {
       this.notSeenCount = response.body;
     }, 
     (error) => {

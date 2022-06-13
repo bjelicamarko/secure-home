@@ -232,6 +232,7 @@ insert into device_message (device_name, message, message_status, timestamp_valu
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
 
 insert into alarm_rule (rule_pattern, alarm_type) values ('locked account', 'LOG');
+insert into alarm_rule (rule_pattern, alarm_type) values ('bad credentials', 'LOG');
 
 insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
     ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);

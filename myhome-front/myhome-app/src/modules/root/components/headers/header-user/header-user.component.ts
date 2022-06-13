@@ -21,19 +21,19 @@ export class HeaderUserComponent implements OnInit {
   ngOnInit(): void {
     let username = this.utilService.getLoggedUsername();
 
-    this.countNotifications(username);
+    this.countNotifications();
 
     this.notificationService.notificationMessage$.subscribe((notification: any) => {
-      this.countNotifications(username);
+      this.countNotifications();
     })
 
     this.updateBadgeService.notif$.subscribe((notification) => {
-      this.countNotifications(username);
+      this.countNotifications();
     })
   }
 
-  countNotifications(username: string) {
-    this.notificationService.countNotSeenForUser(username).subscribe((response: any) => {
+  countNotifications() {
+    this.notificationService.countNotSeenForUser().subscribe((response: any) => {
       this.notSeenCount = response.body;
     }, 
     (error) => {

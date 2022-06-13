@@ -21,4 +21,6 @@ public interface AlarmNotificationService {
     Page<AlarmNotification> findAllByUsernameNotSeen(String username, Pageable pageable) throws AppUserException;
 
     void setSeen(String username, Long id) throws AlarmNotificationException, AppUserException;
+
+    void saveAllAndSetSeen(String username, List<AlarmNotification> alarmNotifications, LogService logService);
 }

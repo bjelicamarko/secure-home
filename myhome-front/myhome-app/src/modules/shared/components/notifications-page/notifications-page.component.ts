@@ -5,6 +5,7 @@ import { NotificationService } from 'src/modules/shared/services/notification.se
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { UtilService } from 'src/modules/shared/services/util/util.service';
 import { UpdateBadgeService } from '../../services/update-badge.service';
+import { UpdateSideNotificationsService } from '../../services/update-side-notifications.service';
 
 @Component({
   selector: 'app-notifications-page',
@@ -23,7 +24,8 @@ export class NotificationsPageComponent implements OnInit {
   userRole: string;
 
   constructor(private notificationService: NotificationService, private snackBarService: SnackBarService,
-              private uitilService: UtilService, private updateBadgeService: UpdateBadgeService) { 
+              private uitilService: UtilService, private updateBadgeService: UpdateBadgeService,
+              private sideNotificationService: UpdateSideNotificationsService) { 
     this.notificationsList = [];
     this.dataSource = new MatTableDataSource(this.notificationsList)
     this.pageSize = 10;
@@ -34,13 +36,13 @@ export class NotificationsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let username = this.uitilService.getLoggedUsername();
-    this.notificationService.findAllForUser(username, this.currentPage - 1, this.pageSize).subscribe((response: any) => {
+    this.notificationService.findAllForUser(this.currentPage - 1, this.pageSize).subscribe((response: any) => {
       this.notificationsList = response.body;
       this.dataSource = new MatTableDataSource(this.notificationsList);
       this.totalSize = Number(response.headers.get("total-elements"));
 
       this.updateBadgeService.sendNotif();
+      this.sideNotificationService.sendNotif();
     },
     (error) => {
       if(error.status === 403)
@@ -51,13 +53,13 @@ export class NotificationsPageComponent implements OnInit {
   }
 
   changePage(newPage: number) {
-    let username = this.uitilService.getLoggedUsername();
-    this.notificationService.findAllForUser(username, newPage - 1, this.pageSize).subscribe((response: any) => {
+    this.notificationService.findAllForUser(newPage - 1, this.pageSize).subscribe((response: any) => {
       this.notificationsList = response.body;
       this.dataSource = new MatTableDataSource(this.notificationsList);
       this.totalSize = Number(response.headers.get("total-elements"));
 
       this.updateBadgeService.sendNotif();
+      this.sideNotificationService.sendNotif();
     });
   }
 

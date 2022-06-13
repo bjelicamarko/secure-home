@@ -86,4 +86,8 @@ public class LogMessGen {
         return String.format("User with username: '%s' is not owner in '%s'", username, realEstateName);
     }
 
+    public static String successfulUserNotificationSeen(String username, Long anId) {
+        return String.format("User with username: '%s' seen notification with id: '%s'", username, anId);
+    }
+
 }

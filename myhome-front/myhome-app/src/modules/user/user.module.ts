@@ -12,6 +12,7 @@ import { MaterialExampleModule } from 'src/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReportsDialogComponent } from './components/reports-dialog/reports-dialog.component';
 import { UserNotificationsPageComponent } from './pages/user-notifications-page/user-notifications-page.component';
+import { UserTemplatePageComponent } from './pages/user-template-page/user-template-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserNotificationsPageComponent } from './pages/user-notifications-page/
     DeviceCardComponent,
     DeviceMessagesPageComponent,
     ReportsDialogComponent,
-    UserNotificationsPageComponent
+    UserNotificationsPageComponent,
+    UserTemplatePageComponent
   ],
   imports: [
     CommonModule,

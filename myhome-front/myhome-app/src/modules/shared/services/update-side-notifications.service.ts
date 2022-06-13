@@ -7,13 +7,13 @@ import { AlarmNotification } from '../models/AlarmNotification';
 })
 export class UpdateSideNotificationsService {
 
-  private notif = new Subject<AlarmNotification>();
+  private notif = new Subject<boolean>();
   public notif$ = this.notif.asObservable();
 
   constructor() { }
 
-  sendNotif(alarmNotification: AlarmNotification): void {
-    this.notif.next(alarmNotification);
+  sendNotif(): void {
+    this.notif.next(true);
   }
 
 }

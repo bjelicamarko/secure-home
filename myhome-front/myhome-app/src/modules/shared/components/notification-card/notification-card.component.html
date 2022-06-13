@@ -1,10 +1,19 @@
 <div class="card">
-    <div class="card-header btn-text-right">
-      <a (click)="dissmisNotification()" style="cursor: pointer;">Dismiss</a>
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          {{notification.timestamp | dateFormat: 'DD.MM.yyyy HH:mm'}}
+        </div>
+
+        <div class="col" style="text-align: right;">
+          <u><a (click)="dissmisNotification()" style="cursor: pointer;">Mark as seen</a></u>
+        </div>
+      </div>
+
     </div>
     <div class="card-body">
-      <h5 *ngIf="deviceName" class="card-title">{{deviceName}}</h5>
-      <h5 *ngIf="!deviceName" class="card-title">Log</h5>
-      <p class="card-text">{{message}}</p>
+      <h5 *ngIf="notification.deviceName" class="card-title">{{notification.deviceName}}</h5>
+      <h5 *ngIf="!notification.deviceName" class="card-title">Log</h5>
+      <p class="card-text">{{notification.message}}</p>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AlarmNotification } from '../../models/AlarmNotification';
 
 @Component({
   selector: 'app-notification-card',
@@ -8,30 +9,20 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class NotificationCardComponent implements OnInit {
 
   @Input()
-  idx: number;
+  notification: AlarmNotification;
 
-  @Input()
-  deviceName: string;
-  
-  @Input()
-  message: string;
-
-  @Output() notificationDismissed: EventEmitter<number>;
+  @Output() notificationSeen: EventEmitter<number>;
 
   constructor() {
-    this.idx = -1;
-    this.deviceName = "";
-    this.message = "";
-    this.notificationDismissed = new EventEmitter();
+    this.notification = { id: -1, message: "", deviceName: "", timestamp: -1 };
+    this.notificationSeen = new EventEmitter();
   }
 
   ngOnInit(): void {
   }
 
   dissmisNotification(): void {
-    alert(this.idx);
-    
-    this.notificationDismissed.emit(this.idx); 
+    this.notificationSeen.emit(this.notification.id); 
   }
 
 }

@@ -27,7 +27,7 @@ export class UsersViewComponent implements AfterViewInit {
   constructor(private fb: FormBuilder, private appUsersService: AppUsersService, private snackBarService: SnackBarService,
     private router: Router) {
     this.users = [];
-    this.pageSize = 4;
+    this.pageSize = 3;
     this.currentPage = 1;
     this.totalSize = 1;
     this.searchFormGroup = this.fb.group({

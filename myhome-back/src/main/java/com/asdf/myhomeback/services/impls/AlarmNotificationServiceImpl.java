@@ -6,6 +6,8 @@ import com.asdf.myhomeback.models.AlarmNotification;
 import com.asdf.myhomeback.repositories.AlarmNotificationRepository;
 import com.asdf.myhomeback.services.AlarmNotificationService;
 import com.asdf.myhomeback.services.AppUserService;
+import com.asdf.myhomeback.services.LogService;
+import com.asdf.myhomeback.utils.LogMessGen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,13 +40,7 @@ public class AlarmNotificationServiceImpl implements AlarmNotificationService {
         if(appUserService.findByUsernameVerifiedUnlocked(username) == null && !username.equals("admin"))
             throw new AppUserException(String.format("Username sent from front: '%s' is invalid (non-existent/locked/deleted user)", username));
 
-        Page<AlarmNotification> anp = alarmNotificationRepository.findAllByUsername(username, pageable);
-        List<AlarmNotification> ans = anp.getContent();
-
-        ans.forEach(alarmNotification -> alarmNotification.setSeen(true));
-        alarmNotificationRepository.saveAll(ans);
-
-        return anp;
+        return alarmNotificationRepository.findAllByUsername(username, pageable);
     }
 
     @Override
@@ -78,7 +74,25 @@ public class AlarmNotificationServiceImpl implements AlarmNotificationService {
                     "'%s'.", username, id, alarmNotification.getUsername()));
         }
 
+        if(alarmNotification.getSeen()) {
+            throw new AlarmNotificationException(String.format("Username: '%s' tried to mark as seen already seen " +
+                    "alarm notification with id: '%s'.", username, id));
+        }
+
+
         alarmNotification.setSeen(true);
         alarmNotificationRepository.save(alarmNotification);
+    }
+
+    @Override
+    public void saveAllAndSetSeen(String username, List<AlarmNotification> alarmNotifications, LogService logService) {
+        alarmNotifications.forEach(alarmNotification -> {
+            if(!alarmNotification.getSeen()) {
+                logService.generateInfoLog(LogMessGen.successfulUserNotificationSeen(username, alarmNotification.getId()));
+                alarmNotification.setSeen(true);
+            }
+        });
+
+        alarmNotificationRepository.saveAll(alarmNotifications);
     }
 }
