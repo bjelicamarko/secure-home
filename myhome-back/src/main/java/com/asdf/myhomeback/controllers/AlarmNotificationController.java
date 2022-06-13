@@ -1,10 +1,10 @@
 package com.asdf.myhomeback.controllers;
 
 import com.asdf.myhomeback.dto.AlarmNotificationDTO;
-import com.asdf.myhomeback.dto.AppUserDTO;
+import com.asdf.myhomeback.dto.AlarmNotificationWithIdDTO;
+import com.asdf.myhomeback.exceptions.AlarmNotificationException;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.models.AlarmNotification;
-import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.AlarmNotificationService;
 import com.asdf.myhomeback.services.LogService;
@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,6 +66,44 @@ public class AlarmNotificationController {
             Integer count = alarmNotificationService.countNotSeenForUsername(username);
             return new ResponseEntity<>(count, HttpStatus.OK);
         } catch (AppUserException e) {
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/notSeen")
+    @PreAuthorize("hasAuthority('GET_NOTIFICATIONS')")
+    public ResponseEntity<List<AlarmNotificationWithIdDTO>> getNotSeenForUser(HttpServletRequest request, Pageable pageable) {
+        String username = tokenUtils.getUsernameFromRequest(request);
+        try{
+            Page<AlarmNotification> anp = alarmNotificationService.findAllByUsernameNotSeen(username, pageable);
+            HttpHeaders headers = ControllerUtils.createPageHeaderAttributes(anp);
+            return new ResponseEntity<>(anp.stream().map(AlarmNotificationWithIdDTO::new).toList(), headers, HttpStatus.OK);
+        } catch (AppUserException e) {
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/setSeen")
+    @PreAuthorize("hasAuthority('GET_NOTIFICATIONS')")
+    public ResponseEntity<String> getNotSeenForUser(HttpServletRequest request, @RequestParam("id") Long id, Pageable pageable) {
+        String username = tokenUtils.getUsernameFromRequest(request);
+        try{
+            alarmNotificationService.setSeen(username, id);
+            // Dodaj log
+            return new ResponseEntity<>("Notification successfully marked as seen.", HttpStatus.OK);
+        } catch (AppUserException | AlarmNotificationException e) {
             e.printStackTrace();
             logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

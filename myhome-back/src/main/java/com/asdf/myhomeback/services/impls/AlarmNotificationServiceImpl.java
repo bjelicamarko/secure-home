@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.services.impls;
 
+import com.asdf.myhomeback.exceptions.AlarmNotificationException;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.models.AlarmNotification;
 import com.asdf.myhomeback.repositories.AlarmNotificationRepository;
@@ -52,5 +53,32 @@ public class AlarmNotificationServiceImpl implements AlarmNotificationService {
             throw new AppUserException(String.format("Username sent from front: '%s' is invalid (non-existent/locked/deleted user)", username));
 
         return alarmNotificationRepository.countAlarmNotificationByUsernameAndSeenIsFalse(username);
+    }
+
+    @Override
+    public Page<AlarmNotification> findAllByUsernameNotSeen(String username, Pageable pageable) throws AppUserException {
+        if(appUserService.findByUsernameVerifiedUnlocked(username) == null && !username.equals("admin"))
+            throw new AppUserException(String.format("Username sent from front: '%s' is invalid (non-existent/locked/deleted user)", username));
+
+        return alarmNotificationRepository.findAllByUsernameAndSeenIsFalse(username, pageable);
+    }
+
+    @Override
+    public void setSeen(String username, Long id) throws AlarmNotificationException, AppUserException {
+        if(appUserService.findByUsernameVerifiedUnlocked(username) == null && !username.equals("admin"))
+            throw new AppUserException(String.format("Username sent from front: '%s' is invalid (non-existent/locked/deleted user)", username));
+
+        AlarmNotification alarmNotification = alarmNotificationRepository.findOneById(id);
+        if(alarmNotification == null) {
+            throw new AlarmNotificationException(String.format("Username: '%s' tried to mark as seen invalid alarm notification.", username));
+        }
+
+        if(!alarmNotification.getUsername().equals(username)) {
+            throw new AlarmNotificationException(String.format("Username: '%s' tried to mark as seen alarm notification with id: '%s' from user:" +
+                    "'%s'.", username, id, alarmNotification.getUsername()));
+        }
+
+        alarmNotification.setSeen(true);
+        alarmNotificationRepository.save(alarmNotification);
     }
 }

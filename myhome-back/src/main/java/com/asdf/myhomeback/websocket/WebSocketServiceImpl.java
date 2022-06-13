@@ -24,6 +24,7 @@ public class WebSocketServiceImpl implements WebSocketService {
             message.put("deviceName", an.getDeviceName());
             message.put("message", an.getMessage());
             message.put("timestamp", an.getTimestamp().toString());
+            message.put("id", an.getId().toString());
 
             this.simpMessagingTemplate.convertAndSend(String.format("/socket-publisher/%s", an.getUsername()), message);
         }
