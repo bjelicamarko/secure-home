@@ -58,8 +58,8 @@ public class ReportDTO {
                 Start Date: %s
                 End date: %s
                 Selected Status: %s
+                Regular number: %s
                 Panic number: %s
-                Suspicious number: %s
                 Content:
                 %s""", this.deviceName, this.startDate, this.endDate, this.selectedStatus, this.numberOfRegular,
                 this.numberOfSuspicious, this.content);
