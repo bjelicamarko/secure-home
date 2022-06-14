@@ -18,6 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +74,13 @@ public class DeviceController {
 
     @PostMapping(value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveAllDeviceMessages(@RequestBody List<DeviceMessageDTO> deviceMessageDTOs) {
-        deviceMessageService.saveAll(deviceMessageDTOs.stream().map(DeviceMessage::new).toList());
+        try {
+            deviceMessageService.saveAll(deviceMessageDTOs.stream().map(DeviceMessage::new).toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new ResponseEntity<>("All good.", HttpStatus.OK);
     }
 

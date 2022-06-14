@@ -1,6 +1,8 @@
 import time
 import random
 
+from crypto_util import *
+
 dictionary = {
     "dict_air_conditioner": {
         "REGULAR": [
@@ -49,6 +51,13 @@ def generate_messages_from_devices():
     message_list.append(generate_message("Cooker", "dict_cooker", "REGULAR"))
     message_list.append(generate_message("Water heater", "dict_water_heater", "REGULAR"))
 
+    print(message_list)
+
+    for message in message_list:
+        message["message"] = encrypt(message["message"])
+
+    print(message_list)
+
     return message_list
 
 def generate_panic_messages_from_devices():
@@ -60,6 +69,13 @@ def generate_panic_messages_from_devices():
     message_list.append(generate_message("Smoke detector", "dict_smoke_detector", "PANIC"))
     message_list.append(generate_message("Cooker", "dict_cooker", "PANIC"))
     message_list.append(generate_message("Water heater", "dict_water_heater", "PANIC"))
+
+    print(message_list)
+
+    for message in message_list:
+        message["message"] = encrypt(message["message"])
+
+    print(message_list)
 
     return message_list
 

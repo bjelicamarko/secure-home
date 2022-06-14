@@ -5,13 +5,20 @@ import com.asdf.myhomeback.models.DeviceMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface DeviceMessageService {
 
     void save(DeviceMessage deviceMessage);
 
-    void saveAll(List<DeviceMessage> deviceMessages);
+    void saveAll(List<DeviceMessage> deviceMessages) throws Exception;
 
     Page<DeviceMessage> getAllMessagesFromDevice(String deviceName, Pageable pageable);
 

@@ -9,11 +9,9 @@ import com.asdf.myhomeback.utils.DeviceUtils;
 import com.asdf.myhomeback.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +36,19 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
     @Autowired
     private WebSocketService webSocketService;
 
+    @Autowired
+    private SymmetricKeyToolService symmetricKeyToolService;
+
     @Override
     public void save(DeviceMessage deviceMessage) {
         deviceMessageRepository.save(deviceMessage);
     }
 
     @Override
-    public void saveAll(List<DeviceMessage> deviceMessages) {
+    public void saveAll(List<DeviceMessage> deviceMessages) throws Exception {
+        // Decrypt messages
+        decryptMessages(deviceMessages);
+
         List<AlarmRule> alarmRules = alarmRuleService.findAllByType(AlarmType.DEVICE);
         List<AlarmNotification> alarmNotifications = new ArrayList<>();
         alarmRules.forEach(alarmRule -> {
@@ -75,6 +79,14 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
 
     private String generateMessage(String message, String deviceName, String name) {
         return String.format("From %s in %s arrived message - %s", deviceName, name, message);
+    }
+
+    private void decryptMessages(List<DeviceMessage> deviceMessages) throws Exception  {
+        for(DeviceMessage deviceMessage : deviceMessages) {
+            System.err.println("Crypt: " + deviceMessage.getMessage());
+            deviceMessage.setMessage(symmetricKeyToolService.decryptMessage(deviceMessage.getMessage()));
+            System.err.println("Decrypt:" + deviceMessage.getMessage());
+        }
     }
 
     @Override
