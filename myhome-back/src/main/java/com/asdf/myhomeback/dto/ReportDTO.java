@@ -43,7 +43,8 @@ public class ReportDTO {
             tempTime =
                     LocalDateTime.ofInstant(Instant.ofEpochMilli(dm.getTimestamp()),
                             TimeZone.getDefault().toZoneId());
-            sb.append(String.format("%s. Timestamp: %s - Status: %s - Message: %s\n", i, tempTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+            sb.append(String.format("%s. Device Name: %s - Timestamp: %s - Status: %s - Message: %s\n", i,
+                    dm.getDeviceName(), tempTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
                     dm.getMessageStatus().toString(), dm.getMessage()));
             i += 1;
         }
@@ -57,7 +58,7 @@ public class ReportDTO {
                 Start Date: %s
                 End date: %s
                 Selected Status: %s
-                Regular number: %s
+                Panic number: %s
                 Suspicious number: %s
                 Content:
                 %s""", this.deviceName, this.startDate, this.endDate, this.selectedStatus, this.numberOfRegular,

@@ -31,6 +31,10 @@ INSERT INTO privilege (name) VALUES ('DELETE_ALARM_RULE'); -- 24
 INSERT INTO privilege (name) VALUES ('GET_DEVICE'); -- 25
 INSERT INTO privilege (name) VALUES ('GET_NOTIFICATIONS'); -- 26
 INSERT INTO privilege (name) VALUES ('UPDATE_DEVICE'); -- 27
+INSERT INTO privilege (name) VALUES ('GET_ALL_MESSAGES_FROM_REAL_ESTATE'); -- 28
+INSERT INTO privilege (name) VALUES ('CREATE_ALL_REPORT'); -- 29
+INSERT INTO privilege (name) VALUES ('FILTER_ALL_MESSAGES_FROM_ESTATE'); -- 30
+INSERT INTO privilege (name) VALUES ('GET_LOWEST_READ_PERIOD'); -- 31
 
 insert into public.system_user (account_non_locked, deleted, email, failed_attempt, firstname, lastname, lock_time, password, profile_photo, usertype, username, verified)
     values (true, false, 'admin@maildrop.cc', 0, 'Admin', 'Admin', null, '$2a$12$jy.nsIUdPsHqa8Hw09ngjuOPHZVCPuF3rpNb7OGfzTqXlQ3uEwI8W', '/user_profile_photos/default.jpg', 'ROLE_ADMIN', 'admin', true);
@@ -125,6 +129,18 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 26);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 26);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 27);
 
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 28);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 28);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 29);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 29);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 30);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 30);
+
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (2, 31);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (3, 31);
+
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 1', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Kuca 2', '/real_estates_photos/house.png');
 INSERT INTO real_estate (name, photo) VALUES ('Stan 1', '/real_estates_photos/house.png');
@@ -181,11 +197,11 @@ INSERT INTO real_estate_device (real_estate_id, device_id) VALUES (8, 7);
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
+('Fridge', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
+('Fridge', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653429600000); -- 2022-05-25
 
@@ -194,15 +210,15 @@ insert into device_message (device_name, message, message_status, timestamp_valu
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+('Fridge', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is too high', 'PANIC', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+('Cooker', 'Stove is on', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
+('Cooker', 'Stove is on', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is too high', 'PANIC', 1653516000000); -- 2022-05-26
+('Cooker', 'Stove is burning out, temperature is too high, please turn device off.', 'PANIC', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653516000000); -- 2022-05-26
 insert into device_message (device_name, message, message_status, timestamp_value) values
@@ -213,17 +229,17 @@ insert into device_message (device_name, message, message_status, timestamp_valu
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is too high', 'PANIC', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+('Smoke detector', 'No smoke detected', 'REGULAR', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is too high', 'PANIC', 1653602400000); -- 2022-05-27
-insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
-insert into device_message (device_name, message, message_status, timestamp_value) values
-('Air conditioner', 'Temperature is too high', 'PANIC', 1653602400000); -- 2022-05-27
+('Smoke detector', 'Smoke concentration is too high, please check the kitchen.', 'PANIC', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is too high', 'PANIC', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
+insert into device_message (device_name, message, message_status, timestamp_value) values
+('Smoke detector', 'Smoke concentration is too high, please check the kitchen.', 'PANIC', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
 insert into device_message (device_name, message, message_status, timestamp_value) values

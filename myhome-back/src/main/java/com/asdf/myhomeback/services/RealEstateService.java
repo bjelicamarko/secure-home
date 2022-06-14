@@ -28,4 +28,8 @@ public interface RealEstateService {
     List<Device> findDevicesByRealEstateName(String name) throws RealEstateException;
 
     List<RealEstate> getRealEstatesByDeviceName(String deviceName);
+
+    RealEstate findRealEstateByName(String name);
+
+    int findLowestReadPeriod(String name);
 }

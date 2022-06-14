@@ -9,10 +9,9 @@ import { DeviceService } from 'src/modules/shared/services/device.service';
 import { SharedDatePickerService } from 'src/modules/shared/services/shared-data-picker.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 
-import { ConnectableObservable, interval } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { interval } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog'
 import { ReportsDialogComponent } from '../../components/reports-dialog/reports-dialog.component';
-import { DeviceDTO } from '../../models/deviceDTO';
 import { Device } from 'src/modules/shared/models/Device';
 
 @Component({
@@ -136,7 +135,8 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
     this.closedDialog = false;
     const dialogRef = this.dialog.open(ReportsDialogComponent, {
       width: '100%',
-      data: { deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate },
+      data: { deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate, 
+      indicator: true },
     });
 
     dialogRef.afterClosed().subscribe(() => {

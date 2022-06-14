@@ -19,4 +19,10 @@ public interface DeviceMessageService {
                                        String startDate, String endDate, String selectedStatus, Pageable pageable) throws DeviceException;
 
     List<DeviceMessage> createReport(String deviceName, String startDate, String endDate, String selectedStatus) throws DeviceException;
+
+    Page<DeviceMessage> findAllByDeviceNameInOrderByIdDesc(String nameOfRealEstate, Pageable pageable);
+
+    Page<DeviceMessage> filterAllMessages(String nameOfRealEstate, String startDate, String endDate, String selectedStatus, Pageable pageable) throws DeviceException;
+
+    List<DeviceMessage> createAllReport(String nameOfRealEstate, String startDate, String endDate, String selectedStatus) throws DeviceException;
 }

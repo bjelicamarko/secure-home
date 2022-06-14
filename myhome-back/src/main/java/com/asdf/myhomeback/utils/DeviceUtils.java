@@ -12,7 +12,7 @@ public class DeviceUtils {
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 
     public static void checkMessageStatus(String selectedStatus) throws DeviceException {
-        if(!(selectedStatus.equals("REGULAR") || selectedStatus.equals("SUSPICIOUS")  ||
+        if(!(selectedStatus.equals("REGULAR") || selectedStatus.equals("PANIC")  ||
                 selectedStatus.equals("")))
             throw new DeviceException("Invalid message status.");
     }

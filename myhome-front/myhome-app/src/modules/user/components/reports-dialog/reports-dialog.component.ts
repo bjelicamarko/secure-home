@@ -11,7 +11,8 @@ export interface Temp {
   deviceName: string,
   selectedStatus: string,
   startDate: string,
-  endDate: string
+  endDate: string,
+  indicator: boolean
 }
 
 @Component({
@@ -53,19 +54,33 @@ export class ReportsDialogComponent implements AfterViewInit {
     if (!this.data.endDate)
       this.data.endDate = '';
 
-    this.deviceService.filterMessages(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus,
-      this.currentPage - 1, this.pageSize)
-      .subscribe((response : any) => {
-        this.deviceMessages = response.body as DeviceMessageDTO[];
-        this.dataSource = new MatTableDataSource(this.deviceMessages);
-        this.dataSource.sort = this.sort;
-        this.totalSize = Number(response.headers.get("total-elements"));
-        this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
-    }, (error) => {
-        console.log(error);
-        this.snackBarService.openSnackBar("Empty list");
-    })
-
+    if (this.data.indicator) {
+      this.deviceService.filterMessages(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus,
+        this.currentPage - 1, this.pageSize)
+        .subscribe((response : any) => {
+          this.deviceMessages = response.body as DeviceMessageDTO[];
+          this.dataSource = new MatTableDataSource(this.deviceMessages);
+          this.dataSource.sort = this.sort;
+          this.totalSize = Number(response.headers.get("total-elements"));
+          this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+      }, (error) => {
+          console.log(error);
+          this.snackBarService.openSnackBar("Empty list");
+      })
+    } else {
+      this.deviceService.filterAllMessages(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus,
+        this.currentPage - 1, this.pageSize)
+        .subscribe((response : any) => {
+          this.deviceMessages = response.body as DeviceMessageDTO[];
+          this.dataSource = new MatTableDataSource(this.deviceMessages);
+          this.dataSource.sort = this.sort;
+          this.totalSize = Number(response.headers.get("total-elements"));
+          this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+      }, (error) => {
+          console.log(error);
+          this.snackBarService.openSnackBar("Empty list");
+      })
+    }
   }
 
   announceSortChange(sortState: Sort) {
@@ -87,41 +102,72 @@ export class ReportsDialogComponent implements AfterViewInit {
 
   changePage(newPage: number) {
    
+    if (this.data.indicator) {
+      this.deviceService.filterMessages(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus,
+        newPage - 1, this.pageSize)
+        .subscribe((response) => {
+            if (response.body != null) {
+              this.deviceMessages = response.body as DeviceMessageDTO[];
+              this.dataSource = new MatTableDataSource(this.deviceMessages);
+              this.dataSource.sort = this.sort;
+              this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+            }
+          }, (err) => {
+            if (err.error)
+              this.snackBarService.openSnackBar(String(err.console));
+          });
+    } else {
+      this.deviceService.filterAllMessages(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus,
+        newPage - 1, this.pageSize)
+        .subscribe((response) => {
+            if (response.body != null) {
+              this.deviceMessages = response.body as DeviceMessageDTO[];
+              this.dataSource = new MatTableDataSource(this.deviceMessages);
+              this.dataSource.sort = this.sort;
+              this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+            }
+          }, (err) => {
+            if (err.error)
+              this.snackBarService.openSnackBar(String(err.console));
+          });
+    }
 
-    this.deviceService.filterMessages(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus,
-      newPage - 1, this.pageSize)
-      .subscribe((response) => {
-          if (response.body != null) {
-            this.deviceMessages = response.body as DeviceMessageDTO[];
-            this.dataSource = new MatTableDataSource(this.deviceMessages);
-            this.dataSource.sort = this.sort;
-            this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
-          }
-        }, (err) => {
-          if (err.error)
-            this.snackBarService.openSnackBar(String(err.console));
-        });
   }
 
   createReport(): void {
-    this.deviceService.createReport(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus)
-    .subscribe((response) => {
-      if (response.body != null) {
-        console.log(response.body);
-        let blob = new Blob([response.body], { type: 'text' });
-        let pdfUrl = window.URL.createObjectURL(blob);
+    if (this.data.indicator) {
+      this.deviceService.createReport(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus)
+      .subscribe((response) => {
+        if (response.body != null) {
+          console.log(response.body);
+          let blob = new Blob([response.body], { type: 'text' });
+          let pdfUrl = window.URL.createObjectURL(blob);
 
-        var text_link = document.createElement('a');
-        text_link.href = pdfUrl;
+          var text_link = document.createElement('a');
+          text_link.href = pdfUrl;
 
-        //   TO OPEN PDF ON BROWSER IN NEW TAB
-        window.open(pdfUrl, '_blank');
+          window.open(pdfUrl, '_blank');
+          text_link.download = 'reports' + ".txt";
+          text_link.click();
+        }
+        })
+    } else {
+      this.deviceService.createAllReport(this.data.deviceName, this.data.startDate, this.data.endDate, this.data.selectedStatus)
+      .subscribe((response) => {
+        if (response.body != null) {
+          console.log(response.body);
+          let blob = new Blob([response.body], { type: 'text' });
+          let pdfUrl = window.URL.createObjectURL(blob);
 
-        //   TO DOWNLOAD PDF TO YOUR COMPUTER
-        text_link.download = 'reports' + ".txt";
-        text_link.click();
-      }
-    })
+          var text_link = document.createElement('a');
+          text_link.href = pdfUrl;
+
+          window.open(pdfUrl, '_blank');
+          text_link.download = 'reports' + ".txt";
+          text_link.click();
+        }
+      })
+    }
   }
   onNoClick(): void {
     this.dialogRef.close();

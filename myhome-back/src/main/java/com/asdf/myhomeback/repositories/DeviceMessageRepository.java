@@ -1,6 +1,7 @@
 package com.asdf.myhomeback.repositories;
 
 import com.asdf.myhomeback.models.DeviceMessage;
+import com.asdf.myhomeback.models.enums.MessageStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,18 @@ public interface DeviceMessageRepository extends JpaRepository<DeviceMessage, Lo
             "d.timestamp < ?3 and (cast(d.messageStatus as string) like ?4 or ?4 = '') " +
             "order by d.id desc")
     List<DeviceMessage> createReport(String deviceName, long startDate, long endDate, String status);
+
+    Page<DeviceMessage> findAllByDeviceNameInOrderByIdDesc(String[] deviceNames, Pageable pageable);
+
+    Page<DeviceMessage> findAllByDeviceNameInAndTimestampBetweenAndMessageStatusOrderByIdDesc
+            (String[] deviceNames, long start, long end, MessageStatus status, Pageable pageable);
+
+    List<DeviceMessage> findAllByDeviceNameInAndTimestampBetweenAndMessageStatusOrderByIdDesc
+            (String[] deviceNames, long start, long end, MessageStatus status);
+
+    Page<DeviceMessage> findAllByDeviceNameInAndTimestampBetweenOrderByIdDesc
+            (String[] deviceNames, long start, long end, Pageable pageable);
+
+    List<DeviceMessage> findAllByDeviceNameInAndTimestampBetweenOrderByIdDesc
+            (String[] deviceNames, long start, long end);
 }

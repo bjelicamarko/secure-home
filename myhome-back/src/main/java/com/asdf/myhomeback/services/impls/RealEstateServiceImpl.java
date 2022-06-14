@@ -92,4 +92,19 @@ public class RealEstateServiceImpl implements RealEstateService {
     public List<RealEstate> getRealEstatesByDeviceName(String deviceName) {
         return realEstateRepository.getRealEstatesByDeviceName(deviceName);
     }
+
+    @Override
+    public RealEstate findRealEstateByName(String name) {
+        return realEstateRepository.findRealEstateByName(name);
+    }
+
+    @Override
+    public int findLowestReadPeriod(String name) {
+        RealEstate re = realEstateRepository.findRealEstateByName(name);
+        int min = Integer.MAX_VALUE;
+        for (Device d : re.getDevices())
+            if (d.getReadPeriod() <= min)
+                min = d.getReadPeriod();
+        return min;
+    }
 }

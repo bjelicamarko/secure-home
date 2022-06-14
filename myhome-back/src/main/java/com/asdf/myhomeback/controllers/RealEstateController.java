@@ -176,4 +176,11 @@ public class RealEstateController {
         }
     }
 
+    @GetMapping("/findLowestReadPeriod/{nameOfRealState}")
+    @PreAuthorize("hasAuthority('GET_LOWEST_READ_PERIOD')")
+    public ResponseEntity<Integer> findLowestReadPeriod(@PathVariable String nameOfRealState) {
+        return new ResponseEntity<Integer>(realEstateService.findLowestReadPeriod(nameOfRealState),
+                HttpStatus.OK);
+    }
+
 }

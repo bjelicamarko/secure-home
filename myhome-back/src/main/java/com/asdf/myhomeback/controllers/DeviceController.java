@@ -6,9 +6,13 @@ import com.asdf.myhomeback.dto.ReportDTO;
 import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.DeviceMessage;
+import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.DeviceMessageService;
 import com.asdf.myhomeback.services.DeviceService;
+import com.asdf.myhomeback.services.LogService;
+import com.asdf.myhomeback.services.UserRealEstateService;
 import com.asdf.myhomeback.utils.ControllerUtils;
+import com.asdf.myhomeback.utils.LogMessGen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +35,15 @@ public class DeviceController {
 
     @Autowired
     private DeviceMessageService deviceMessageService;
+
+    @Autowired
+    private TokenUtils tokenUtils;
+
+    @Autowired
+    private LogService logService;
+
+    @Autowired
+    private UserRealEstateService userRealEstateService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('GET_DEVICES')")
@@ -113,6 +127,80 @@ public class DeviceController {
             if (deviceMessages.size() == 0)
                 return  new ResponseEntity<>("Empty list", HttpStatus.NOT_FOUND);
             ReportDTO report = new ReportDTO(deviceName, startDate, endDate, selectedStatus, deviceMessages);
+            return new ResponseEntity<>(report.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getAllMessagesFromRealEstate/{realEstate}")
+    @PreAuthorize("hasAuthority('GET_ALL_MESSAGES_FROM_REAL_ESTATE')")
+    public ResponseEntity<List<DeviceMessageDTO>> getAllMessagesFromRealEstate( HttpServletRequest request,
+                                                                                @PathVariable String realEstate, Pageable pageable) {
+        String authToken = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(authToken);
+
+        if (userRealEstateService.isUserInRealEstate(username, realEstate)){
+            logService.generateErrLog(LogMessGen.userNotInRealEstate(username, realEstate));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Page<DeviceMessage> deviceMessages = deviceMessageService.findAllByDeviceNameInOrderByIdDesc(realEstate, pageable);
+        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+                ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
+    }
+
+    @GetMapping("/filterAllMessages")
+    @PreAuthorize("hasAuthority('FILTER_ALL_MESSAGES_FROM_ESTATE')")
+    public ResponseEntity<List<DeviceMessageDTO>> filterAllMesages( HttpServletRequest request,
+            @RequestParam(value = "realEstateName", required = false) String realEstateName,
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "selectedStatus", required = false) String selectedStatus,
+            Pageable pageable
+    ) {
+        try {
+            String authToken = tokenUtils.getToken(request);
+            String username = tokenUtils.getUsernameFromToken(authToken);
+
+            if (userRealEstateService.isUserInRealEstate(username, realEstateName)){
+                logService.generateErrLog(LogMessGen.userNotInRealEstate(username, realEstateName));
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            Page<DeviceMessage> deviceMessages = deviceMessageService.filterAllMessages(realEstateName, startDate, endDate, selectedStatus,
+                    pageable);
+            if (deviceMessages.getContent().size() == 0)
+                return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+                    ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/createAllReport")
+    @PreAuthorize("hasAuthority('CREATE_ALL_REPORT')")
+    public ResponseEntity<String> createAllReport( HttpServletRequest request,
+            @RequestParam(value = "realEstateName", required = false) String realEstateName,
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "selectedStatus", required = false) String selectedStatus
+    ) {
+        try {
+
+            String authToken = tokenUtils.getToken(request);
+            String username = tokenUtils.getUsernameFromToken(authToken);
+
+            if (userRealEstateService.isUserInRealEstate(username, realEstateName)){
+                logService.generateErrLog(LogMessGen.userNotInRealEstate(username, realEstateName));
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            List<DeviceMessage> deviceMessages = deviceMessageService.createAllReport(realEstateName, startDate, endDate, selectedStatus);
+            if (deviceMessages.size() == 0)
+                return  new ResponseEntity<>("Empty list", HttpStatus.NOT_FOUND);
+            ReportDTO report = new ReportDTO("all", startDate, endDate, selectedStatus, deviceMessages);
             return new ResponseEntity<>(report.toString(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

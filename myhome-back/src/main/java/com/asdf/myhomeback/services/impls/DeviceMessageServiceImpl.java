@@ -3,6 +3,7 @@ package com.asdf.myhomeback.services.impls;
 import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.*;
 import com.asdf.myhomeback.models.enums.AlarmType;
+import com.asdf.myhomeback.models.enums.MessageStatus;
 import com.asdf.myhomeback.repositories.DeviceMessageRepository;
 import com.asdf.myhomeback.services.*;
 import com.asdf.myhomeback.utils.DeviceUtils;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -106,6 +108,71 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
         return deviceMessageRepository.createReport(deviceName, startDateVal, endDateVal, selectedStatus);
     }
 
+    @Override
+    public Page<DeviceMessage> findAllByDeviceNameInOrderByIdDesc(String nameOfRealEstate, Pageable pageable) {
+        RealEstate re = realEstateService.findRealEstateByName(nameOfRealEstate);
+        String[] arr = getAllDevicesNamesFromRealEstate(re);
+
+        return deviceMessageRepository.findAllByDeviceNameInOrderByIdDesc(arr, pageable);
+    }
+
+    @Override
+    public Page<DeviceMessage> filterAllMessages(String nameOfRealEstate, String startDate, String endDate, String selectedStatus
+    , Pageable pageable) throws DeviceException {
+        RealEstate re = realEstateService.findRealEstateByName(nameOfRealEstate);
+        String[] arr = getAllDevicesNamesFromRealEstate(re);
+
+        startDate = this.checkAllFromField(startDate);
+        endDate = this.checkAllFromField(endDate);
+        selectedStatus = this.checkAllFromField(selectedStatus);
+
+        DeviceUtils.checkMessageStatus(selectedStatus);
+        long startDateVal = DeviceUtils.checkStartDate(startDate);
+        long endDateVal = DeviceUtils.checkEndDate(endDate);
+
+        if (selectedStatus.equals("")) {
+            return deviceMessageRepository.findAllByDeviceNameInAndTimestampBetweenOrderByIdDesc
+                    (arr, startDateVal, endDateVal, pageable);
+        } else {
+            return deviceMessageRepository.findAllByDeviceNameInAndTimestampBetweenAndMessageStatusOrderByIdDesc
+                    (arr, startDateVal, endDateVal, MessageStatus.valueOf(selectedStatus), pageable);
+        }
+    }
+
+    @Override
+    public List<DeviceMessage> createAllReport(String nameOfRealEstate,
+                                               String startDate, String endDate, String selectedStatus) throws DeviceException {
+        RealEstate re = realEstateService.findRealEstateByName(nameOfRealEstate);
+        String[] arr = getAllDevicesNamesFromRealEstate(re);
+
+        startDate = this.checkAllFromField(startDate);
+        endDate = this.checkAllFromField(endDate);
+        selectedStatus = this.checkAllFromField(selectedStatus);
+
+        DeviceUtils.checkMessageStatus(selectedStatus);
+        long startDateVal = DeviceUtils.checkStartDate(startDate);
+        long endDateVal = DeviceUtils.checkEndDate(endDate);
+
+        if (selectedStatus.equals("")) {
+            return deviceMessageRepository.findAllByDeviceNameInAndTimestampBetweenOrderByIdDesc
+                    (arr, startDateVal, endDateVal);
+        } else {
+            return deviceMessageRepository.findAllByDeviceNameInAndTimestampBetweenAndMessageStatusOrderByIdDesc
+                    (arr, startDateVal, endDateVal, MessageStatus.valueOf(selectedStatus));
+        }
+    }
+
+
+    private String [] getAllDevicesNamesFromRealEstate(RealEstate re) {
+        String[] arr = new String[re.getDevices().size()];
+        int i = 0;
+        for (Device device : re.getDevices()) {
+            arr[i] = device.getName();
+            i++;
+        }
+        return arr;
+    }
+
     private String checkAllFromField(String field) {
         if (field == null){
             field = "";
@@ -114,5 +181,6 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
         }
         return field;
     }
+
 
 }

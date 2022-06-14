@@ -37,7 +37,7 @@
         
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            [ngClass]="{'make-warning': row.messageStatus === 'SUSPICIOUS' }">
+            [ngClass]="{'make-panic': row.messageStatus === 'PANIC' }">
             </tr>
         </table>
         </div>
