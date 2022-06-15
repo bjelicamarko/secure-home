@@ -1,12 +1,30 @@
-<form [formGroup]="alarmRuleForm" (keydown.enter)="$event.preventDefault()">
+<form [formGroup]="ruleForm" (keydown.enter)="$event.preventDefault()">
     <div class="row justify-content-center" style="margin-top: 2%;">
         <div class="col-2">
-            <mat-form-field class="example-form-field" appearance="fill" style="width: 100%;">
-                <mat-label>Rule pattern</mat-label>
-                <input id="rulePatternInput" matInput type="text" formControlName="rulePattern">
+            <mat-form-field style="width: 100%;" appearance="fill">
+                <mat-label>Rule type</mat-label>
+                <mat-select formControlName="ruleType">
+                    <mat-option *ngFor="let option of ['LOG', 'ALARM', 'DATABASE']" [value]="option">{{option}}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
-        <div class="col-2">
+        <div class="col-3">
+            <mat-form-field class="example-form-field" appearance="fill" style="width: 100%;">
+                <mat-label>{{(ruleForm.value.ruleType != 'DATABASE') ? 'Rule pattern' : 'Rule regex'}}</mat-label>
+                <input id="regexPatternInput" matInput type="text" formControlName="regexPattern">
+            </mat-form-field>
+        </div>
+        <div class="col-2" *ngIf="ruleForm.value.ruleType === 'LOG'">
+            <mat-form-field style="width: 100%;" appearance="fill">
+                <mat-label>Log level</mat-label>
+                <mat-select formControlName="logLevel">
+                    <mat-option *ngFor="let option of ['INFO', 'WARNING', 'ERROR', 'FATAL']" [value]="option">{{option}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-2" *ngIf="ruleForm.value.ruleType != 'LOG'">
             <mat-form-field style="width: 100%;" appearance="fill">
                 <mat-label>Device name</mat-label>
                 <mat-select formControlName="deviceName">
@@ -22,18 +40,27 @@
     </div>
     <div class="row">
         <span class="col-3"></span>
-        <table *ngIf="alarmRules.length != 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-6" matSort
+        <table *ngIf="rules.length != 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-6" matSort
             style="margin-top: 5%;" (matSortChange)="announceSortChange($event)">
-            <ng-container class="mat-column-rulePattern" matColumnDef="rulePattern">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by rulePattern">
+            <ng-container class="mat-column-regexPattern" matColumnDef="regexPattern">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by regexPattern">
                     Rule pattern</th>
-                <td mat-cell *matCellDef="let element"> {{element.rulePattern}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.regexPattern === '.*' ? element.regexPattern + '
+                    (default)' : element.regexPattern}} </td>
             </ng-container>
 
-            <ng-container class="mat-column-alarmType" matColumnDef="alarmType">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by alarmType">
-                    Alarm type</th>
-                <td mat-cell *matCellDef="let element"> {{element.alarmType}} </td>
+            <ng-container class="mat-column-ruleType" matColumnDef="ruleType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by ruleType">
+                    Rule type</th>
+                <td mat-cell *matCellDef="let element"> {{element.ruleType}} </td>
+            </ng-container>
+
+            <ng-container class="mat-column-logLevel" matColumnDef="logLevel">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by logLevel">
+                    Log level</th>
+                <td mat-cell *matCellDef="let element"> {{(element.logLevel === null) ? "--- --- ---" :
+                    element.logLevel}}
+                </td>
             </ng-container>
 
             <ng-container class="mat-column-deviceName" matColumnDef="deviceName">
@@ -43,6 +70,7 @@
                     element.deviceName}}
                 </td>
             </ng-container>
+
             <ng-container class="mat-column-delete" matColumnDef="delete">
                 <th mat-header-cell *matHeaderCellDef> Delete </th>
                 <td mat-cell *matCellDef="let element">

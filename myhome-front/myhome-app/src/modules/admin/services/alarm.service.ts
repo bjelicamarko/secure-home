@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AlarmRuleDTO, AlarmRuleExtendedDTO } from '../models/AlarmRuleDTO';
+import { RuleDTO } from '../models/RuleDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class AlarmService {
 
   constructor(private http: HttpClient) { }
 
-  saveAlarmRule(alarmRuleDTO: AlarmRuleDTO): Observable<HttpResponse<string>> {
+  saveRule(ruleDTO: RuleDTO): Observable<HttpResponse<string>> {
     let queryParams = {};
 
     queryParams = {
@@ -20,16 +20,28 @@ export class AlarmService {
       observe: "response",
       responseType: "text"
     };
-    return this.http.post<HttpResponse<string>>("myhome/api/alarmRules", alarmRuleDTO, queryParams);
+    return this.http.post<HttpResponse<string>>("myhome/api/rules", ruleDTO, queryParams);
   }
 
-  getAllExistingAlarmRules(): Observable<HttpResponse<AlarmRuleExtendedDTO>> {
+  getAllRules(): Observable<HttpResponse<RuleDTO>> {
     let queryParams = {};
 
     queryParams = {
       headers: this.headers,
       observe: "response"
     };
-    return this.http.get<HttpResponse<AlarmRuleExtendedDTO>>("myhome/api/alarmRules", queryParams);
+    return this.http.get<HttpResponse<RuleDTO>>("myhome/api/rules", queryParams);
+  }
+
+  deleteAlarmRule(id: number): Observable<HttpResponse<string>> {
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text",
+    };
+
+    return this.http.delete<HttpResponse<string>>("myhome/api/rules/" + id, queryParams);
   }
 }

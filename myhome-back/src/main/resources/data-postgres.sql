@@ -25,9 +25,9 @@ INSERT INTO privilege (name) VALUES ('FILTER_ALL_MESSAGES_FROM_DEVICE'); -- 18
 INSERT INTO privilege (name) VALUES ('CREATE_REPORT'); -- 19
 INSERT INTO privilege (name) VALUES ('READ_LOGS'); -- 20
 INSERT INTO privilege (name) VALUES ('FILTER_ALL_LOGS'); -- 21
-INSERT INTO privilege (name) VALUES ('CREATE_ALARM_RULE'); -- 22
-INSERT INTO privilege (name) VALUES ('GET_ALARM_RULES'); -- 23
-INSERT INTO privilege (name) VALUES ('DELETE_ALARM_RULE'); -- 24
+INSERT INTO privilege (name) VALUES ('CREATE_RULE'); -- 22
+INSERT INTO privilege (name) VALUES ('GET_RULES'); -- 23
+INSERT INTO privilege (name) VALUES ('DELETE_RULE'); -- 24
 INSERT INTO privilege (name) VALUES ('GET_DEVICE'); -- 25
 INSERT INTO privilege (name) VALUES ('GET_NOTIFICATIONS'); -- 26
 INSERT INTO privilege (name) VALUES ('UPDATE_DEVICE'); -- 27
@@ -231,8 +231,16 @@ insert into device_message (device_name, message, message_status, timestamp_valu
 insert into device_message (device_name, message, message_status, timestamp_value) values
 ('Air conditioner', 'Temperature is optimal', 'REGULAR', 1653602400000); -- 2022-05-27
 
-insert into alarm_rule (rule_pattern, alarm_type) values ('locked account', 'LOG');
-insert into alarm_rule (rule_pattern, alarm_type) values ('bad credentials', 'LOG');
+insert into rule (rule_type, regex_pattern, log_level) values ('LOG', 'locked account', 'ERROR');
+insert into rule (rule_type, regex_pattern, log_level) values ('LOG', 'bad credentials', 'ERROR');
+
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Air conditioner');
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Fridge');
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Front door');
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Backyard door');
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Smoke detector');
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Cooker');
+insert into rule (rule_type, regex_pattern, device_name) values ('DATABASE', '.*', 'Water heater');
 
 insert into alarm_notification (message, alarm_type, device_name, timestamp, username, seen) values
     ('Temperature is optimal', 'DEVICE', 'Air conditioner', 1653602400000, 'dunjica', false);
