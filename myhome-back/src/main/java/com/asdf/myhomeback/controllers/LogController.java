@@ -44,10 +44,11 @@ public class LogController {
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "selectedLevel", required = false) String selectedLevel,
             @RequestParam(value = "searchValue", required = false) String searchValue,
+            @RequestParam(value = "messageRegex", required = false) String messageRegex,
             Pageable pageable
     ) {
         try {
-            Page<Log> deviceMessages = logService.filterLogs(startDate, endDate, selectedLevel, searchValue, pageable);
+            Page<Log> deviceMessages = logService.filterLogs(startDate, endDate, selectedLevel, searchValue, messageRegex, pageable);
             if (deviceMessages.getContent().size() == 0)
                 return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(deviceMessages.stream().map(LogDTO::new).toList(),

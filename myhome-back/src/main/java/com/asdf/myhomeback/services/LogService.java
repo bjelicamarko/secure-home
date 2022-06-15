@@ -19,5 +19,7 @@ public interface LogService {
 
     Page<Log> getAllLogs(Pageable pageable);
 
-    Page<Log> filterLogs(String startDate, String endDate, String selectedLevel, String searchValue,  Pageable pageable) throws LogException;
+    Page<Log> filterLogs(String startDate, String endDate, String selectedLevel, String searchValue, String messageRegex, Pageable pageable) throws LogException;
+
+    void generateFatalLog(String logMessage);
 }

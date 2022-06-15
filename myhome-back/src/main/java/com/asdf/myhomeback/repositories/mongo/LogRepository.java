@@ -8,8 +8,14 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface LogRepository extends MongoRepository<Log, Long> {
 
-    Page<Log> findLogsByDateTimeBetweenAndLogLevelInAndLogMessageContainingOrDateTimeBetweenAndLogLevelInAndLoggerNameContaining(
-            long startDate1, long endDate1, String[] logLevels1, String searchValue1,
-            long startDate2, long endDate2, String[] logLevels2, String searchValue2,
-            Pageable pageable);
+    Page<Log> findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegexAndLoggerNameContaining(
+            long startDate1, long endDate1, String[] logLevels1, String messageRegex, String searchValue,Pageable pageable);
+
+    Page<Log> findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegex(
+            long startDate1, long endDate1, String[] logLevels1, String messageRegex, Pageable pageable);
+
+    Page<Log> findLogsByDateTimeBetweenAndLogLevelInAndLoggerNameContaining(
+            long startDate2, long endDate2, String[] logLevels2, String searchValue, Pageable pageable);
+
+
 }

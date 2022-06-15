@@ -8,7 +8,7 @@ import { LogService } from '../../services/log.service';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { StackTraceComponent } from '../../components/stack-trace/stack-trace.component';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Form } from '@angular/forms';
 import { SharedDatePickerService } from 'src/modules/shared/services/shared-data-picker.service';
 
 @Component({
@@ -22,7 +22,6 @@ export class LogsViewComponent implements AfterViewInit {
   displayedColumns: string[] = ['timestamp', 'logLevel', 'loggerName', 'message', 'stackTrace'];
   _liveAnnouncer: any;
 
-  searchValue: string = '';
   selectedLevel: string = 'all';
   startDate: string = '';
   endDate: string = '';
@@ -32,9 +31,7 @@ export class LogsViewComponent implements AfterViewInit {
     end: new FormControl(),
   });
 
-  public searchFormGroup = new FormGroup({
-    searchValue: new FormControl()
-  });
+  public searchFormGroup: FormGroup;
 
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
   pageSize: number;
@@ -46,12 +43,18 @@ export class LogsViewComponent implements AfterViewInit {
     private snackBarService: SnackBarService,
     private logService: LogService,
     public dialog: MatDialog,
-    private sharedDatePickerService: SharedDatePickerService) {
+    private sharedDatePickerService: SharedDatePickerService,
+    private fb: FormBuilder) {
     this.logs = [];
     this.pageSize = 10;
     this.currentPage = 1;
     this.totalSize = 1;
     this.dataSource = new MatTableDataSource(this.logs);
+
+    this.searchFormGroup = this.fb.group({
+      searchValue: [''],
+      messageRegex: ['']
+    });
   }
 
   @ViewChild(MatSort)
@@ -86,8 +89,8 @@ export class LogsViewComponent implements AfterViewInit {
   }
 
   changePage(newPage: number) {
-    this.logService.filterLogs(this.startDate, this.endDate, this.selectedLevel, this.getSearchFormValue(this.searchFormGroup.value.searchValue),
-      newPage - 1, this.pageSize)
+    this.logService.filterLogs(this.startDate, this.endDate, this.selectedLevel, this.getValueFromControl(this.searchFormGroup.value.searchValue),
+      this.getValueFromControl(this.searchFormGroup.value.messageRegex), newPage - 1, this.pageSize)
       .subscribe((response: any) => {
         this.logs = response.body as LogDTO[];
         this.dataSource = new MatTableDataSource(this.logs);
@@ -121,8 +124,9 @@ export class LogsViewComponent implements AfterViewInit {
   }
 
   filterMessages(): void {
-    this.logService.filterLogs(this.startDate, this.endDate, this.selectedLevel, this.getSearchFormValue(this.searchFormGroup.value.searchValue),
-      this.currentPage - 1, this.pageSize)
+    this.currentPage = 1;
+    this.logService.filterLogs(this.startDate, this.endDate, this.selectedLevel, this.getValueFromControl(this.searchFormGroup.value.searchValue),
+      this.getValueFromControl(this.searchFormGroup.value.messageRegex), this.currentPage - 1, this.pageSize)
       .subscribe((response: any) => {
         this.logs = response.body as LogDTO[];
         this.dataSource = new MatTableDataSource(this.logs);
@@ -135,7 +139,7 @@ export class LogsViewComponent implements AfterViewInit {
       })
   }
 
-  getSearchFormValue(searchValue: any) {
-    return searchValue == null ? '' : searchValue;
+  getValueFromControl(value: any) {
+    return value == null ? '' : value;
   }
 }

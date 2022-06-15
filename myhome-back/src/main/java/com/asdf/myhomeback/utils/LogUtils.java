@@ -12,7 +12,7 @@ public class LogUtils {
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 
     public static void checkLogLevel(String selectedLevel) throws LogException {
-        if(!(selectedLevel.equals("INFO") || selectedLevel.equals("WARN")  || selectedLevel.equals("ERROR") ||
+        if(!(selectedLevel.equals("INFO") || selectedLevel.equals("WARN")  || selectedLevel.equals("ERROR") || selectedLevel.equals("FATAL") ||
                 selectedLevel.equals("")))
             throw new LogException("Invalid log level.");
     }
