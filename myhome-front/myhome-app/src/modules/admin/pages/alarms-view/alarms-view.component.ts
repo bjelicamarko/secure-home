@@ -4,7 +4,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DeviceService } from 'src/modules/shared/services/device.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
-import { AlarmRuleExtendedDTO } from '../../models/AlarmRuleDTO';
+import { RuleDTO } from '../../models/RuleDTO';
 import { AlarmService } from '../../services/alarm.service';
 
 @Component({
@@ -15,23 +15,26 @@ import { AlarmService } from '../../services/alarm.service';
 export class AlarmsViewComponent implements AfterViewInit {
 
   dataSource;
-  displayedColumns: string[] = ['rulePattern', 'alarmType', 'deviceName', 'delete'];
+  displayedColumns: string[] = ['regexPattern', 'ruleType', 'logLevel', 'deviceName', 'delete'];
   _liveAnnouncer: any;
 
   deviceNames: string[];
-  alarmRuleForm = this.formBuilder.group({
-    rulePattern: '',
-    deviceName: 'LOG'
+  ruleForm = this.formBuilder.group({
+    regexPattern: '',
+    deviceName: 'Air conditioner',
+    logLevel: 'INFO',
+    ruleType: 'LOG'
   });
-  alarmRules: AlarmRuleExtendedDTO[];
+  rules: RuleDTO[];
+
 
   constructor(private formBuilder: FormBuilder,
     private deviceService: DeviceService,
     private snackBarService: SnackBarService,
-    private alarmService: AlarmService) {
-    this.deviceNames = ['LOG'];
-    this.alarmRules = [];
-    this.dataSource = new MatTableDataSource(this.alarmRules);
+    private ruleService: AlarmService) {
+    this.deviceNames = [];
+    this.rules = [];
+    this.dataSource = new MatTableDataSource(this.rules);
   }
 
   @ViewChild(MatSort)
@@ -39,7 +42,7 @@ export class AlarmsViewComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.deviceService.getAllDeviceNames().subscribe((response: any) => {
-      this.deviceNames = [...this.deviceNames, ...response.body];
+      this.deviceNames = response.body as string[];
     },
       (error) => {
         if (error.status == 500)
@@ -47,7 +50,7 @@ export class AlarmsViewComponent implements AfterViewInit {
         else if (error.status == 401)
           this.snackBarService.openSnackBar("Unaothorized.");
       })
-    this.getAlarmRules();
+    this.getAllRules();
   }
 
   announceSortChange(sortState: Sort) {
@@ -59,42 +62,59 @@ export class AlarmsViewComponent implements AfterViewInit {
   }
 
   onSubmit() {
-    if (this.alarmRuleForm.value.rulePattern === '') {
+    if (this.ruleForm.value.regexPattern === '') {
       this.snackBarService.openSnackBar("Rule pattern cannot be empty.")
       return;
     }
-    console.log(this.alarmRuleForm.value)
-    let alarmRule = {
-      "rulePattern": this.alarmRuleForm.value.rulePattern,
-      "deviceName": this.alarmRuleForm.value.deviceName
+
+    console.log(this.ruleForm.value)
+
+    if (this.ruleForm.value.ruleType === 'ALARM')
+      this.ruleForm.value.logLevel = ''
+
+
+    if (this.ruleForm.value.ruleType === 'LOG')
+      this.ruleForm.value.deviceName = ''
+
+    let ruleDTO = {
+      "id": -1,
+      "regexPattern": this.ruleForm.value.regexPattern,
+      "ruleType": this.ruleForm.value.ruleType,
+      "logLevel": this.ruleForm.value.logLevel,
+      "deviceName": this.ruleForm.value.deviceName
     }
 
-    this.alarmService.saveAlarmRule(alarmRule).subscribe((response) => {
-      this.snackBarService.openSnackBar(response.body as string)
-      this.getAlarmRules();
-    });
+    this.ruleService.saveRule(ruleDTO).subscribe(
+      (response) => {
+        this.snackBarService.openSnackBar(response.body as string)
+        this.ruleForm.reset();
+        this.getAllRules();
+      },
+      (error) => {
+        this.snackBarService.openSnackBar(error.error);
+      });
   }
 
-  getAlarmRules() {
-    this.alarmService.getAllExistingAlarmRules().subscribe((response: any) => {
-      this.alarmRules = response.body;
+  getAllRules() {
+    this.ruleService.getAllRules().subscribe((response: any) => {
+      this.rules = response.body;
       console.log(response.body);
 
-      this.dataSource = new MatTableDataSource(this.alarmRules);
+      this.dataSource = new MatTableDataSource(this.rules);
       this.dataSource.sort = this.sort;
     },
       (error) => {
         if (error.status == 500)
-          this.snackBarService.openSnackBar("Error ocured while loading device names.");
+          this.snackBarService.openSnackBar("Error ocured while loading rules.");
         else if (error.status == 401)
           this.snackBarService.openSnackBar("Unaothorized.");
       })
   }
 
   deleteAlarmRule(id: number) {
-    this.deviceService.deleteAlarmRule(id).subscribe((response) => {
-      this.snackBarService.openSnackBar("Alarm rule successfully deleted.");
-      this.getAlarmRules();
+    this.ruleService.deleteAlarmRule(id).subscribe((response) => {
+      this.snackBarService.openSnackBar("Rule successfully deleted.");
+      this.getAllRules();
     },
       (error) => {
         this.snackBarService.openSnackBar(error.error);

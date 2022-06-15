@@ -2,13 +2,14 @@ package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.exceptions.LogException;
 import com.asdf.myhomeback.models.AlarmNotification;
-import com.asdf.myhomeback.models.AlarmRule;
 import com.asdf.myhomeback.models.Log;
+import com.asdf.myhomeback.models.Rule;
 import com.asdf.myhomeback.models.enums.AlarmType;
+import com.asdf.myhomeback.models.enums.RuleType;
 import com.asdf.myhomeback.repositories.mongo.LogRepository;
 import com.asdf.myhomeback.services.AlarmNotificationService;
-import com.asdf.myhomeback.services.AlarmRuleService;
 import com.asdf.myhomeback.services.LogService;
+import com.asdf.myhomeback.services.RuleService;
 import com.asdf.myhomeback.utils.LogUtils;
 import com.asdf.myhomeback.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class LogServiceImpl implements LogService {
     private LogRepository logRepository;
 
     @Autowired
-    private AlarmRuleService alarmRuleService;
+    private RuleService ruleService;
 
     @Autowired
     private AlarmNotificationService alarmNotificationService;
@@ -38,14 +39,8 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public void saveLog(Log log){
-        // check if some alarm rule will trigger notification
-        List<AlarmRule> alarmRules = alarmRuleService.findAllByType(AlarmType.LOG);
-        List<AlarmNotification> alarmNotifications = new ArrayList<>();
-        alarmRules.forEach(alarmRule -> {
-            if (log.getLogMessage().contains(alarmRule.getRulePattern())){
-                alarmNotifications.add(new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null, "admin"));
-            }
-        });
+        // check if some log rule will trigger notification
+        List<AlarmNotification> alarmNotifications = getAlarmNotifications(log);
 
         // save all notifications
         alarmNotificationService.saveAll(alarmNotifications);
@@ -54,6 +49,18 @@ public class LogServiceImpl implements LogService {
         webSocketService.sendNotifications(alarmNotifications, AlarmType.LOG);
 
         logRepository.save(log);
+    }
+
+    private List<AlarmNotification> getAlarmNotifications(Log log) {
+        List<Rule> logRules = ruleService.findAll(RuleType.LOG);
+        List<AlarmNotification> alarmNotifications = new ArrayList<>();
+        logRules.forEach(logRule -> {
+            // if log contains some string or logLevel is same as in the rule
+            if (log.getLogMessage().contains(logRule.getRegexPattern()) && log.getLogLevel().equals(logRule.getLogLevel())){
+                alarmNotifications.add(new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null, "admin"));
+            }
+        });
+        return alarmNotifications;
     }
 
     @Override

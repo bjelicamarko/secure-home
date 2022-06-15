@@ -1,10 +1,10 @@
 package com.asdf.myhomeback.models;
 
-import com.asdf.myhomeback.dto.AlarmRuleDTO;
-import com.asdf.myhomeback.models.enums.AlarmType;
+import com.asdf.myhomeback.models.enums.RuleType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.logging.LogLevel;
 
 import javax.persistence.*;
 
@@ -12,21 +12,23 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class AlarmRule {
+public class Rule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique=true, nullable=false)
     private Long id;
 
-    @Column(name = "rule_pattern", nullable=false)
-    private String rulePattern;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "alarm_type", nullable = false)
-    private AlarmType alarmType;
+    @Column(name="rule_type", nullable=false)
+    RuleType ruleType;
+
+    @Column(name = "regex_pattern", nullable=false)
+    private String regexPattern;
 
     @Column(name = "device_name")
     private String deviceName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "log_level")
+    private LogLevel logLevel;
 }

@@ -4,6 +4,7 @@ import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.*;
 import com.asdf.myhomeback.models.enums.AlarmType;
 import com.asdf.myhomeback.models.enums.MessageStatus;
+import com.asdf.myhomeback.models.enums.RuleType;
 import com.asdf.myhomeback.repositories.DeviceMessageRepository;
 import com.asdf.myhomeback.services.*;
 import com.asdf.myhomeback.utils.DeviceUtils;
@@ -24,7 +25,7 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
     private DeviceMessageRepository deviceMessageRepository;
 
     @Autowired
-    private AlarmRuleService alarmRuleService;
+    private RuleService ruleService;
 
     @Autowired
     private AlarmNotificationService alarmNotificationService;
@@ -48,16 +49,50 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
 
     @Override
     public void saveAll(List<DeviceMessage> deviceMessages) throws Exception {
+        
         // Decrypt messages
         decryptMessages(deviceMessages);
 
-        List<AlarmRule> alarmRules = alarmRuleService.findAllByType(AlarmType.DEVICE);
+        // checking databaseRules
+        List<DeviceMessage> validDeviceMessages = getValidDeviceMessages(deviceMessages);
+
+        // checking alarmRules
+        List<AlarmNotification> alarmNotifications = getAlarmNotifications(validDeviceMessages);
+
+        // save all notifications
+        alarmNotificationService.saveAll(alarmNotifications);
+
+        // send all notifications
+        webSocketService.sendNotifications(alarmNotifications, AlarmType.DEVICE);
+
+        deviceMessageRepository.saveAll(validDeviceMessages);
+    }
+
+    private List<DeviceMessage> getValidDeviceMessages(List<DeviceMessage> deviceMessages) {
+
+        List<Rule> databaseRules = ruleService.findAll(RuleType.DATABASE);
+
+        List<DeviceMessage> validDeviceMessages = new ArrayList<>();
+        databaseRules.forEach(databaseRule -> {
+            deviceMessages.forEach(deviceMessage -> {
+                // if deviceMessage->message doesnt contain pattern from rule
+                // and databaseRule->deviceName is equals to deviceMessage->deviceName
+                if (deviceMessage.getMessage().matches(databaseRule.getRegexPattern()) && deviceMessage.getDeviceName().equals(databaseRule.getDeviceName())) {
+                    validDeviceMessages.add(deviceMessage);
+                }
+            });
+        });
+        return  validDeviceMessages;
+    }
+
+    private List<AlarmNotification> getAlarmNotifications(List<DeviceMessage> deviceMessages) {
+        List<Rule> alarmRules = ruleService.findAll(RuleType.ALARM);
         List<AlarmNotification> alarmNotifications = new ArrayList<>();
         alarmRules.forEach(alarmRule -> {
             deviceMessages.forEach(deviceMessage -> {
                 // if deviceMessage->message contains pattern from rule
                 // and alarmRule->deviceName is equals to deviceMessage->deviceName
-                if (deviceMessage.getMessage().contains(alarmRule.getRulePattern()) && deviceMessage.getDeviceName().equals(alarmRule.getDeviceName())) {
+                if (deviceMessage.getMessage().contains(alarmRule.getRegexPattern()) && deviceMessage.getDeviceName().equals(alarmRule.getDeviceName())) {
                     List<RealEstate> realEstates = realEstateService.getRealEstatesByDeviceName(alarmRule.getDeviceName());
                     realEstates.forEach(realEstate -> {
                         List<AppUser> usersFromRealEstate = userRealEstateService.getUsersFromRealEstate(realEstate.getName());
@@ -69,14 +104,7 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
                 }
             });
         });
-
-        // save all notifications
-        alarmNotificationService.saveAll(alarmNotifications);
-
-        // send all notifications
-        webSocketService.sendNotifications(alarmNotifications, AlarmType.DEVICE);
-
-        deviceMessageRepository.saveAll(deviceMessages);
+        return alarmNotifications;
     }
 
     private String generateMessage(String message, String deviceName, String name) {
