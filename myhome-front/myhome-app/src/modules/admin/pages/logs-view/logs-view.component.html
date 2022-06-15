@@ -1,24 +1,38 @@
 <div>
     <div *ngIf="logs.length != 0" class="row align-items-center justify-content-center" style="margin-top: 2%;">
-        <form class="col-2" [formGroup]="searchFormGroup" (keydown.enter)="$event.preventDefault()">
-            <div class="align-items-center justify-content-center">
-                <mat-form-field class="example-form-field" appearance="fill" style="width: 100%">
-                    <mat-label>Search</mat-label>
-                    <input id="searchValueInput" matInput type="text" formControlName="searchValue">
-                    <button id="clearSearchValue" *ngIf="searchFormGroup.controls['searchValue'].value" matSuffix
-                        mat-icon-button aria-label="Clear"
-                        (click)="searchFormGroup.controls['searchValue'].setValue('')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-                <small *ngIf="(searchFormGroup.controls['searchValue'].touched || searchFormGroup.controls['searchValue'].dirty) 
-                         &&
-                       searchFormGroup.controls['searchValue'].errors?.['invalidUsername']">Invalid search input
-                </small>
+        <form class="col-4" [formGroup]="searchFormGroup" (keydown.enter)="$event.preventDefault()">
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field class="example-form-field" appearance="fill" style="width: 100%">
+                        <mat-label>Search</mat-label>
+                        <input id="searchValueInput" matInput type="text" formControlName="searchValue">
+                        <button id="clearSearchValue" *ngIf="searchFormGroup.controls['searchValue'].value" matSuffix
+                            mat-icon-button aria-label="Clear"
+                            (click)="searchFormGroup.controls['searchValue'].setValue('')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field class="example-form-field" appearance="fill" style="width: 100%">
+                        <mat-label>Message regex</mat-label>
+                        <input id="messageRegexInput" matInput type="text" formControlName="messageRegex">
+                        <button id=" clearMessageRegex" *ngIf="searchFormGroup.controls['messageRegex'].value" matSuffix
+                            mat-icon-button aria-label="Clear"
+                            (click)="searchFormGroup.controls['messageRegex'].setValue('')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <small *ngIf="(searchFormGroup.controls['messageRegex'].touched || searchFormGroup.controls['messageRegex'].dirty) 
+                             &&
+                           searchFormGroup.controls['messageRegex'].errors?.['invalidRegex']">Invalid regex
+                    </small>
+                </div>
             </div>
         </form>
         <div class="col-2" id="date-form">
-            <mat-form-field class="select" appearance="fill">
+            <mat-form-field class="select" appearance="fill" style="width: 100%">
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
                     <input id="start" matStartDate formControlName='start' placeholder="Start date" />
@@ -35,13 +49,14 @@
             </mat-form-field>
         </div>
         <div class="col-2">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" style="width: 100%">
                 <mat-label>Log level</mat-label>
                 <mat-select [(value)]="selectedLevel">
                     <mat-option value="all">Any</mat-option>
                     <mat-option value="INFO">Info</mat-option>
                     <mat-option value="WARN">Warning</mat-option>
                     <mat-option value="ERROR">Error</mat-option>
+                    <mat-option value="FATAL">Fatal</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -92,7 +107,7 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                [ngClass]="{'make-error': row.logLevel === 'ERROR', 'make-warning': row.logLevel === 'WARN'}">
+                [ngClass]="{'make-error': row.logLevel === 'ERROR', 'make-warning': row.logLevel === 'WARN', 'make-fatal': row.logLevel === 'FATAL'}">
             </tr>
         </table>
     </div>

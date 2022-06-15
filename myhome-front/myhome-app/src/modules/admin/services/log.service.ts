@@ -21,13 +21,15 @@ export class LogService {
       params: new HttpParams()
         .set("page", String(page))
         .append("size", String(size))
-        .append("sort", "id"),
+        .append("sort", "id, asc"),
     };
     return this.http.get<HttpResponse<LogDTO[]>>("myhome/api/logs", queryParams);
   }
 
-  filterLogs(startDate: string, endDate: string, selectedLevel: string, searchValue: string, page: number, size: number) {
+  filterLogs(startDate: string, endDate: string, selectedLevel: string, searchValue: string, messageRegex: string, page: number, size: number) {
     let queryParams = {};
+    console.log(messageRegex)
+    messageRegex = btoa(messageRegex)
 
     queryParams = {
       headers: this.headers,
@@ -36,8 +38,10 @@ export class LogService {
         endDate: endDate,
         selectedLevel: selectedLevel,
         searchValue: searchValue,
+        messageRegex: messageRegex,
         page: String(page),
-        size: String(size)
+        size: String(size),
+        sort: "dateTime, asc"
       },
       observe: 'response'
     };

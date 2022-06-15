@@ -14,13 +14,13 @@ import com.asdf.myhomeback.utils.LogUtils;
 import com.asdf.myhomeback.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogLevel;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class LogServiceImpl implements LogService {
@@ -105,24 +105,42 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public Page<Log> filterLogs(String startDate, String endDate, String selectedLevel, String searchValue, Pageable pageable) throws LogException {
+    public Page<Log> filterLogs(String startDate, String endDate, String selectedLevel, String searchValue, String messageRegex, Pageable pageable) throws LogException {
+
+        byte[] decodedBytes = Base64.getDecoder().decode(messageRegex);
+        messageRegex = new String(decodedBytes);
+
         startDate = this.checkAllFromField(startDate);
         endDate = this.checkAllFromField(endDate);
         selectedLevel = this.checkAllFromField(selectedLevel);
         searchValue = searchValue == null ? "" : searchValue;
 
         LogUtils.checkLogLevel(selectedLevel);
-        String[] selectedLevels = new String[] {"INFO", "WARN", "ERROR"};
+        String[] selectedLevels = new String[] {"INFO", "WARN", "ERROR", "FATAL"};
         if (!selectedLevel.equals(""))
             selectedLevels = new String[] {selectedLevel};
 
         long startDateVal = LogUtils.checkStartDate(startDate);
         long endDateVal = LogUtils.checkEndDate(endDate);
-        return logRepository
-                .findLogsByDateTimeBetweenAndLogLevelInAndLogMessageContainingOrDateTimeBetweenAndLogLevelInAndLoggerNameContaining(
-                        startDateVal, endDateVal, selectedLevels, searchValue,
-                        startDateVal, endDateVal, selectedLevels, searchValue,
-                        pageable);
+
+        if (searchValue.equals(""))
+            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegex(startDateVal, endDateVal, selectedLevels, messageRegex, pageable);
+
+        else if (messageRegex.equals(""))
+            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLoggerNameContaining(startDateVal, endDateVal, selectedLevels, searchValue, pageable);
+
+        else
+            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegexAndLoggerNameContaining(
+                    startDateVal, endDateVal, selectedLevels, messageRegex, searchValue, pageable);
+    }
+
+    @Override
+    public void generateFatalLog(String logMessage) {
+        Long dateTime = new Date().getTime();
+        String loggerName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        Log log = new Log(dateTime, LogLevel.FATAL, loggerName, logMessage);
+
+        saveLog(log);
     }
 
     private String checkAllFromField(String field) {
