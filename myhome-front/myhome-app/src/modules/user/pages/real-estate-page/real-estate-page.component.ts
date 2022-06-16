@@ -49,8 +49,8 @@ export class RealEstatePageComponent implements AfterViewInit {
   totalSize: number;
 
   constructor(private route: ActivatedRoute, private router: Router, private realEstateService: RealEstateService,
-     private snackBarService: SnackBarService, private deviceService: DeviceService,
-     public dialog: MatDialog, private sharedDatePickerService: SharedDatePickerService) {
+    private snackBarService: SnackBarService, private deviceService: DeviceService,
+    public dialog: MatDialog, private sharedDatePickerService: SharedDatePickerService) {
     this.name = route.snapshot.paramMap.get("name");
     this.realEstate = { household: [], devices: [] }
     this.pageSize = 20;
@@ -62,7 +62,7 @@ export class RealEstatePageComponent implements AfterViewInit {
 
   @ViewChild(MatSort)
   sort: MatSort = new MatSort;
-  
+
   ngAfterViewInit(): void {
     if (!this.name) return;
 
@@ -77,16 +77,16 @@ export class RealEstatePageComponent implements AfterViewInit {
             this.router.navigate(["mh-app/user/user-home-page"]);
           }
         });
-    
+
     this.deviceService
-    .getAllMessagesFromRealEstate(this.name, this.currentPage-1, this.pageSize)
-    .subscribe((response: any) => {
-      this.deviceMessages = response.body as DeviceMessageDTO[];
+      .getAllMessagesFromRealEstate(this.name, this.currentPage - 1, this.pageSize)
+      .subscribe((response: any) => {
+        this.deviceMessages = response.body as DeviceMessageDTO[];
         this.dataSource = new MatTableDataSource(this.deviceMessages);
         this.dataSource.sort = this.sort;
         this.totalSize = Number(response.headers.get("total-elements"));
         this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
-    })
+      })
 
     if (this.name)
       this.deviceService.findLowestReadPeriod(this.name).subscribe((response) => {
@@ -96,14 +96,14 @@ export class RealEstatePageComponent implements AfterViewInit {
             console.log("BLAAA");
             this.name = decodeURIComponent(this.name);
             this.deviceService
-            .getAllMessagesFromRealEstate(this.name, this.currentPage-1, this.pageSize)
-            .subscribe((response: any) => {
-              this.deviceMessages = response.body as DeviceMessageDTO[];
+              .getAllMessagesFromRealEstate(this.name, this.currentPage - 1, this.pageSize)
+              .subscribe((response: any) => {
+                this.deviceMessages = response.body as DeviceMessageDTO[];
                 this.dataSource = new MatTableDataSource(this.deviceMessages);
                 this.dataSource.sort = this.sort;
                 this.totalSize = Number(response.headers.get("total-elements"));
                 this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
-            })
+              })
           }
         });
       })
@@ -115,7 +115,7 @@ export class RealEstatePageComponent implements AfterViewInit {
     this.name = decodeURIComponent(this.name);
 
     this.deviceService
-    .getAllMessagesFromRealEstate(this.name, newPage - 1, this.pageSize)
+      .getAllMessagesFromRealEstate(this.name, newPage - 1, this.pageSize)
       .subscribe((response) => {
         if (response.body != null) {
           this.deviceMessages = response.body as DeviceMessageDTO[];
@@ -170,8 +170,10 @@ export class RealEstatePageComponent implements AfterViewInit {
     this.closedDialog = false;
     const dialogRef = this.dialog.open(ReportsDialogComponent, {
       width: '100%',
-      data: { deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate,
-      indicator: false },
+      data: {
+        deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate,
+        indicator: false
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {

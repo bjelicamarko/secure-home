@@ -90,4 +90,7 @@ public class LogMessGen {
         return String.format("User with username: '%s' seen notification with id: '%s'", username, anId);
     }
 
+    public static String maliciousIpAddress(String remoteAddress) {
+        return String.format("Spring application was hit from malicious address '%s'", remoteAddress);
+    }
 }

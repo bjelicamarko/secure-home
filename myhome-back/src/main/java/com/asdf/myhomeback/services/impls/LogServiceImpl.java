@@ -12,6 +12,9 @@ import com.asdf.myhomeback.services.LogService;
 import com.asdf.myhomeback.services.RuleService;
 import com.asdf.myhomeback.utils.LogUtils;
 import com.asdf.myhomeback.websocket.WebSocketService;
+import org.kie.api.runtime.ClassObjectFilter;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.data.domain.*;
@@ -37,6 +40,9 @@ public class LogServiceImpl implements LogService {
     @Autowired
     private WebSocketService webSocketService;
 
+    @Autowired
+    private KieContainer kieContainer;
+
     @Override
     public void saveLog(Log log){
         // check if some log rule will trigger notification
@@ -55,12 +61,30 @@ public class LogServiceImpl implements LogService {
         List<Rule> logRules = ruleService.findAll(RuleType.LOG);
         List<AlarmNotification> alarmNotifications = new ArrayList<>();
         logRules.forEach(logRule -> {
-            // if log contains some string or logLevel is same as in the rule
-            if (log.getLogMessage().contains(logRule.getRegexPattern()) && log.getLogLevel().equals(logRule.getLogLevel())){
-                alarmNotifications.add(new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null, "admin"));
-            }
+            if(logRule.getLogLevel().equals(LogLevel.ERROR))
+                droolsRuleLogError(logRule, log, alarmNotifications);
+            else
+                // if log contains some string and logLevel is same as in the rule
+                if (log.getLogMessage().contains(logRule.getRegexPattern()) && log.getLogLevel().equals(logRule.getLogLevel()))
+                    alarmNotifications.add(new AlarmNotification(log.getLogMessage(), AlarmType.LOG, null, "admin"));
+
         });
         return alarmNotifications;
+    }
+
+    private void droolsRuleLogError(Rule logRule, Log log, List<AlarmNotification> alarmNotifications) {
+        KieSession kieSession = kieContainer.newKieSession("ExampleSession");
+        kieSession.getAgenda().getAgendaGroup("test_agenda").setFocus();
+
+        kieSession.insert(logRule);
+
+        kieSession.insert(log);
+        kieSession.fireAllRules();
+
+        Collection<AlarmNotification> results = (Collection<AlarmNotification>) kieSession.getObjects(new ClassObjectFilter(AlarmNotification.class));
+        if(results.size() != 0){
+            alarmNotifications.add(results.stream().findFirst().get());
+        }
     }
 
     @Override
@@ -101,7 +125,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public Page<Log> getAllLogs(Pageable pageable) {
-        return logRepository.findAll(pageable);
+        return logRepository.findAllByDateTimeIsNotNullOrderByDateTimeDesc(pageable);
     }
 
     @Override
@@ -124,13 +148,13 @@ public class LogServiceImpl implements LogService {
         long endDateVal = LogUtils.checkEndDate(endDate);
 
         if (searchValue.equals(""))
-            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegex(startDateVal, endDateVal, selectedLevels, messageRegex, pageable);
+            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegexOrderByDateTimeDesc(startDateVal, endDateVal, selectedLevels, messageRegex, pageable);
 
         else if (messageRegex.equals(""))
-            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLoggerNameContaining(startDateVal, endDateVal, selectedLevels, searchValue, pageable);
+            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLoggerNameContainingOrderByDateTimeDesc(startDateVal, endDateVal, selectedLevels, searchValue, pageable);
 
         else
-            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegexAndLoggerNameContaining(
+            return logRepository.findLogsByDateTimeBetweenAndLogLevelInAndLogMessageRegexAndLoggerNameContainingOrderByDateTimeDesc(
                     startDateVal, endDateVal, selectedLevels, messageRegex, searchValue, pageable);
     }
 

@@ -2,13 +2,23 @@ package com.asdf.myhomeback.services.impls;
 
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.dto.RegistrationDTO;
+import com.asdf.myhomeback.models.AlarmNotification;
 import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.UserRole;
+import com.asdf.myhomeback.models.drools.IpAddress;
+import com.asdf.myhomeback.models.enums.AlarmType;
 import com.asdf.myhomeback.repositories.AppUserRepository;
+import com.asdf.myhomeback.services.AlarmNotificationService;
 import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.services.UserRoleService;
 import com.asdf.myhomeback.utils.AppUserUtils;
+import com.asdf.myhomeback.websocket.WebSocketService;
+import org.kie.api.KieServices;
+import org.kie.api.runtime.ClassObjectFilter;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +26,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -38,6 +52,19 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private KieContainer kieContainer;
+
+    @Autowired
+    private List<IpAddress> maliciousIpAddresses;
+
+    @Autowired
+    @Lazy
+    private AlarmNotificationService alarmNotificationService;
+
+    @Autowired
+    private WebSocketService webSocketService;
 
     public static final String LINK_ROOT = "http://localhost:8081/api/users/verify-registration/";
 
@@ -210,5 +237,35 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser findByUsernameVerifiedUnlocked(String username) {
         return appUserRepository.findByUsernameVerifiedUnlocked(username).orElse(null);
+    }
+
+    @Override
+    public boolean checkMaliciousIpAddress(String remoteAddress) {
+        KieSession kieSession = kieContainer.newKieSession("ExampleSession");
+        kieSession.getAgenda().getAgendaGroup("test_agenda").setFocus();
+
+        IpAddress ipAddress = new IpAddress(remoteAddress);
+
+        kieSession.insert(ipAddress);
+        kieSession.insert(maliciousIpAddresses); // bean
+
+        kieSession.fireAllRules();
+
+        List<AlarmNotification> alarmNotifications = new ArrayList<>();
+
+        Collection<AlarmNotification> results = (Collection<AlarmNotification>) kieSession.getObjects(new ClassObjectFilter(AlarmNotification.class));
+        if(results.size() != 0){
+            alarmNotifications.add(results.stream().findFirst().get());
+
+            // save all notifications
+            alarmNotificationService.saveAll(alarmNotifications);
+
+            // send all notifications
+            webSocketService.sendNotifications(alarmNotifications, AlarmType.LOG);
+
+            return true;
+        }
+
+        return false;
     }
 }

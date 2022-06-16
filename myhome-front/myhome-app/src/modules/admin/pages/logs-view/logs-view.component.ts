@@ -61,7 +61,7 @@ export class LogsViewComponent implements AfterViewInit {
   sort: MatSort = new MatSort;
 
   ngAfterViewInit(): void {
-    this.logService.getAllLogs(this.currentPage - 1, this.pageSize)
+    this.logService.getAllLogs(0, this.pageSize)
       .subscribe((response: any) => {
         this.logs = response.body as LogDTO[];
         console.log(this.logs)
@@ -104,7 +104,7 @@ export class LogsViewComponent implements AfterViewInit {
   }
 
   formatDateTime(date: number) {
-    var dateString = moment(date).format('DD. MM. YYYY. hh:mm');
+    var dateString = moment(date).format('DD. MM. YYYY. HH:mm');
     return dateString.toString();
   }
 

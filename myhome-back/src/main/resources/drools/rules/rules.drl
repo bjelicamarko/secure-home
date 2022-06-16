@@ -1,14 +1,52 @@
 package drools.rules
 
 import com.asdf.myhomeback.dto.IdDTO;
+import com.asdf.myhomeback.models.Log;
 
-import java.util.*;
+import org.springframework.boot.logging.LogLevel;
 
-rule "Test"
+import java.util.*
+import com.asdf.myhomeback.models.AlarmNotification
+import com.asdf.myhomeback.models.enums.AlarmType;
+import com.asdf.myhomeback.models.Rule;
+import com.asdf.myhomeback.models.drools.IpAddress;
+import com.asdf.myhomeback.models.enums.RuleType;
+
+function boolean containsPattern(String logMessage, String regexPattern){
+    return logMessage.contains(regexPattern);
+}
+
+function boolean isAddressMalicious(String address, List maliciousAddresses){
+    for (Object ipAddress : maliciousAddresses) {
+        if(address.equals(((IpAddress) ipAddress).getAddress())) {
+            return true;
+        }
+    }
+    return false;
+}
+
+rule "error_level_log"
     agenda-group "test_agenda"
     when
-        $test : IdDTO(id == 5);
+        $logRule: Rule(ruleType == RuleType.LOG, logLevel == LogLevel.ERROR)
+        $log : Log(logLevel == LogLevel.ERROR)
+        eval(containsPattern($log.getLogMessage(), $logRule.getRegexPattern()))
     then
-        $test.setId(6L);
-        System.out.println("It works!");
+        AlarmNotification alarmNotification = new AlarmNotification($log.getLogMessage(), AlarmType.LOG, null, "admin");
+        insert(alarmNotification);
+        System.err.println("Log with logLevel ERROR found!");
+        System.err.println(alarmNotification.getMessage());
+end
+
+rule "malicoius_ip_address"
+    agenda-group "test_agenda"
+    when
+        $maliciousAddresses: List(size > 0)
+        $address : IpAddress()
+        eval(isAddressMalicious($address.getAddress(), $maliciousAddresses))
+    then
+        String alarmNotifContent = String.format("Spring application was hit from malicious address '%s'", $address.getAddress());
+        AlarmNotification alarmNotification = new AlarmNotification(alarmNotifContent, AlarmType.LOG, null, "admin");
+        insert(alarmNotification);
+        System.err.println(alarmNotification.getMessage());
 end

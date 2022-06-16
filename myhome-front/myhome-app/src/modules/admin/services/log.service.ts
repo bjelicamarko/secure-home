@@ -21,7 +21,6 @@ export class LogService {
       params: new HttpParams()
         .set("page", String(page))
         .append("size", String(size))
-        .append("sort", "id, asc"),
     };
     return this.http.get<HttpResponse<LogDTO[]>>("myhome/api/logs", queryParams);
   }
@@ -40,8 +39,7 @@ export class LogService {
         searchValue: searchValue,
         messageRegex: messageRegex,
         page: String(page),
-        size: String(size),
-        sort: "dateTime, asc"
+        size: String(size)
       },
       observe: 'response'
     };

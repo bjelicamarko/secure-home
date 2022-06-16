@@ -45,10 +45,11 @@ public class BlacklistedTokenServiceImpl implements BlacklistedTokenService {
         blacklistedTokenList.forEach(blacklistedToken -> {
             String token = blacklistedToken.getToken();
             Date expiredIn = tokenUtils.getExpirationDateFromToken(token);
-            if (!expiredIn.before(new Date())) {
-                removeToken(blacklistedToken);
-                deletedTokens.addAndGet(1);
-            }
+            if(expiredIn != null)
+                if (!expiredIn.before(new Date())) {
+                    removeToken(blacklistedToken);
+                    deletedTokens.addAndGet(1);
+                }
         });
         if (deletedTokens.intValue() != 0)
             printDeletingMessage(deletedTokens);
