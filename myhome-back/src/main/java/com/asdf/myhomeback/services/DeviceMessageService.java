@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.services;
 
+import com.asdf.myhomeback.dto.DeviceMessageDTO;
 import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.DeviceMessage;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public interface DeviceMessageService {
 
     void save(DeviceMessage deviceMessage);
 
-    void saveAll(List<DeviceMessage> deviceMessages) throws Exception;
+    void saveAll(List<DeviceMessageDTO> deviceMessageDTOs) throws Exception;
 
     Page<DeviceMessage> getAllMessagesFromDevice(String deviceName, Pageable pageable);
 

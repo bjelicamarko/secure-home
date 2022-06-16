@@ -30,16 +30,16 @@ public class LogController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('READ_LOGS')")
-    public ResponseEntity<List<LogDTO>> getAllUsersButAdmin(Pageable pageable) {
+    public ResponseEntity<LogDTO[]> getAllUsersButAdmin(Pageable pageable) {
         Page<Log> logs = logService.getAllLogs(pageable);
 
-        return new ResponseEntity<>(logs.stream().map(LogDTO::new).toList(),
+        return new ResponseEntity<>(logs.stream().map(LogDTO::new).toArray(LogDTO[]::new),
                 ControllerUtils.createPageHeaderAttributes(logs), HttpStatus.OK);
     }
 
     @GetMapping("/filterLogs")
     @PreAuthorize("hasAuthority('FILTER_ALL_LOGS')")
-    public ResponseEntity<List<LogDTO>> filterMessages(
+    public ResponseEntity<LogDTO[]> filterMessages(
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "selectedLevel", required = false) String selectedLevel,
@@ -50,11 +50,11 @@ public class LogController {
         try {
             Page<Log> deviceMessages = logService.filterLogs(startDate, endDate, selectedLevel, searchValue, messageRegex, pageable);
             if (deviceMessages.getContent().size() == 0)
-                return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(deviceMessages.stream().map(LogDTO::new).toList(),
+                return  new ResponseEntity<>(new LogDTO[]{}, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deviceMessages.stream().map(LogDTO::new).toArray(LogDTO[]::new),
                     ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new LogDTO[]{}, HttpStatus.BAD_REQUEST);
         }
     }
 }

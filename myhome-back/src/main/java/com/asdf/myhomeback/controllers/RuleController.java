@@ -20,10 +20,10 @@ public class RuleController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('GET_RULES')")
-    public ResponseEntity<List<RuleDTO>> getAllExistingRules(){
+    public ResponseEntity<RuleDTO[]> getAllExistingRules(){
         try {
             List<Rule> rules = ruleService.findAll();
-            return new ResponseEntity<>(rules.stream().map(RuleDTO::new).toList(), HttpStatus.OK);
+            return new ResponseEntity<>(rules.stream().map(RuleDTO::new).toArray(RuleDTO[]::new), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

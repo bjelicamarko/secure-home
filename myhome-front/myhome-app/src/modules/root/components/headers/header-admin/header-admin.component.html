@@ -9,7 +9,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" [routerLink]="'/mh-app/admin/users-view'"
-            routerLinkActive="active">View</a>
+            routerLinkActive="active">Users</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" aria-current="page" [routerLink]="'/mh-app/admin/create-real-estate'">Add real
@@ -26,7 +26,8 @@
           <a class="nav-link" aria-current="page" [routerLink]="'/mh-app/admin/alarms-view'">Alarms</a>
         </li>
         <li class="nav-item">
-          <a [matBadgeHidden]="notSeenCount===0" class="nav-link" matBadge="{{notSeenCount}}" aria-current="page" [routerLink]="'/mh-app/admin/notifications'">
+          <a [matBadgeHidden]="notSeenCount===0" class="nav-link" matBadge="{{notSeenCount}}" aria-current="page"
+            [routerLink]="'/mh-app/admin/notifications'">
             Notifications
           </a>
         </li>

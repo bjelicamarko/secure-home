@@ -1,5 +1,6 @@
 package com.asdf.myhomeback.services.impls;
 
+import com.asdf.myhomeback.dto.DeviceMessageDTO;
 import com.asdf.myhomeback.exceptions.DeviceException;
 import com.asdf.myhomeback.models.*;
 import com.asdf.myhomeback.models.enums.AlarmType;
@@ -48,8 +49,13 @@ public class DeviceMessageServiceImpl implements DeviceMessageService {
     }
 
     @Override
-    public void saveAll(List<DeviceMessage> deviceMessages) throws Exception {
-        
+    public void saveAll(List<DeviceMessageDTO> deviceMessageDTOs) throws Exception {
+
+        List<DeviceMessage> deviceMessages = new ArrayList<>();
+        for (DeviceMessageDTO deviceMessageDTO : deviceMessageDTOs) {
+            deviceMessages.add(new DeviceMessage(deviceMessageDTO));
+        }
+
         // Decrypt messages
         decryptMessages(deviceMessages);
 

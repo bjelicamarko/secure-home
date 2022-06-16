@@ -53,15 +53,15 @@ public class ReportDTO {
 
     @Override
     public String toString() {
-        return String.format("""
-                Device Name: %s
-                Start Date: %s
-                End date: %s
-                Selected Status: %s
-                Regular number: %s
-                Panic number: %s
-                Content:
-                %s""", this.deviceName, this.startDate, this.endDate, this.selectedStatus, this.numberOfRegular,
+        return String.format("\n" +
+                "Device Name: %s\n"+
+                "Start Date: %s\n"+
+                "End date: %s\n"+
+                "Selected Status: %s\n"+
+                "Regular number: %s\n"+
+                "Panic number: %s\n"+
+                "Content:\n"+
+                "%s", this.deviceName, this.startDate, this.endDate, this.selectedStatus, this.numberOfRegular,
                 this.numberOfSuspicious, this.content);
     }
 }

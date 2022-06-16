@@ -180,12 +180,12 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     private String composeVerificationEmail(String username) {
-        String message = """
-                Account was created using this email address with username: '%s'.
-                To verify your identity click on this link %s%s
-
-                This is an automatically generated email – please do not reply to it. 
-                ©secure-home""";
+        String message = "\n"+
+                "Account was created using this email address with username: '%s'.\n"+
+                "To verify your identity click on this link %s%s\n"+
+                "\n"+
+                "This is an automatically generated email – please do not reply to it.\n"+
+                "©secure-home\n";
 
         return String.format(message, username, LINK_ROOT, username);
     }

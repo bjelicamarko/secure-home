@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,7 +19,13 @@ public class RealEstateWithHouseholdAndDevicesDTO {
 
     public RealEstateWithHouseholdAndDevicesDTO(List<String> household, List<Device> devices) {
         this.household = household;
-        this.devices = devices.stream().map(DeviceDTO::new).toList();
+        this.convertDevices(devices);
+    }
+
+    private void convertDevices(List<Device> devicesToConvert) {
+        this.devices = new ArrayList<>();
+        for (Device device : devicesToConvert)
+            devices.add(new DeviceDTO(device));
     }
 
 }

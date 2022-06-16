@@ -1,0 +1,14 @@
+package drools.rules
+
+import com.asdf.myhomeback.dto.IdDTO;
+
+import java.util.*;
+
+rule "Test"
+    agenda-group "test_agenda"
+    when
+        $test : IdDTO(id == 5);
+    then
+        $test.setId(6L);
+        System.out.println("It works!");
+end

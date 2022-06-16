@@ -1,11 +1,8 @@
 package com.asdf.myhomeback.controllers;
 
-import com.asdf.myhomeback.dto.RealEstateWithDevicesDTO;
-import com.asdf.myhomeback.dto.RealEstateWithPhotoAndRoleDTO;
+import com.asdf.myhomeback.dto.*;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
-import com.asdf.myhomeback.dto.RealEstateDTO;
-import com.asdf.myhomeback.dto.RealEstateToAssignDTO;
 import com.asdf.myhomeback.models.Device;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.security.TokenUtils;
@@ -119,7 +116,7 @@ public class RealEstateController {
 
     @GetMapping(value = "/all")
     @PreAuthorize("hasAuthority('GET_USER_REAL_ESTATES')")
-    public ResponseEntity<List<RealEstateWithPhotoAndRoleDTO>> getRealEstatesOfUser(HttpServletRequest request, Pageable pageable){
+    public ResponseEntity<RealEstateWithPhotoAndRoleDTO[]> getRealEstatesOfUser(HttpServletRequest request, Pageable pageable){
         try{
             String authToken = tokenUtils.getToken(request);
             String username = tokenUtils.getUsernameFromToken(authToken);
@@ -127,11 +124,11 @@ public class RealEstateController {
             List<String> roles = userRealEstateService.findUsersRoleInRealEstates(username, realEstates);
 
             List<RealEstateWithPhotoAndRoleDTO> list = new ArrayList<>();
-            List<RealEstate> realEstates1 = realEstates.stream().toList();
+            List<RealEstate> realEstates1 = realEstates.getContent();
             for (int i = 0; i < realEstates1.size(); i++) {
                 list.add(new RealEstateWithPhotoAndRoleDTO(realEstates1.get(i), roles.get(i)));
             }
-            return new ResponseEntity<>(list, ControllerUtils.createPageHeaderAttributes(realEstates), HttpStatus.OK);
+            return new ResponseEntity<>(list.toArray(new RealEstateWithPhotoAndRoleDTO[list.size()]), ControllerUtils.createPageHeaderAttributes(realEstates), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             String username = tokenUtils.getUsernameFromRequest(request);

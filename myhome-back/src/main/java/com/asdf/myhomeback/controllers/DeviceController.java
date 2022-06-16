@@ -82,7 +82,7 @@ public class DeviceController {
     @PostMapping(value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveAllDeviceMessages(@RequestBody List<DeviceMessageDTO> deviceMessageDTOs) {
         try {
-            deviceMessageService.saveAll(deviceMessageDTOs.stream().map(DeviceMessage::new).toList());
+            deviceMessageService.saveAll(deviceMessageDTOs);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -93,15 +93,15 @@ public class DeviceController {
 
     @GetMapping("/getAllMessagesFromDevice/{deviceName}")
     @PreAuthorize("hasAuthority('GET_ALL_MESSAGES_FROM_DEVICE')")
-    public ResponseEntity<List<DeviceMessageDTO>> getAllMessagesFromDevice(@PathVariable String deviceName, Pageable pageable) {
+    public ResponseEntity<DeviceMessageDTO[]> getAllMessagesFromDevice(@PathVariable String deviceName, Pageable pageable) {
         Page<DeviceMessage> deviceMessages = deviceMessageService.getAllMessagesFromDevice(deviceName, pageable);
-        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toArray(DeviceMessageDTO[]::new),
                 ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
     }
 
     @GetMapping("/filterMessages")
     @PreAuthorize("hasAuthority('FILTER_ALL_MESSAGES_FROM_DEVICE')")
-    public ResponseEntity<List<DeviceMessageDTO>> filterMessages(
+    public ResponseEntity<DeviceMessageDTO[]> filterMessages(
             @RequestParam(value = "deviceName", required = false) String deviceName,
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
@@ -112,11 +112,11 @@ public class DeviceController {
             Page<DeviceMessage> deviceMessages = deviceMessageService.filterMessages(deviceName, startDate, endDate, selectedStatus,
                     pageable);
             if (deviceMessages.getContent().size() == 0)
-                return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+                return  new ResponseEntity<>(new DeviceMessageDTO[]{}, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toArray(DeviceMessageDTO[]::new),
                     ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new DeviceMessageDTO[]{}, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -141,7 +141,7 @@ public class DeviceController {
 
     @GetMapping("/getAllMessagesFromRealEstate/{realEstate}")
     @PreAuthorize("hasAuthority('GET_ALL_MESSAGES_FROM_REAL_ESTATE')")
-    public ResponseEntity<List<DeviceMessageDTO>> getAllMessagesFromRealEstate( HttpServletRequest request,
+    public ResponseEntity<DeviceMessageDTO[]> getAllMessagesFromRealEstate( HttpServletRequest request,
                                                                                 @PathVariable String realEstate, Pageable pageable) {
         String authToken = tokenUtils.getToken(request);
         String username = tokenUtils.getUsernameFromToken(authToken);
@@ -152,13 +152,13 @@ public class DeviceController {
         }
 
         Page<DeviceMessage> deviceMessages = deviceMessageService.findAllByDeviceNameInOrderByIdDesc(realEstate, pageable);
-        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+        return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toArray(DeviceMessageDTO[]::new),
                 ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
     }
 
     @GetMapping("/filterAllMessages")
     @PreAuthorize("hasAuthority('FILTER_ALL_MESSAGES_FROM_ESTATE')")
-    public ResponseEntity<List<DeviceMessageDTO>> filterAllMesages( HttpServletRequest request,
+    public ResponseEntity<DeviceMessageDTO[]> filterAllMesages( HttpServletRequest request,
             @RequestParam(value = "realEstateName", required = false) String realEstateName,
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
@@ -177,11 +177,11 @@ public class DeviceController {
             Page<DeviceMessage> deviceMessages = deviceMessageService.filterAllMessages(realEstateName, startDate, endDate, selectedStatus,
                     pageable);
             if (deviceMessages.getContent().size() == 0)
-                return  new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toList(),
+                return  new ResponseEntity<>(new DeviceMessageDTO[]{}, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deviceMessages.stream().map(DeviceMessageDTO::new).toArray(DeviceMessageDTO[]::new),
                     ControllerUtils.createPageHeaderAttributes(deviceMessages), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new DeviceMessageDTO[]{}, HttpStatus.BAD_REQUEST);
         }
     }
 

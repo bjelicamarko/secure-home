@@ -113,7 +113,7 @@ public class AppUserController {
         String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
-        
+
         logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
         return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
@@ -130,16 +130,16 @@ public class AppUserController {
 
     @GetMapping(value = "/getAllUsersButAdmin", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('READ_USERS_WITHOUT_ADMIN')")
-    public ResponseEntity<List<AppUserDTO>> getAllUsersButAdmin(Pageable pageable) {
+    public ResponseEntity<AppUserDTO[]> getAllUsersButAdmin(Pageable pageable) {
         Page<AppUser> users = appUserService.getAllUsersButAdmin(pageable);
 
-        return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
+        return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toArray(AppUserDTO[]::new),
                 ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
     }
 
     @GetMapping(value = "/searchUsers", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('SEARCH_USERS')")
-    public ResponseEntity<List<AppUserDTO>> searchUsers(
+    public ResponseEntity<AppUserDTO[]> searchUsers(
             @RequestParam(value = "searchField", required = false) String searchField,
             @RequestParam(value = "userType", required = false) String userType,
             @RequestParam(value = "verified", required = false) String verified,
@@ -149,7 +149,7 @@ public class AppUserController {
 
         try {
             Page<AppUser> users = appUserService.searchUsers(searchField, userType, verified, locked, pageable);
-            return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toList(),
+            return new ResponseEntity<>(users.stream().map(AppUserDTO::new).toArray(AppUserDTO[]::new),
                     ControllerUtils.createPageHeaderAttributes(users), HttpStatus.OK);
         } catch (AppUserException e) {
             e.printStackTrace();

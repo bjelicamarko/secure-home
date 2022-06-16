@@ -37,15 +37,15 @@ public class AlarmNotificationController {
     @Autowired
     private LogService logService;
 
-    @GetMapping ()
+    @GetMapping
     @PreAuthorize("hasAuthority('GET_NOTIFICATIONS')")
-    public ResponseEntity<List<AlarmNotificationDTO>> findAllForUser(Pageable pageable, HttpServletRequest request){
+    public ResponseEntity<AlarmNotificationDTO[]> findAllForUser(Pageable pageable, HttpServletRequest request){
         String username = tokenUtils.getUsernameFromRequest(request);
         try{
             Page<AlarmNotification> anp = alarmNotificationService.findAllByUsername(username, pageable);
             alarmNotificationService.saveAllAndSetSeen(username, anp.getContent(), logService);
             HttpHeaders headers = ControllerUtils.createPageHeaderAttributes(anp);
-            return new ResponseEntity<>(anp.stream().map(AlarmNotificationDTO::new).toList(), headers, HttpStatus.OK);
+            return new ResponseEntity<>(anp.stream().map(AlarmNotificationDTO::new).toArray(AlarmNotificationDTO[]::new), headers, HttpStatus.OK);
         } catch (AppUserException e) {
             e.printStackTrace();
             logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
@@ -75,24 +75,24 @@ public class AlarmNotificationController {
         }
     }
 
-    @GetMapping("/notSeen")
-    @PreAuthorize("hasAuthority('GET_NOTIFICATIONS')")
-    public ResponseEntity<List<AlarmNotificationWithIdDTO>> getNotSeenForUser(HttpServletRequest request, Pageable pageable) {
-        String username = tokenUtils.getUsernameFromRequest(request);
-        try{
-            Page<AlarmNotification> anp = alarmNotificationService.findAllByUsernameNotSeen(username, pageable);
-            HttpHeaders headers = ControllerUtils.createPageHeaderAttributes(anp);
-            return new ResponseEntity<>(anp.stream().map(AlarmNotificationWithIdDTO::new).toList(), headers, HttpStatus.OK);
-        } catch (AppUserException e) {
-            e.printStackTrace();
-            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/notSeen")
+//    @PreAuthorize("hasAuthority('GET_NOTIFICATIONS')")
+//    public ResponseEntity<List<AlarmNotificationWithIdDTO>> getNotSeenForUser(HttpServletRequest request, Pageable pageable) {
+//        String username = tokenUtils.getUsernameFromRequest(request);
+//        try{
+//            Page<AlarmNotification> anp = alarmNotificationService.findAllByUsernameNotSeen(username, pageable);
+//            HttpHeaders headers = ControllerUtils.createPageHeaderAttributes(anp);
+//            return new ResponseEntity<>(anp.stream().map(AlarmNotificationWithIdDTO::new).toList(), headers, HttpStatus.OK);
+//        } catch (AppUserException e) {
+//            e.printStackTrace();
+//            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping("/setSeen")
     @PreAuthorize("hasAuthority('GET_NOTIFICATIONS')")
