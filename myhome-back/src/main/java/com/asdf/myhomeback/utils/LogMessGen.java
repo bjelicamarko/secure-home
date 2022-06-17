@@ -93,4 +93,14 @@ public class LogMessGen {
     public static String maliciousIpAddress(String remoteAddress) {
         return String.format("Spring application was hit from malicious address '%s'", remoteAddress);
     }
+
+    public static String expiredJWT(String username, String urlPath) {
+        return String.format("User with username: '%s' tried to access url endpoint: " +
+                "'%s' with expired token.", username, urlPath);
+    }
+
+    public static String blacklistedToken(String username, String urlPath) {
+        return String.format("User with username: '%s' tried to access url endpoint: " +
+                "'%s' with blacklisted token.", username, urlPath);
+    }
 }

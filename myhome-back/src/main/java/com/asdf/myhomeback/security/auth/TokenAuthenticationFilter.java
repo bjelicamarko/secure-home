@@ -4,9 +4,12 @@ import com.asdf.myhomeback.exceptions.TokenBlacklistedException;
 import com.asdf.myhomeback.models.BlacklistedToken;
 import com.asdf.myhomeback.security.TokenUtils;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
+import com.asdf.myhomeback.services.LogService;
+import com.asdf.myhomeback.utils.LogMessGen;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +29,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
 	private BlacklistedTokenService blackListedTokenService;
 
+	private LogService logService;
+
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
 	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService, BlacklistedTokenService blackListedTokenService) {
@@ -34,12 +39,20 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		this.blackListedTokenService = blackListedTokenService;
 	}
 
+	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService, BlacklistedTokenService blackListedTokenService, LogService logService) {
+		this.tokenUtils = tokenHelper;
+		this.userDetailsService = userDetailsService;
+		this.blackListedTokenService = blackListedTokenService;
+		this.logService = logService;
+	}
+
 	@Override
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		String username;
 		String authToken = tokenUtils.getToken(request);
+		String urlPath = request.getRequestURI();
 
 		String fingerprint = tokenUtils.getFingerprintFromCookie(request);
 
@@ -61,9 +74,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 				}
 			}
 		} catch (ExpiredJwtException ex) {
+			username = tokenUtils.getUsernameFromToken(authToken);
+			logService.generateWarnLog(LogMessGen.expiredJWT(username, urlPath));
 			LOGGER.debug("Token expired!");
 		}
 		catch (TokenBlacklistedException e){
+			username = tokenUtils.getUsernameFromToken(authToken);
+			logService.generateWarnLog(LogMessGen.blacklistedToken(username, urlPath));
 			System.err.println(e.getMessage());
 			LOGGER.debug(e.getMessage());
 		}

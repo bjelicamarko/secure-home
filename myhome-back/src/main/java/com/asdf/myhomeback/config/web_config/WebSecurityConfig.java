@@ -5,6 +5,7 @@ import com.asdf.myhomeback.security.auth.RestAuthenticationEntryPoint;
 import com.asdf.myhomeback.security.auth.TokenAuthenticationFilter;
 import com.asdf.myhomeback.services.AppUserService;
 import com.asdf.myhomeback.services.BlacklistedTokenService;
+import com.asdf.myhomeback.services.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private BlacklistedTokenService blackListedTokenService;
 
+	@Autowired
+	private LogService logService;
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -67,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/verify-registration/**").permitAll()
 				.anyRequest().authenticated().and()
 				.cors().and()
-				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, blackListedTokenService),
+				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, blackListedTokenService, logService),
 						BasicAuthenticationFilter.class)
 				.headers()
 				.xssProtection()
