@@ -28,7 +28,10 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device findOneByName(String name) {
+    public Device findOneByName(String name) throws DeviceException {
+        Device device = deviceRepository.findByName(name);
+        if(device == null)
+            throw new DeviceException(String.format("Device with name: '%s' does not exist in database.", name));
         return deviceRepository.findByName(name);
     }
 
@@ -37,7 +40,7 @@ public class DeviceServiceImpl implements DeviceService {
         DeviceUtils.checkReadPeriod(d.getReadPeriod());
         Device device = deviceRepository.findByName(d.getName());
         if (device == null)
-            throw new DeviceException("Null device");
+            throw new DeviceException(String.format("Device with name: '%s' does not exist in database.", d.getName()));
         device.setReadPeriod(d.getReadPeriod());
         deviceRepository.save(device);
     }

@@ -1,4 +1,9 @@
-package com.asdf.myhomeback.utils;
+package com.asdf.adminback.util;
+
+import com.asdf.adminback.dto.CertificateDataDTO;
+import com.asdf.adminback.dto.CertificateSigningDTO;
+import com.asdf.adminback.dto.RevokedCertificateDTO;
+import com.asdf.adminback.models.CSR;
 
 public class LogMessGen {
 
@@ -119,4 +124,91 @@ public class LogMessGen {
     public static String deviceReadTimeUpdate(String user, String deviceName, Integer to) {
         return String.format("User with username: '%s' updated read time from device: '%s' to '%s' seconds.", user, deviceName, to);
     }
+
+    public static String saveCertMess(String username, CertificateDataDTO dto) {
+        return String.format("""
+                        Admin with username: '%s' signed certificate with data:
+                        Email: '%s'
+                        Common name: '%s'
+                        Organization: '%s'
+                        Organization unit: '%s'
+                        Country: '%s'
+                        State: '%s'""",
+                username, dto.getEmail(), dto.getCommonName(), dto.getOrganization(),
+                dto.getOrganizationUnit(), dto.getCountry(), dto.getState());
+    }
+
+    public static String revokeCertMess(String username, RevokedCertificateDTO dto) {
+        return String.format("Admin with username: '%s' revoked certificate with alias: '%s'." +
+                "\nReason: %s", username, dto.getAlias(), dto.getReason());
+    }
+
+    public static String saveCsrMess(CSR csr) {
+        return String.format("""
+                        Certificate signing request arrived with data:
+                        Email: '%s'
+                        Common name: '%s'
+                        Organization: '%s'
+                        Organization unit: '%s'
+                        Country: '%s'
+                        State: '%s'""",
+                csr.getEmail(), csr.getCommonName(), csr.getOrganization(),
+                csr.getOrganizationUnit(), csr.getCountry(), csr.getState());
+    }
+
+    public static String saveCsrErrMess(String message, CSR csr) {
+        return String.format("""
+                        Certificate signing request arrived and error occurred:
+                        Message: '%s'
+                        Data:
+                        - Email: '%s'
+                        - Common name: '%s'
+                        - Organization: '%s'
+                        - Organization unit: '%s'
+                        - Country: '%s'
+                        - State: '%s'""",
+                message,
+                csr.getEmail(), csr.getCommonName(), csr.getOrganization(),
+                csr.getOrganizationUnit(), csr.getCountry(), csr.getState());
+    }
+
+    public static String saveCsrInternalErrMess(CSR csr) {
+        return String.format("""
+                        Certificate signing request arrived and internal server error occurred.
+                        Data:
+                        - Email: '%s'
+                        - Common name: '%s'
+                        - Organization: '%s'
+                        - Organization unit: '%s'
+                        - Country: '%s'
+                        - State: '%s'""",
+                csr.getEmail(), csr.getCommonName(), csr.getOrganization(),
+                csr.getOrganizationUnit(), csr.getCountry(), csr.getState());
+    }
+
+    public static String csrVerification(Long id) {
+        return String.format("Certificate signing request with id: '%s' successfully verified ", id);
+    }
+
+    public static String csrVerificationErr(String message, Long id) {
+        return String.format("Error occurred while verifying certificate signing request with id: '%s' with" +
+                " message: '%s'", message, id);
+    }
+
+    public static String certValidationSucc(String username, String alias) {
+        return String.format("Admin with username: '%s' ran validation for certificate with alias: '%s', " +
+                "and validation was successful.", username, alias);
+    }
+
+    public static String certValidationEx(String username, String alias, String message) {
+        return String.format("Admin with username: '%s' ran validation for certificate with alias: '%s', " +
+                "and validation was unsuccessful." +
+                "\nMessage: '%s'", username, alias, message);
+    }
+
+    public static String unSuccCsrGet(String username, Long id) {
+        return String.format("Admin with username: '%s' requested csr with invalid id: '%s'", username, id);
+    }
+
+
 }

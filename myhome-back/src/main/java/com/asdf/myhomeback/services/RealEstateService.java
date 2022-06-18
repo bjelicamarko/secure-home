@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface RealEstateService {
 
-    RealEstate getRealEstateById(Long id);
+    RealEstate getRealEstateById(Long id) throws RealEstateException;
 
     void saveRealEstate(RealEstateWithDevicesDTO realEstateDTO) throws RealEstateException;
 
@@ -31,5 +31,5 @@ public interface RealEstateService {
 
     RealEstate findRealEstateByName(String name);
 
-    int findLowestReadPeriod(String name);
+    int findLowestReadPeriod(String name) throws RealEstateException;
 }

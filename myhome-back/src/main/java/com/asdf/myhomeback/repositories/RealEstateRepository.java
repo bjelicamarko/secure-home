@@ -32,4 +32,6 @@ public interface RealEstateRepository extends JpaRepository<RealEstate, Long> {
     List<RealEstate> getRealEstatesByDeviceName(String deviceName);
 
     RealEstate findRealEstateByName(String name);
+
+    RealEstate findRealEstateById(Long id);
 }

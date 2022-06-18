@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -32,8 +33,11 @@ public class RealEstateServiceImpl implements RealEstateService {
     private DeviceService deviceService;
 
     @Override
-    public RealEstate getRealEstateById(Long id) {
-        return realEstateRepository.findById(id).orElse(null);
+    public RealEstate getRealEstateById(Long id) throws RealEstateException {
+        RealEstate realEstate = realEstateRepository.findRealEstateById(id);
+        if(realEstate == null)
+            throw new RealEstateException(String.format("Real estate with id: '%s' does not exist.", id));
+        return realEstate;
     }
 
     @Override
@@ -99,8 +103,11 @@ public class RealEstateServiceImpl implements RealEstateService {
     }
 
     @Override
-    public int findLowestReadPeriod(String name) {
+    public int findLowestReadPeriod(String name) throws RealEstateException {
         RealEstate re = realEstateRepository.findRealEstateByName(name);
+        if(re == null)
+            throw new RealEstateException(String.format("Real estate with name: '%s' does not exist.", name));
+
         int min = Integer.MAX_VALUE;
         for (Device d : re.getDevices())
             if (d.getReadPeriod() <= min)

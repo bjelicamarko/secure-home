@@ -12,7 +12,7 @@ public interface DeviceService {
 
     Set<Device> findAllByNameInList(List<String> names);
 
-    Device findOneByName(String name);
+    Device findOneByName(String name) throws DeviceException;
 
     void updateDeviceReadPeriod(Device d) throws DeviceException;
 }

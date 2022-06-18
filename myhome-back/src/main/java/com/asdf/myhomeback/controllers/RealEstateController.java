@@ -47,6 +47,11 @@ public class RealEstateController {
         try{
             RealEstate realEstate = realEstateService.getRealEstateById(id);
             return new ResponseEntity<>(new RealEstateDTO(realEstate), HttpStatus.OK);
+        } catch (RealEstateException e) {
+            String username = tokenUtils.getUsernameFromRequest(req);
+            e.printStackTrace();
+            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
             String username = tokenUtils.getUsernameFromRequest(req);
@@ -175,9 +180,20 @@ public class RealEstateController {
 
     @GetMapping("/findLowestReadPeriod/{nameOfRealState}")
     @PreAuthorize("hasAuthority('GET_LOWEST_READ_PERIOD')")
-    public ResponseEntity<Integer> findLowestReadPeriod(@PathVariable String nameOfRealState) {
-        return new ResponseEntity<Integer>(realEstateService.findLowestReadPeriod(nameOfRealState),
-                HttpStatus.OK);
+    public ResponseEntity<Integer> findLowestReadPeriod(@PathVariable String nameOfRealState, HttpServletRequest req) {
+        try {
+            return new ResponseEntity<Integer>(realEstateService.findLowestReadPeriod(nameOfRealState),
+                    HttpStatus.OK);
+        } catch (RealEstateException e) {
+            e.printStackTrace();
+            String username = tokenUtils.getUsernameFromRequest(req);
+            logService.generateErrLog(LogMessGen.exMessUser(username, e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            String username = tokenUtils.getUsernameFromRequest(req);
+            logService.generateErrLog(LogMessGen.internalServerError(username), Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
 }

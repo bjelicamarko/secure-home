@@ -163,4 +163,9 @@ public class TokenUtils {
 		return claims;
 	}
 
+	public String getUsernameFromRequest(HttpServletRequest request) {
+		String token = this.getToken(request);
+		return this.getUsernameFromToken(token);
+	}
+
 }

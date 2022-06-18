@@ -4,6 +4,8 @@ import com.asdf.adminback.dto.UserTokenStateDTO;
 import com.asdf.adminback.models.AppUser;
 import com.asdf.adminback.security.TokenUtils;
 import com.asdf.adminback.security.auth.JwtAuthenticationRequest;
+import com.asdf.adminback.services.LogService;
+import com.asdf.adminback.util.LogMessGen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,9 @@ public class AppUserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private LogService logService;
+
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)  {
         Authentication authentication = authenticationManager
@@ -38,6 +43,8 @@ public class AppUserController {
         AppUser appUser = (AppUser) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles().get(0).getName());
         int expiresIn = tokenUtils.getExpiredIn();
+
+        logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
