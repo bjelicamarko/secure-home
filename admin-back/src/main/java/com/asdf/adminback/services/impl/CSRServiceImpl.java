@@ -1,8 +1,10 @@
-package com.asdf.adminback.services;
+package com.asdf.adminback.services.impl;
 
 import com.asdf.adminback.exceptions.CSRException;
 import com.asdf.adminback.models.CSR;
 import com.asdf.adminback.repositories.CSRRepository;
+import com.asdf.adminback.services.CSRService;
+import com.asdf.adminback.services.MailService;
 import com.asdf.adminback.util.CSRUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

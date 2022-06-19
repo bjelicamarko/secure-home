@@ -37,6 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private TokenUtils tokenUtils;
 
+	@Autowired
+	private AppUserService appUserService;
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -60,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/login").permitAll()
 				.anyRequest().authenticated().and()
 				.cors().and()
-				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
+				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, appUserService),
 						BasicAuthenticationFilter.class);
 		http.csrf().disable();
 	}

@@ -1,7 +1,8 @@
-package com.asdf.adminback.services;
+package com.asdf.adminback.services.impl;
 
 import com.asdf.adminback.models.Log;
 import com.asdf.adminback.repositories.mongo.LogRepository;
+import com.asdf.adminback.services.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.stereotype.Service;
