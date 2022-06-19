@@ -45,6 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private BlacklistedTokenService blackListedTokenService;
 
 	@Autowired
+	private AppUserService appUserService;
+
+	@Autowired
 	private LogService logService;
 
 	@Bean
@@ -71,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/verify-registration/**").permitAll()
 				.anyRequest().authenticated().and()
 				.cors().and()
-				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, blackListedTokenService, logService),
+				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService, appUserService, blackListedTokenService, logService),
 						BasicAuthenticationFilter.class)
 				.headers()
 				.xssProtection()

@@ -44,4 +44,6 @@ public interface AppUserService extends UserDetailsService {
     AppUser findByUsernameVerifiedUnlocked(String username);
 
     boolean checkMaliciousIpAddress(String remoteAddress);
+
+    boolean isUserLocked(String username);
 }

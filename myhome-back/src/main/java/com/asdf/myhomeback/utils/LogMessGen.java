@@ -18,6 +18,10 @@ public class LogMessGen {
         return String.format("Login failed for locked account for username: '%s'", username);
     }
 
+    public static String accountLocked(String url, String username) {
+        return String.format("Failed to execute '%s' with locked account for username: '%s'", url, username);
+    }
+
     public static String accountUnverifiedLogin(String username) {
         return String.format("Login failed for unverified account for username: '%s'", username);
     }

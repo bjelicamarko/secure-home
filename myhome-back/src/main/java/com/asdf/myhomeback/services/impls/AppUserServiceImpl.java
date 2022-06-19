@@ -268,4 +268,10 @@ public class AppUserServiceImpl implements AppUserService {
 
         return false;
     }
+
+    @Override
+    public boolean isUserLocked(String username) {
+        Optional<AppUser> user = appUserRepository.findByUsernameAndAccountNonLocked(username, false);
+        return user.isEmpty();
+    }
 }

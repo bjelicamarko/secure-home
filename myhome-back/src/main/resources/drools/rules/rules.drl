@@ -34,6 +34,7 @@ rule "error_level_log"
     then
         AlarmNotification alarmNotification = new AlarmNotification($log.getLogMessage(), AlarmType.LOG, null, "admin");
         insert(alarmNotification);
+        System.err.println("---- DROOLS");
         System.err.println("Log with logLevel ERROR found!");
         System.err.println(alarmNotification.getMessage());
 end
@@ -48,5 +49,7 @@ rule "malicoius_ip_address"
         String alarmNotifContent = String.format("Spring application was hit from malicious address '%s'", $address.getAddress());
         AlarmNotification alarmNotification = new AlarmNotification(alarmNotifContent, AlarmType.LOG, null, "admin");
         insert(alarmNotification);
+
+        System.err.println("---- DROOLS");
         System.err.println(alarmNotification.getMessage());
 end
