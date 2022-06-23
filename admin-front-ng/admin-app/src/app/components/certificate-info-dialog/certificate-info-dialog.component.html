@@ -1,0 +1,46 @@
+<div>
+    <p><b>Issued to:</b> {{ chainCertificate.issuedTo }}</p>
+    <p><b>Issued by:</b> {{ chainCertificate.issuedBy }}</p>
+    <p>
+      <b>Valid from</b> {{ chainCertificate.validFrom }} <b>to</b>
+      {{ chainCertificate.validTo }}
+    </p>
+    <p class="centerText">
+      ----------------------------------------
+      <b>More Details</b> ------------------------------------
+    </p>
+    <p><b>Serial Number:</b> {{ chainCertificate.serialNumber }}</p>
+    <p>
+      <b>Public key algorithm:</b> {{ chainCertificate.publicKeyAlgorithm }}
+    </p>
+    <p><b>Name Issuer: </b> {{ chainCertificate.complexNameIssuer }}</p>
+    <p><b>Name Subject: </b> {{ chainCertificate.complexNameSubject }}</p>
+    <p><b>Version: </b> {{ chainCertificate.version }}</p>
+    <p><b>CA: </b> {{ chainCertificate.isCA === -1 ? "No" : "Yes" }}</p>
+    <p>
+      <b>Authority key identifier: </b>
+      {{ chainCertificate.authorityKeyIdentifier }}
+    </p>
+    <p>
+      <b>Subject key identifier: </b>
+      {{ chainCertificate.subjectKeyIdentifier }}
+    </p>
+    <div *ngIf="chainCertificate.keyUsages.length !== 0">
+      <p class="centerText">
+        ----------------------------------------
+        <b>Key Usage</b> ---------------------------------------
+      </p>
+      <p *ngFor="let usage of chainCertificate.keyUsages">
+        {{ usage }} ✔
+      </p>
+    </div>
+    <div *ngIf="chainCertificate.extendedKeyUsages.length !== 0">
+      <p class="centerText">
+        ----------------------------------
+        <b>Extended Key Usage</b> ---------------------------------
+      </p>
+      <p *ngFor="let usage of chainCertificate.extendedKeyUsages">
+        {{ usage }}
+      </p>
+    </div>
+</div>

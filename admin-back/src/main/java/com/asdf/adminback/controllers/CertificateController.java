@@ -50,7 +50,7 @@ public class CertificateController {
         }
     }
 
-    @PostMapping(value = "/getCertificate/{alias}")
+    @GetMapping(value = "/getCertificate/{alias}")
     // @PreAuthorize("hasAuthority('READ_CERTIFICATE')")
     public ResponseEntity<List<CertificateDTO>> getCertificate(@PathVariable String alias) {
         return new ResponseEntity<>(keyStoreService.readCertificateChain(FILE_PATH, PWD, alias)
@@ -96,9 +96,9 @@ public class CertificateController {
         }
     }
 
-    @PostMapping("/validate/{alias}")
+    @PostMapping("/validate")
     // @PreAuthorize("hasAuthority('VALIDATE_CERTIFICATE')")
-    public ResponseEntity<String> validateCertificate(@PathVariable String alias, HttpServletRequest req) {
+    public ResponseEntity<String> validateCertificate(@RequestBody String alias, HttpServletRequest req) {
         String username = tokenUtils.getUsernameFromRequest(req);
         try {
             certificateService.validateCertificate(alias);

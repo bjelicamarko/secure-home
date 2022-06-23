@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem("user", token);
 
       if (this.utilService.isRoleInUserRoles("ROLE_ADMIN")) {
-        // Redirekt na neku putanju this.router.navigate(["adm-app/neka_putanja"]);
+        this.router.navigate(["adm-app/all-certificates-view"]);
       }
 
     },

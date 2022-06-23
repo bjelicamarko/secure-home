@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AllCertificatesViewComponent } from './pages/all-certificates-view/all-certificates-view.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { RootLayoutPageComponent } from './pages/root-layout-page/root-layout-page.component';
@@ -15,6 +16,11 @@ const routes: Routes = [
         component: LoginComponent,
         pathMatch: "full"
       },
+      {
+        path: "all-certificates-view",
+        component: AllCertificatesViewComponent,
+        pathMatch: "full"
+      }
     ]
   },
   {
