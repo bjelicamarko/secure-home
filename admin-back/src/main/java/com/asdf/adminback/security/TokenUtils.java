@@ -1,12 +1,15 @@
 package com.asdf.adminback.security;
 
 import com.asdf.adminback.models.AppUser;
+import com.asdf.adminback.models.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -33,14 +36,15 @@ public class TokenUtils {
 
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-	public String generateToken(String username, String userType) {
+	public String generateToken(String username, List<UserRole> roles) {
+		String[] roleNames = roles.stream().map(UserRole::getName).collect(Collectors.toList()).toArray(String[]::new);
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(username)
 				.setAudience(AUDIENCE_WEB)
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
-				.claim("role", userType)
+				.claim("roles", roleNames)
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 
