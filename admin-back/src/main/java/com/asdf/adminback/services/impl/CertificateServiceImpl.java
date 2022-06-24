@@ -103,8 +103,12 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public void revokeCertificate(String alias, String reason) throws CertificateNotFound {
+    public void revokeCertificate(String alias, String reason) throws Exception {
         if (!keyStoreService.containsAlias(alias)) throw new CertificateNotFound(alias);
+
+        RCertificate certificate = certificateRepository.findByAlias(alias);
+        if (certificate != null) throw new Exception(String.format("Certificate '%s' is already invoked.", alias));
+
         RCertificate rCertificate = new RCertificate(alias, reason, LocalDate.now().toString());
         certificateRepository.save(rCertificate);
     }

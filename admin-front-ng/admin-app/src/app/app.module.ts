@@ -7,7 +7,6 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { RootLayoutPageComponent } from './pages/root-layout-page/root-layout-page.component';
 import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
 import { HeaderAdminComponent } from './components/header-admin/header-admin.component';
-import { HeaderCommonComponent } from './components/header-common/header-common.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,6 +18,7 @@ import { CertificateDialogComponent } from './components/certificate-dialog/cert
 
 import { MaterialExampleModule } from 'src/material.module';
 import { CertificateInfoDialogComponent } from './components/certificate-info-dialog/certificate-info-dialog.component';
+import { InvalidateCertificateDialogComponent } from './components/invalidate-certificate-dialog/invalidate-certificate-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +27,12 @@ import { CertificateInfoDialogComponent } from './components/certificate-info-di
     RootLayoutPageComponent,
     UnauthorizedPageComponent,
     HeaderAdminComponent,
-    HeaderCommonComponent,
     LoginComponent,
     HeaderUnivComponent,
     AllCertificatesViewComponent,
     CertificateDialogComponent,
-    CertificateInfoDialogComponent
+    CertificateInfoDialogComponent,
+    InvalidateCertificateDialogComponent
   ],
   imports: [
     BrowserModule,

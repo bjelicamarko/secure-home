@@ -12,6 +12,11 @@ INSERT INTO privilege (name) VALUES ('FIND_CSR');
 INSERT INTO privilege (name) VALUES ('SAVE_CSR');
 INSERT INTO privilege (name) VALUES ('VERIFY_CSR');
 INSERT INTO privilege (name) VALUES ('UNLOCK_USER');
+INSERT INTO privilege (name) VALUES ('READ_KEYSTORE');
+INSERT INTO privilege (name) VALUES ('READ_CERTIFICATE');
+INSERT INTO privilege (name) VALUES ('SAVE_CERTIFICATE');
+INSERT INTO privilege (name) VALUES ('REVOKE_CERTIFICATE');
+INSERT INTO privilege (name) VALUES ('VALIDATE_CERTIFICATE');
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1); --  ROLE_ADMIN
 
@@ -25,6 +30,11 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 7);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 8);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 9);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 10);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 11);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 12);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 13);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 14);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 15);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
 values('csr1@maildrop.cc', 'csr1name', 'csr1organization', 'csr1organizationunit', 'csr1city', 'csr1state', 'csr1country', true);

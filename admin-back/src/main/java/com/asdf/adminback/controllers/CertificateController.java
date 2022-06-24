@@ -11,6 +11,7 @@ import com.asdf.adminback.util.LogMessGen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.*;
@@ -40,7 +41,7 @@ public class CertificateController {
     private TokenUtils tokenUtils;
 
     @GetMapping(value="/getAliases")
-    // @PreAuthorize("hasAuthority('READ_KEYSTORE')")
+     @PreAuthorize("hasAuthority('READ_KEYSTORE')")
     public ResponseEntity<List<String>> getAliases() {
         try {
             return new ResponseEntity<>(keyStoreService.getAliases(), HttpStatus.OK);
@@ -51,14 +52,14 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/getCertificate/{alias}")
-    // @PreAuthorize("hasAuthority('READ_CERTIFICATE')")
+     @PreAuthorize("hasAuthority('READ_CERTIFICATE')")
     public ResponseEntity<List<CertificateDTO>> getCertificate(@PathVariable String alias) {
         return new ResponseEntity<>(keyStoreService.readCertificateChain(FILE_PATH, PWD, alias)
                 , HttpStatus.OK);
     }
 
     @PostMapping
-    // @PreAuthorize("hasAuthority('SAVE_CERTIFICATE')")
+     @PreAuthorize("hasAuthority('SAVE_CERTIFICATE')")
     public ResponseEntity<String> save(@RequestBody CertificateSigningDTO certificateSigningDTO, HttpServletRequest req) {
         String username = tokenUtils.getUsernameFromRequest(req);
         try {
@@ -79,7 +80,7 @@ public class CertificateController {
     }
 
     @PostMapping("/revoke")
-    // @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE')")
+     @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE')")
     public ResponseEntity<String> revokeCertificate(@RequestBody RevokedCertificateDTO revokedCertificate, HttpServletRequest req) {
         String username = tokenUtils.getUsernameFromRequest(req);
         try {
@@ -97,7 +98,7 @@ public class CertificateController {
     }
 
     @PostMapping("/validate")
-    // @PreAuthorize("hasAuthority('VALIDATE_CERTIFICATE')")
+     @PreAuthorize("hasAuthority('VALIDATE_CERTIFICATE')")
     public ResponseEntity<String> validateCertificate(@RequestBody String alias, HttpServletRequest req) {
         String username = tokenUtils.getUsernameFromRequest(req);
         try {

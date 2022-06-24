@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CertificateDialogComponent } from 'src/app/components/certificate-dialog/certificate-dialog.component';
+import { InvalidateCertificateDialogComponent } from 'src/app/components/invalidate-certificate-dialog/invalidate-certificate-dialog.component';
 import { CertificateDTO } from 'src/app/models/CertificateDTO';
 import { CertificateService } from 'src/app/services/certificate.service';
 import { SnackBarService } from 'src/app/services/snack-bar.service';
@@ -18,32 +19,36 @@ export class AllCertificatesViewComponent implements OnInit {
   selectedCertificates: CertificateDTO[] = [];
   showModal: boolean = false;
 
-  constructor(public dialog: MatDialog, private certificateService : CertificateService, 
+  constructor(public dialog: MatDialog, private certificateService: CertificateService,
     private snackBarService: SnackBarService) { }
 
   ngOnInit(): void {
     this.certificateService.getAliases()
-    .subscribe((response) => {
-      this.aliases = [this.invalidAlias];
-      this.aliases = [...this.aliases, ...response.body as string[]];
-    })
+      .subscribe((response) => {
+        this.aliases = [this.invalidAlias];
+        this.aliases = [...this.aliases, ...response.body as string[]];
+      })
   }
 
   changeAlias() {
     this.certificateService.getCertificate(this.selectedAlias)
-    .subscribe((response) => {
-      this.selectedCertificates = response.body as CertificateDTO[];
-    });
+      .subscribe((response) => {
+        this.selectedCertificates = response.body as CertificateDTO[];
+      });
   }
 
-  checkCertificate() { 
+  checkCertificate() {
     if (this.selectedAlias === this.invalidAlias) {
       this.snackBarService.openSnackBar("Certificate not selected!");
     } else {
       this.certificateService.checkCertificate(this.selectedAlias)
-      .subscribe((response) => {
-        this.snackBarService.openSnackBar(response.body as string);
-      })
+        .subscribe(
+          (response) => {
+            this.snackBarService.openSnackBar(response.body as string);
+          },
+          (error) => {
+            this.snackBarService.openSnackBar(error.error as string);
+          });
     }
   }
 
@@ -56,9 +61,9 @@ export class AllCertificatesViewComponent implements OnInit {
         reason: reason,
       };
       this.certificateService.invalidateCertificate(revokedCertificateDTO)
-      .subscribe((response) => {
-        this.snackBarService.openSnackBar(response.body as string);
-      })
+        .subscribe((response) => {
+          this.snackBarService.openSnackBar(response.body as string);
+        })
     }
   }
 
@@ -75,7 +80,10 @@ export class AllCertificatesViewComponent implements OnInit {
 
   openModalInvalidateCert() {
     if (this.selectedAlias !== this.invalidAlias) {
-      // otvori modal
+      this.dialog.open(InvalidateCertificateDialogComponent, {
+        width: '45%',
+        data: this.selectedAlias
+      });
     } else {
       this.snackBarService.openSnackBar("Certificate not selected!");
     }

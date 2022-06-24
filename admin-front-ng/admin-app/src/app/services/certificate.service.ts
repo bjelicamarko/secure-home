@@ -8,6 +8,7 @@ import { RevokedCertificateDTO } from "../models/RevokedCertificateDTO";
     providedIn: "root",
 })
 export class CertificateService {
+
     private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private http: HttpClient) { }
@@ -16,51 +17,50 @@ export class CertificateService {
         let queryParams = {};
 
         queryParams = {
-        headers: this.headers,
-        observe: "response",
-        responseType: "json"
+            headers: this.headers,
+            observe: "response",
+            responseType: "json"
         };
 
         return this.http.get<HttpResponse<string[]>>
-        ("adminapp/api/certificates/getAliases", queryParams);
+            ("adminapp/api/certificates/getAliases", queryParams);
     }
 
-    getCertificate(alias: string): Observable<HttpResponse<CertificateDTO[]>>{
+    getCertificate(alias: string): Observable<HttpResponse<CertificateDTO[]>> {
         let queryParams = {};
 
         queryParams = {
-        headers: this.headers,
-        observe: "response",
-        responseType: "json"
+            headers: this.headers,
+            observe: "response",
+            responseType: "json"
         };
 
         return this.http.get<HttpResponse<CertificateDTO[]>>
-        ("adminapp/api/certificates/getCertificate/" + alias, queryParams);
+            ("adminapp/api/certificates/getCertificate/" + alias, queryParams);
     }
 
     invalidateCertificate(certificateDTO: RevokedCertificateDTO): Observable<HttpResponse<string>> {
         let queryParams = {};
 
         queryParams = {
-        headers: this.headers,
-        observe: "response",
-        responseType: "text"
+            headers: this.headers,
+            observe: "response",
+            responseType: "text"
         };
 
         return this.http.post<HttpResponse<string>>
-        ("adminapp/api/certificates/revoke", certificateDTO, queryParams);
+            ("adminapp/api/certificates/revoke", certificateDTO, queryParams);
     }
 
     checkCertificate(alias: string): Observable<HttpResponse<string>> {
         let queryParams = {};
 
         queryParams = {
-        headers: this.headers,
-        observe: "response",
-        responseType: "text"
+            headers: this.headers,
+            observe: "response",
+            responseType: "text"
         };
 
-        return this.http.post<HttpResponse<string>>
-        ("adminapp/api/certificates/validate", alias, queryParams);
+        return this.http.post<HttpResponse<string>>("adminapp/api/certificates/validate", alias, queryParams);
     }
 }

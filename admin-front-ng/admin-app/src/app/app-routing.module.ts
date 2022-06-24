@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RoleGuard } from './guards/role/role.guard';
 import { AllCertificatesViewComponent } from './pages/all-certificates-view/all-certificates-view.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
@@ -19,6 +20,8 @@ const routes: Routes = [
       {
         path: "all-certificates-view",
         component: AllCertificatesViewComponent,
+        canActivate: [RoleGuard],
+        data: { expectedRoles: "ROLE_ADMIN" },
         pathMatch: "full"
       }
     ]
