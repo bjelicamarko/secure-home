@@ -46,4 +46,14 @@ export class UtilService {
     return "";
   }
 
+  public isValidInt(num: string | null): boolean {
+    if(!num) 
+      return false;
+
+    if(isNaN(parseInt(num)))
+      return false
+
+    return true;
+  }
+
 }

@@ -15,10 +15,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HeaderUnivComponent } from './components/header-univ/header-univ.component';
 import { AllCertificatesViewComponent } from './pages/all-certificates-view/all-certificates-view.component';
 import { CertificateDialogComponent } from './components/certificate-dialog/certificate-dialog.component';
-
 import { MaterialExampleModule } from 'src/material.module';
 import { CertificateInfoDialogComponent } from './components/certificate-info-dialog/certificate-info-dialog.component';
 import { InvalidateCertificateDialogComponent } from './components/invalidate-certificate-dialog/invalidate-certificate-dialog.component';
+import { AdminHomePageComponent } from './pages/admin-home-page/admin-home-page.component';
+import { CsrViewerComponent } from './components/csr-viewer/csr-viewer.component';
+import { CertificateSigningPageComponent } from './pages/certificate-signing-page/certificate-signing-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,10 @@ import { InvalidateCertificateDialogComponent } from './components/invalidate-ce
     AllCertificatesViewComponent,
     CertificateDialogComponent,
     CertificateInfoDialogComponent,
-    InvalidateCertificateDialogComponent
+    InvalidateCertificateDialogComponent,
+    AdminHomePageComponent,
+    CsrViewerComponent,
+    CertificateSigningPageComponent
   ],
   imports: [
     BrowserModule,
