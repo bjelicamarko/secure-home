@@ -1,9 +1,9 @@
 import { AbstractControl } from '@angular/forms';
 
-export function MinLengthValidator2(control: AbstractControl) {
+export function D15LengthValidator(control: AbstractControl) {
   if (!control.value) return null;
 
-  const isValid = /^.{2,2}$/.test(control.value);
+  const isValid = /^.{15,15}$/.test(control.value);
 
   if (!isValid)
     return { invalidLength: true };

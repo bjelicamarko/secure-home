@@ -15,7 +15,7 @@ public interface CSRService {
 
     CSR save(CSR csr) throws CSRException;
 
-    void verify(Long id) throws CSRException;
+    CSR verify(String securityCode) throws CSRException;
 
     CSR findByEmail(String email);
 

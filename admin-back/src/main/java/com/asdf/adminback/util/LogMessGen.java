@@ -186,13 +186,13 @@ public class LogMessGen {
                 csr.getOrganizationUnit(), csr.getCountry(), csr.getState());
     }
 
-    public static String csrVerification(Long id) {
-        return String.format("Certificate signing request with id: '%s' successfully verified ", id);
+    public static String csrVerification(Long id, String securityCode) {
+        return String.format("Certificate signing request with id: '%s' successfully verified by security code: '%s'", id, securityCode);
     }
 
-    public static String csrVerificationErr(String message, Long id) {
-        return String.format("Error occurred while verifying certificate signing request with id: '%s' with" +
-                " message: '%s'", message, id);
+    public static String csrVerificationErr(String message, String securityCode) {
+        return String.format("Error occurred while verifying certificate signing request by security code: '%s' with" +
+                " message: '%s'", securityCode, message);
     }
 
     public static String certValidationSucc(String username, String alias) {

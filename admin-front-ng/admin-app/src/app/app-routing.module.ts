@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { RootLayoutPageComponent } from './pages/root-layout-page/root-layout-page.component';
 import { UnauthorizedPageComponent } from './pages/unauthorized-page/unauthorized-page.component';
+import { VerifyCsrPageComponent } from './pages/verify-csr-page/verify-csr-page.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,11 @@ const routes: Routes = [
       {
         path: "csr-form",
         component: CsrFormPageComponent,
+        pathMatch: "full"
+      },
+      {
+        path: "verify-csr",
+        component: VerifyCsrPageComponent,
         pathMatch: "full"
       }
     ]

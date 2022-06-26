@@ -65,7 +65,7 @@ export class CertificateService {
         return this.http.post<HttpResponse<string>>("adminapp/api/certificates/validate", alias, queryParams);
     }
 
-    saveCertificate(certificateDTO: CSRDTO): Observable<HttpResponse<string>> {
+    saveCSR(certificateDTO: CSRDTO): Observable<HttpResponse<string>> {
         let queryParams = {};
 
         queryParams = {
@@ -75,5 +75,17 @@ export class CertificateService {
         };
 
         return this.http.post<HttpResponse<string>>("adminapp/api/csrs", certificateDTO, queryParams);
+    }
+
+    verifyCSR(csrId: string): Observable<HttpResponse<string>> {
+        let queryParams = {};
+
+        queryParams = {
+            headers: this.headers,
+            observe: "response",
+            responseType: "text"
+        };
+
+        return this.http.post<HttpResponse<string>>("adminapp/api/csrs/verify-csr", csrId, queryParams);
     }
 }

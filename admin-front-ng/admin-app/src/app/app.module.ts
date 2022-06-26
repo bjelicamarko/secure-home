@@ -20,6 +20,7 @@ import { MaterialExampleModule } from 'src/material.module';
 import { CertificateInfoDialogComponent } from './components/certificate-info-dialog/certificate-info-dialog.component';
 import { InvalidateCertificateDialogComponent } from './components/invalidate-certificate-dialog/invalidate-certificate-dialog.component';
 import { CsrFormPageComponent } from './pages/csr-form-page/csr-form-page.component';
+import { VerifyCsrPageComponent } from './pages/verify-csr-page/verify-csr-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CsrFormPageComponent } from './pages/csr-form-page/csr-form-page.compon
     CertificateDialogComponent,
     CertificateInfoDialogComponent,
     InvalidateCertificateDialogComponent,
-    CsrFormPageComponent
+    CsrFormPageComponent,
+    VerifyCsrPageComponent
   ],
   imports: [
     BrowserModule,
