@@ -37,19 +37,19 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 14);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 15);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
-values('csr1@maildrop.cc', 'csr1name', 'csr1organization', 'csr1organizationunit', 'csr1city', 'csr1state', 'csr1country', true);
+values('csr1@maildrop.cc', 'csr1name', 'csr1organization', 'csr1organizationunit', 'csr1city', 'csr1state', 'c1', true);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
-values('csr2@maildrop.cc', 'csr2name', 'csr2organization', 'csr2organizationunit', 'csr2city', 'csr2state', 'csr2country', true);
+values('csr2@maildrop.cc', 'csr2name', 'csr2organization', 'csr2organizationunit', 'csr2city', 'csr2state', 'c2', true);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
-values('csr3@maildrop.cc', 'csr3name', 'csr3organization', 'csr3organizationunit', 'csr3city', 'csr3state', 'csr3country', true);
+values('csr3@maildrop.cc', 'csr3name', 'csr3organization', 'csr3organizationunit', 'csr3city', 'csr3state', 'c3', true);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
-values('csr4@maildrop.cc', 'csr4name', 'csr4organization', 'csr4organizationunit', 'csr4city', 'csr4state', 'csr4country', false);
+values('csr4@maildrop.cc', 'csr4name', 'csr4organization', 'csr4organizationunit', 'csr4city', 'csr4state', 'c4', false);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
-values('csr5@maildrop.cc', 'csr5name', 'csr5organization', 'csr5organizationunit', 'csr5city', 'csr5state', 'csr5country', false);
+values('csr5@maildrop.cc', 'csr5name', 'csr5organization', 'csr5organizationunit', 'csr5city', 'csr5state', 'c5', false);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, verified)
-values('csr6@maildrop.cc', 'csr6name', 'csr6organization', 'csr6organizationunit', 'csr6city', 'csr6state', 'csr6country', false);
+values('csr6@maildrop.cc', 'csr6name', 'csr6organization', 'csr6organizationunit', 'csr6city', 'csr6state', 'c6', false);

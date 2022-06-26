@@ -1,4 +1,4 @@
-export interface KeyUSageDTO {
+export interface KeyUsageDTO {
     certificateSigning: boolean;
     crlSign: boolean;
     dataEncipherment: boolean;

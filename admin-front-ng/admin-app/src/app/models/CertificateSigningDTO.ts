@@ -1,10 +1,10 @@
 import { CertificateDataDTO } from "./CertificateDataDTO";
 import { ExtendedKeyUsageDTO } from "./ExtendedKeyUsageDTO";
-import { KeyUSageDTO } from "./KeyUsageDTO";
+import { KeyUsageDTO } from "./KeyUsageDTO";
 
 export interface CertificateSigningDTO {
-    certificateDataDTO: CertificateDataDTO;
-    keyUsageDTO: KeyUSageDTO
-    extendedKeyUsageDTO: ExtendedKeyUsageDTO;
-    ca: boolean;
+    certificateDataDTO: CertificateDataDTO | null;
+    keyUsageDTO: KeyUsageDTO | null
+    extendedKeyUsageDTO: ExtendedKeyUsageDTO | null;
+    ca: boolean | null;
 }

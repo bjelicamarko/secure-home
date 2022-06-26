@@ -1,0 +1,66 @@
+<div class="container center">
+    <h4>Key usage</h4>
+
+    <div class="row">
+        <div class="col">
+            <input [(ngModel)]="keyUsage.certificateSigning" class="form-check-input" type="checkbox" value="" id="certificateSigning">
+            <label class="form-check-label" for="certificateSigning">
+                Certificate Signing
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="keyUsage.crlSign" class="form-check-input" type="checkbox" value="" id="crlSign">
+            <label class="form-check-label" for="crlSign">
+                Crl Signing
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="keyUsage.dataEncipherment" class="form-check-input" type="checkbox" value="" id="dataEncipherment">
+            <label class="form-check-label" for="dataEncipherment">
+                Data encipherment
+            </label>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <input [(ngModel)]="keyUsage.decipherOnly" class="form-check-input" type="checkbox" value="" id="decipherOnly">
+            <label class="form-check-label" for="decipherOnly">
+                Decipher only
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="keyUsage.digitalSignature" class="form-check-input" type="checkbox" value="" id="digitalSignature">
+            <label class="form-check-label" for="digitalSignature">
+                Digital signature
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="keyUsage.encipherOnly" class="form-check-input" type="checkbox" value="" id="encipherOnly">
+            <label class="form-check-label" for="encipherOnly">
+                Encipher only
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <input [(ngModel)]="keyUsage.keyAgreement" class="form-check-input" type="checkbox" value="" id="keyAgreement">
+            <label class="form-check-label" for="keyAgreement">
+                Key agreement
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="keyUsage.keyEncipherment" class="form-check-input" type="checkbox" value="" id="keyEncipherment">
+            <label class="form-check-label" for="keyEncipherment">
+                Key encipherment 
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="keyUsage.nonRepudiation" class="form-check-input" type="checkbox" value="" id="nonRepudiation">
+            <label class="form-check-label" for="nonRepudiation">
+                Non repudiation
+            </label>
+        </div>
+    </div>
+</div>

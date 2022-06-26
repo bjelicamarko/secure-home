@@ -26,9 +26,4 @@ export class AdminHomePageComponent implements OnInit {
     })
 
   }
-
-  examine(id: number): void {
-    alert(id);
-  }
-
 }

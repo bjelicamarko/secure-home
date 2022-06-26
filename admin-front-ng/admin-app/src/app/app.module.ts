@@ -21,6 +21,9 @@ import { InvalidateCertificateDialogComponent } from './components/invalidate-ce
 import { AdminHomePageComponent } from './pages/admin-home-page/admin-home-page.component';
 import { CsrViewerComponent } from './components/csr-viewer/csr-viewer.component';
 import { CertificateSigningPageComponent } from './pages/certificate-signing-page/certificate-signing-page.component';
+import { CertificateFormComponent } from './components/certificate-form/certificate-form.component';
+import { KeyUsageComponent } from './components/key-usage/key-usage.component';
+import { ExtendedKeyUsageComponent } from './components/extended-key-usage/extended-key-usage.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { CertificateSigningPageComponent } from './pages/certificate-signing-pag
     InvalidateCertificateDialogComponent,
     AdminHomePageComponent,
     CsrViewerComponent,
-    CertificateSigningPageComponent
+    CertificateSigningPageComponent,
+    CertificateFormComponent,
+    KeyUsageComponent,
+    ExtendedKeyUsageComponent
   ],
   imports: [
     BrowserModule,

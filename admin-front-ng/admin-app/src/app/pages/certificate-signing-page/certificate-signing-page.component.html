@@ -1,8 +1,10 @@
 <div class="center marg">
     <h2>Certificate signing</h2>
-    <app-csr-viewer [csr]="csr"></app-csr-viewer>
+    
+    <h4>CSR data</h4>
+    <app-csr-viewer [csr]="csrBack"></app-csr-viewer>
 
-    <h4>Template</h4>
+    <h4>Extensions</h4>
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="rad" id="r1" (click)="selectCa()" checked>
         <label class="form-check-label" for="r1">
@@ -28,19 +30,23 @@
         </label>
       </div>
 
-      <div *ngIf="ca">
-        
+
+      <div class="marg">
+        <app-key-usage [keyUsage]="keyUsage"></app-key-usage>
       </div>
 
-      <div *ngIf="sslServer">
-        
+      <div *ngIf="!ca" class="marg">
+        <app-extended-key-usage [extendedKeyUsage]="extendedKeyUsage"></app-extended-key-usage>
       </div>
 
-      <div *ngIf="sslClient">
-        
+      <div *ngIf="ca" class="marg">
+        <h4>Basic constraints</h4>
+        <input [(ngModel)]="isCa" class="form-check-input" type="checkbox" value="" id="isCa">
+        <label class="form-check-label" for="isCa">
+            Certificate authority
+        </label>
       </div>
 
-      <div *ngIf="codeSigning">
-        
-      </div>
+      <app-certificate-form (submitEvent)="submit($event)" [csr]="csr"></app-certificate-form>
+
 </div>
