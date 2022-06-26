@@ -54,7 +54,6 @@ public class CSRController {
     }
 
     @PostMapping
-    // @PreAuthorize("hasAuthority('SAVE_CSR')")
     public ResponseEntity<String> save(@RequestBody CSR csr, HttpServletRequest req) {
         String username = tokenUtils.getUsernameFromRequest(req);
         try {

@@ -23,7 +23,7 @@ public class CSRServiceImpl implements CSRService {
     @Autowired
     private MailService mailService;
 
-    public static final String LINK_ROOT = "http://localhost:8080/api/csrs/verify-csr/";
+    public static final String LINK_ROOT = "https://localhost:8080/api/csrs/verify-csr/";
 
     @Override
     public List<CSR> findAll() {

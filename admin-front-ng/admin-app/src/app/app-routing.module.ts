@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RoleGuard } from './guards/role/role.guard';
 import { AllCertificatesViewComponent } from './pages/all-certificates-view/all-certificates-view.component';
+import { CsrFormPageComponent } from './pages/csr-form-page/csr-form-page.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { RootLayoutPageComponent } from './pages/root-layout-page/root-layout-page.component';
@@ -22,6 +23,11 @@ const routes: Routes = [
         component: AllCertificatesViewComponent,
         canActivate: [RoleGuard],
         data: { expectedRoles: "ROLE_ADMIN" },
+        pathMatch: "full"
+      },
+      {
+        path: "csr-form",
+        component: CsrFormPageComponent,
         pathMatch: "full"
       }
     ]

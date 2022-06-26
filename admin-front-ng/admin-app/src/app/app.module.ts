@@ -19,6 +19,7 @@ import { CertificateDialogComponent } from './components/certificate-dialog/cert
 import { MaterialExampleModule } from 'src/material.module';
 import { CertificateInfoDialogComponent } from './components/certificate-info-dialog/certificate-info-dialog.component';
 import { InvalidateCertificateDialogComponent } from './components/invalidate-certificate-dialog/invalidate-certificate-dialog.component';
+import { CsrFormPageComponent } from './pages/csr-form-page/csr-form-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { InvalidateCertificateDialogComponent } from './components/invalidate-ce
     AllCertificatesViewComponent,
     CertificateDialogComponent,
     CertificateInfoDialogComponent,
-    InvalidateCertificateDialogComponent
+    InvalidateCertificateDialogComponent,
+    CsrFormPageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,15 @@
-<div style="margin-left: 5%; margin-top: 2%;">
-  <mat-form-field appearance="fill">
-    <mat-label>Select certificate</mat-label>
-    <mat-select [(value)]="selectedAlias">
-      <mat-option (click)="changeAlias()" *ngFor="let aliase of aliases" [value]="aliase">{{aliase}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button (click)="openModal()" mat-button color="primary">Open certificate</button>
-  <button (click)="openModalInvalidateCert()" mat-button color="accent">Invalidate certificate</button>
-  <button (click)="checkCertificate()" mat-button color="warn">Check certificate</button>
+<div style="margin-left: 5%; margin-top: 2%; text-align: center;">
+  <div class="row">
+    <div class="col-4"></div>
+    <mat-form-field appearance="fill" style="width: 20%; transform: translate(30%);">
+      <mat-label>Select certificate</mat-label>
+      <mat-select [(value)]="selectedAlias">
+        <mat-option (click)="changeAlias()" *ngFor="let aliase of aliases" [value]="aliase">{{aliase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button (click)="openModal()" class="btn command-button" style="margin-right: 1%">Open certificate</button>
+  <button (click)="openModalInvalidateCert()" class="btn command-button" style="margin-right: 1%">Invalidate
+    certificate</button>
+  <button (click)="checkCertificate()" class="btn command-button">Check certificate</button>
 </div>
