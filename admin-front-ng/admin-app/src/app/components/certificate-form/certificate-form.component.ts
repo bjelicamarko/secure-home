@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CertificateDataDTO } from 'src/app/models/CertificateDataDTO';
-import { CsrDTO } from 'src/app/models/CsrDTO';
+import { CSRDTO } from 'src/app/models/CSRDTO';
 import { EmailValidator } from 'src/app/validators/EmailValidator';
 import { LengthTwoValidator } from 'src/app/validators/LengthTwoValidator';
 import { MaxLengthValidator } from 'src/app/validators/MaxLengthValidator';
@@ -15,7 +15,7 @@ import { MinLengthValidator } from 'src/app/validators/MinLengthValidator';
 export class CertificateFormComponent implements OnInit {
 
   @Input()
-  csr: CsrDTO;
+  csr: CSRDTO;
 
   @Output() 
   submitEvent: EventEmitter<CertificateDataDTO>;

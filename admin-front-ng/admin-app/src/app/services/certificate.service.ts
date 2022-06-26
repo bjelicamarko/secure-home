@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { CertificateDTO } from "../models/CertificateDTO";
 import { CertificateSigningDTO } from "../models/CertificateSigningDTO";
+import { CSRDTO } from "../models/CSRDTO";
 import { RevokedCertificateDTO } from "../models/RevokedCertificateDTO";
 
 @Injectable({
@@ -65,7 +66,20 @@ export class CertificateService {
         return this.http.post<HttpResponse<string>>("adminapp/api/certificates/validate", alias, queryParams);
     }
 
+    saveCSR(certificateDTO: CSRDTO): Observable<HttpResponse<string>> {
+        let queryParams = {};
+
+        queryParams = {
+            headers: this.headers,
+            observe: "response",
+            responseType: "text"
+        };
+
+        return this.http.post<HttpResponse<string>>("adminapp/api/csrs", certificateDTO, queryParams);
+    }
+
     save(certificateSigningDTO: CertificateSigningDTO): Observable<HttpResponse<string>> {
+
         let queryParams = {};
 
         queryParams = {
@@ -76,5 +90,17 @@ export class CertificateService {
 
         return this.http.post<HttpResponse<string>>
             ("adminapp/api/certificates", certificateSigningDTO, queryParams);
+    }
+
+    verifyCSR(csrId: string): Observable<HttpResponse<string>> {
+        let queryParams = {};
+
+        queryParams = {
+            headers: this.headers,
+            observe: "response",
+            responseType: "text"
+        };
+
+        return this.http.post<HttpResponse<string>>("adminapp/api/csrs/verify-csr", csrId, queryParams);
     }
 }

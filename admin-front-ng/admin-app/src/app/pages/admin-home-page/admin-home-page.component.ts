@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CsrDTO } from 'src/app/models/CsrDTO';
+import { CSRDTO } from 'src/app/models/CSRDTO';
 import { CsrService } from 'src/app/services/csr.service';
 import { SnackBarService } from 'src/app/services/snack-bar.service';
 
@@ -10,7 +10,7 @@ import { SnackBarService } from 'src/app/services/snack-bar.service';
 })
 export class AdminHomePageComponent implements OnInit {
 
-  csrs: CsrDTO[];
+  csrs: CSRDTO[];
 
   constructor(private csrService: CsrService, private snackBarService: SnackBarService) {
     this.csrs = [];
@@ -19,7 +19,7 @@ export class AdminHomePageComponent implements OnInit {
   ngOnInit(): void {
 
     this.csrService.getAllVerified().subscribe((response) => {
-      this.csrs = response.body as CsrDTO[];
+      this.csrs = response.body as CSRDTO[];
     }, 
     (error) => {
       this.snackBarService.openSnackBar("An error ocured while loading verified csrs")

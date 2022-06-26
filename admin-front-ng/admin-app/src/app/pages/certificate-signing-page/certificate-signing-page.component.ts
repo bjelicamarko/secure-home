@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CertificateDataDTO } from 'src/app/models/CertificateDataDTO';
 import { CertificateSigningDTO } from 'src/app/models/CertificateSigningDTO';
-import { CsrDTO } from 'src/app/models/CsrDTO';
+import { CSRDTO } from 'src/app/models/CSRDTO';
 import { ExtendedKeyUsageDTO } from 'src/app/models/ExtendedKeyUsageDTO';
 import { KeyUsageDTO } from 'src/app/models/KeyUsageDTO';
 import { CertificateService } from 'src/app/services/certificate.service';
@@ -17,8 +17,8 @@ import { UtilService } from 'src/app/services/util.service';
 })
 export class CertificateSigningPageComponent implements OnInit {
 
-  csr: CsrDTO;
-  csrBack: CsrDTO;
+  csr: CSRDTO;
+  csrBack: CSRDTO;
 
   ca: boolean;
   sslServer: boolean;
@@ -95,7 +95,7 @@ export class CertificateSigningPageComponent implements OnInit {
     if(idStr === null) return; // This will never happen
 
     this.csrService.findOneById(parseInt(idStr)).subscribe((response) => {
-      this.csr = response.body as CsrDTO;
+      this.csr = response.body as CSRDTO;
       this.saveLoadedCsr();
     }, 
     (error) => {

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CsrDTO } from 'src/app/models/CsrDTO';
+import { CSRDTO } from 'src/app/models/CSRDTO';
 
 @Component({
   selector: 'app-csr-viewer',
@@ -9,7 +9,7 @@ import { CsrDTO } from 'src/app/models/CsrDTO';
 export class CsrViewerComponent implements OnInit {
 
   @Input()
-  csr!: CsrDTO;
+  csr!: CSRDTO;
 
   constructor() {}
 

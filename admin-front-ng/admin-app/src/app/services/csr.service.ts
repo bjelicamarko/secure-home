@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CsrDTO } from '../models/CsrDTO';
+import { CSRDTO } from '../models/CSRDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class CsrService {
 
   constructor(private http: HttpClient) { }
 
-  getAllVerified(): Observable<HttpResponse<CsrDTO[]>> {
+  getAllVerified(): Observable<HttpResponse<CSRDTO[]>> {
     let queryParams = {};
 
     queryParams = {
@@ -21,10 +21,10 @@ export class CsrService {
         responseType: "json"
     };
 
-    return this.http.get<HttpResponse<CsrDTO[]>>("adminapp/api/csrs/verified", queryParams);
+    return this.http.get<HttpResponse<CSRDTO[]>>("adminapp/api/csrs/verified", queryParams);
   }
 
-  findOneById(id: number): Observable<HttpResponse<CsrDTO>> {
+  findOneById(id: number): Observable<HttpResponse<CSRDTO>> {
     let queryParams = {};
 
     queryParams = {
@@ -33,7 +33,7 @@ export class CsrService {
         responseType: "json"
     };
 
-    return this.http.get<HttpResponse<CsrDTO>>("adminapp/api/csrs/" + id, queryParams);
+    return this.http.get<HttpResponse<CSRDTO>>("adminapp/api/csrs/" + id, queryParams);
   }
 
 }

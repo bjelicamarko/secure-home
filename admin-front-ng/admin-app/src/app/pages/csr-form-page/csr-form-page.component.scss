@@ -1,0 +1,25 @@
+.myForm {
+    margin-top: 8%;
+    transform: translate(70px);
+    text-align: center;
+}
+
+.command-button {
+    margin-top: 1%;
+    background-color: rgb(22, 117, 90);
+    color: white;
+}
+
+.command-button:hover {
+    background-color: rgb(146, 142, 142);
+    color: rgb(0, 0, 0);
+}
+
+.input-field {
+    margin-bottom: 2%;
+}
+
+.input-field-common {
+    margin-bottom: 2%;
+    width: 80%;
+}

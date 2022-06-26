@@ -54,7 +54,6 @@ public class CSRController {
     }
 
     @PostMapping
-    // @PreAuthorize("hasAuthority('SAVE_CSR')")
     public ResponseEntity<String> save(@RequestBody CSR csr, HttpServletRequest req) {
         String username = tokenUtils.getUsernameFromRequest(req);
         try {
@@ -74,21 +73,20 @@ public class CSRController {
         }
     }
 
-    @GetMapping("/verify-csr/{id}")
-    // @PreAuthorize("hasAuthority('VERIFY_CSR')")
-    public ResponseEntity<String> verify(@PathVariable Long id) {
+    @PostMapping("/verify-csr")
+    public ResponseEntity<String> verify(@RequestBody String securityCode) {
         try {
-            csrService.verify(id);
-            logService.generateInfoLog(LogMessGen.csrVerification(id));
+            CSR csr = csrService.verify(securityCode);
+            logService.generateInfoLog(LogMessGen.csrVerification(csr.getId(), securityCode));
             return new ResponseEntity<>("CSR successfully verified.", HttpStatus.OK);
         }
         catch (CSRException e) {
-            logService.generateErrLog(LogMessGen.csrVerificationErr(e.getMessage(), id));
+            logService.generateErrLog(LogMessGen.csrVerificationErr(e.getMessage(), securityCode));
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
             e.printStackTrace();
-            logService.generateErrLog(LogMessGen.csrVerificationErr("Unknown error happened verifying csr.", id),  Arrays.toString(e.getStackTrace()));
+            logService.generateErrLog(LogMessGen.csrVerificationErr("Unknown error happened verifying csr.", securityCode),  Arrays.toString(e.getStackTrace()));
             return new ResponseEntity<>("Unknown error happened verifying csr.", HttpStatus.BAD_REQUEST);
         }
     }

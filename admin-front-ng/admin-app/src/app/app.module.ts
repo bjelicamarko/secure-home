@@ -24,6 +24,8 @@ import { CertificateSigningPageComponent } from './pages/certificate-signing-pag
 import { CertificateFormComponent } from './components/certificate-form/certificate-form.component';
 import { KeyUsageComponent } from './components/key-usage/key-usage.component';
 import { ExtendedKeyUsageComponent } from './components/extended-key-usage/extended-key-usage.component';
+import { CsrFormPageComponent } from './pages/csr-form-page/csr-form-page.component';
+import { VerifyCsrPageComponent } from './pages/verify-csr-page/verify-csr-page.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { ExtendedKeyUsageComponent } from './components/extended-key-usage/exten
     CertificateSigningPageComponent,
     CertificateFormComponent,
     KeyUsageComponent,
-    ExtendedKeyUsageComponent
+    ExtendedKeyUsageComponent,
+    CsrFormPageComponent,
+    VerifyCsrPageComponent
   ],
   imports: [
     BrowserModule,

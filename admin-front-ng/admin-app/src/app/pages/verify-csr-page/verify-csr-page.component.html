@@ -1,0 +1,36 @@
+<div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-6">
+            <form class="myForm" [formGroup]="form">
+                <h2 style="text-transform: uppercase; font-family: Arial, Helvetica, sans-serif; margin-bottom: 5%;">
+                    Certificate signing
+                    request verification</h2>
+                <div class="row" style="margin-left: 15%;">
+                    <div class="col-4 input-field-common">
+                        <input type="text" class="form-control" id="securityCode" name="securityCode"
+                            placeholder="CSR security code" formControlName="securityCode" />
+                        <small id='danger-label-securityCode' class="text-danger danger-label" *ngIf="
+                          form.controls['securityCode'].touched &&
+                          form.controls['securityCode'].errors?.['required']
+                          ">
+                            Security code can't be empty!
+                        </small>
+                        <small id='danger-label-securityCode' class="text-danger danger-label" *ngIf="
+                          form.controls['securityCode'].touched &&
+                          form.controls['securityCode'].errors?.['invalidLength']
+                          ">
+                            Security code invalid lenght!
+                        </small>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn command-button" [disabled]="!form.valid" (click)="onSubmitAction()"
+                            type="submit">
+                            Verify request
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

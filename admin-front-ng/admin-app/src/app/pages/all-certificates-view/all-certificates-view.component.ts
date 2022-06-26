@@ -14,8 +14,8 @@ import { SnackBarService } from 'src/app/services/snack-bar.service';
 export class AllCertificatesViewComponent implements OnInit {
 
   aliases: string[] = [];
-  invalidAlias: string = "----------";
-  selectedAlias: string = "----------";
+  invalidAlias: string = "NONE SELECTED";
+  selectedAlias: string = "NONE SELECTED";
   selectedCertificates: CertificateDTO[] = [];
   showModal: boolean = false;
 
