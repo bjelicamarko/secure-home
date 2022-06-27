@@ -13,7 +13,7 @@
                 <b>{{device.readPeriod}}</b>
                 <input style="margin-left: 50px;" id={{i}} type="number"
                     [ngModel]="device.readPeriod" />
-                    <button class="submit" (click)='changeReadPeriod(i, device)'>Change</button>
+                    <button class="btn btn-success submit" (click)='changeReadPeriod(i, device)'>Change</button>
                 </td>
             </tr>
         </table>

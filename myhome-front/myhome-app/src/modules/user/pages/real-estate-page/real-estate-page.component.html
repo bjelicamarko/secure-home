@@ -64,7 +64,7 @@
         </div>
         <div class="col">
             <div class="example-container mat-elevation-z8" style="width: 1000px;">
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
+                <table id="log-table" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
                     (matSortChange)="announceSortChange($event)">
 
                     <ng-container matColumnDef="deviceName">

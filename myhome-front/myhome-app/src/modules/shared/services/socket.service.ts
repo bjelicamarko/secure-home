@@ -28,7 +28,7 @@ export class SocketService {
     }
     this.initialized = true;
 
-    const socket = new SockJS("http://localhost:8081/socket/");
+    const socket = new SockJS("https://localhost:8081/socket/");
     this.stompClient = Stomp.over(socket);
 
     const that = this;
