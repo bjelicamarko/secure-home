@@ -77,8 +77,21 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
       this.deviceService.getOneByName(this.name).subscribe((response) => {
         this.device = response.body as Device;
         interval(this.device.readPeriod).subscribe(() => {
-          if (this.closedDialog)
-            window.location.reload();
+          if (this.closedDialog) {
+
+            if (!this.name) return;
+
+            this.name = decodeURIComponent(this.name);
+
+            this.deviceService.getAllMessagesFromDevice(this.name, this.currentPage - 1, this.pageSize)
+              .subscribe((response: any) => {
+                this.deviceMessages = response.body as DeviceMessageDTO[];
+                this.dataSource = new MatTableDataSource(this.deviceMessages);
+                this.dataSource.sort = this.sort;
+                this.totalSize = Number(response.headers.get("total-elements"));
+                this.setPagination(response.headers.get('total-elements'), response.headers.get('current-page'));
+              })
+          }
         });
       })
   }
@@ -135,8 +148,10 @@ export class DeviceMessagesPageComponent implements AfterViewInit {
     this.closedDialog = false;
     const dialogRef = this.dialog.open(ReportsDialogComponent, {
       width: '100%',
-      data: { deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate, 
-      indicator: true },
+      data: {
+        deviceName: this.name, selectedStatus: this.selectedStatus, startDate: this.startDate, endDate: this.endDate,
+        indicator: true
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {

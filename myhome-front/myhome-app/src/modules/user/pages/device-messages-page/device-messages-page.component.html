@@ -1,6 +1,6 @@
 <div>
     <div class="row p-4 align-items-center justify-content-center"
-    style="margin-top: 20px;text-align: center; margin-left: 150px;">
+        style="margin-top: 20px;text-align: center; margin-left: 150px;">
         <div class="col-2" style="width: 30%;" id="date-form">
             <mat-form-field class="select" appearance="fill">
                 <mat-label>Enter a date range</mat-label>
@@ -29,7 +29,7 @@
             </mat-form-field>
         </div>
         <div class="col-2" style="width: 30%;">
-            <button style="margin-bottom:15px;" mat-mini-fab color="warn"
+            <button style="margin-bottom:15px; transform: translate(-300%, -20%);" mat-mini-fab color="success"
                 aria-label="Example icon button with a filter list icon" (click)="filterMessages()">
                 <mat-icon>search</mat-icon>
             </button>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="col">
-        <p style="text-align: center; font-weight: bold; color: red;">Table of messages</p>
+        <p style="text-align: center; font-weight: bold;">Table of messages</p>
         <div class="example-container mat-elevation-z8" style="width: 1000px;">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
                 (matSortChange)="announceSortChange($event)">

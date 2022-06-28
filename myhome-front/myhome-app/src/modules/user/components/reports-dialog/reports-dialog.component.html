@@ -1,12 +1,11 @@
 <div>
     <div class="row p-4 align-items-center justify-content-center">
-        <button style="margin-bottom:15px;" mat-mini-fab color="warn"
-            aria-label="Example icon button with a filter list icon" (click)="createReport()">
-            <mat-icon>description</mat-icon>
+        <button class="btn btn-success" style="margin-bottom:15px; width: 10%;" (click)="createReport()">
+            Report
         </button>
     </div>
     <div class="col">
-        <p style="text-align: center; font-weight: bold; color: red;">Table of messages</p>
+        <p style="text-align: center; font-weight: bold;">Table of messages</p>
         <div class="example-container mat-elevation-z8" style="width: 1000px;">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
                 (matSortChange)="announceSortChange($event)">

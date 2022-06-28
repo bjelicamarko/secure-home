@@ -24,10 +24,10 @@
     </div>
     <div>
         <hr>
-        <button class="btn btn-success" (click)=toggleDisplayDivIf()>Toggle Table</button>
+        <button class="btn btn-success" (click)=toggleDisplayDivIf()>Show device messages</button>
     </div>
     <div *ngIf="!isShowDivIf">
-        <div class="row" style="margin-top: 20px;text-align: center; margin-left: 150px;">
+        <div class="row" style="margin-top: 20px;text-align: center; margin-left: 210px;">
             <div class="col-2" style="width: 30%;" id="date-form">
                 <mat-form-field class="select" appearance="fill">
                     <mat-label>Enter a date range</mat-label>
@@ -56,7 +56,7 @@
                 </mat-form-field>
             </div>
             <div class="col-2" style="width: 20%;">
-                <button style="margin-bottom:15px;" mat-mini-fab color="warn"
+                <button style="margin-bottom:15px;" mat-mini-fab color="success"
                     aria-label="Example icon button with a filter list icon" (click)="filterMessages()">
                     <mat-icon>search</mat-icon>
                 </button>

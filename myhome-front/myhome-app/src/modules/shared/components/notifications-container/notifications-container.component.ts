@@ -16,13 +16,13 @@ export class NotificationsContainerComponent implements OnInit {
   notifications: AlarmNotification[];
 
   constructor(private sideNotificationsService: UpdateSideNotificationsService, private notificationService: NotificationService,
-              private snackBarService: SnackBarService, private badgeService: UpdateBadgeService) { 
+    private snackBarService: SnackBarService, private badgeService: UpdateBadgeService) {
     this.notifications = [];
   }
 
   ngOnInit(): void {
     this.loadNotifications();
-    
+
     this.notificationService.notificationMessage$.subscribe(() => {
       this.snackBarService.openSnackBar("New notification arrived");
       this.loadNotifications();
@@ -36,13 +36,13 @@ export class NotificationsContainerComponent implements OnInit {
   loadNotifications(): void {
     this.notificationService.getNotSeenForUser(1 - 1, 6).subscribe((response: any) => {
       this.notifications = response.body;
-    }, 
-    (error) => {
-      if(error.status == 400)
-        this.snackBarService.openSnackBar("Non-existent/Locked/Deleted user, could not read notifications");
-      if(error.status == 500)
-        this.snackBarService.openSnackBar("An unkown error ocured while loading side notifications");
-    });
+    },
+      (error) => {
+        if (error.status == 400)
+          this.snackBarService.openSnackBar("Non-existent/Locked/Deleted user, could not read notifications");
+        if (error.status == 500)
+          this.snackBarService.openSnackBar("An unkown error ocured while loading side notifications");
+      });
   }
 
   setSeen($event: any) {
@@ -52,11 +52,10 @@ export class NotificationsContainerComponent implements OnInit {
       console.log(response.body);
       this.loadNotifications();
       this.badgeService.sendNotif();
-    }, 
-    (error) => {
-      console.log(error);
-      this.snackBarService.openSnackBar(error.body);
-    })
+    },
+      (error) => {
+        this.snackBarService.openSnackBar(error.error);
+      })
   }
 
 }

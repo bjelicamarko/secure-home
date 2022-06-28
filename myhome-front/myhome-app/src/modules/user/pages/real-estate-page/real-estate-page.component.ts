@@ -93,7 +93,6 @@ export class RealEstatePageComponent implements AfterViewInit {
         interval(response.body as number).subscribe(() => {
           if (this.closedDialog) {
             if (!this.name) return;
-            console.log("BLAAA");
             this.name = decodeURIComponent(this.name);
             this.deviceService
               .getAllMessagesFromRealEstate(this.name, this.currentPage - 1, this.pageSize)
