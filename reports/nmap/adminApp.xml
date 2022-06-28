@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml-stylesheet href="file:///C:/Program Files/Nmap/nmap.xsl" type="text/xsl"?><nmaprun start="1656440442" profile_name="" xmloutputversion="1.04" scanner="nmap" version="7.92" startstr="Tue Jun 28 20:20:42 2022" args="nmap -sV -p 8080 -v -v --script vuln localhost"><scaninfo services="8080" protocol="tcp" numservices="1" type="syn"></scaninfo><verbose level="2"></verbose><debugging level="0"></debugging><output type="interactive">Starting Nmap 7.92 ( https://nmap.org ) at 2022-06-28 20:20 Central European Daylight Time
+NSE: Loaded 149 scripts for scanning.
+NSE: Script Pre-scanning.
+NSE: Starting runlevel 1 (of 2) scan.
+Initiating NSE at 20:20
+Completed NSE at 20:20, 10.01s elapsed
+NSE: Starting runlevel 2 (of 2) scan.
+Initiating NSE at 20:20
+Completed NSE at 20:20, 0.00s elapsed
+Warning: Hostname localhost resolves to 2 IPs. Using 127.0.0.1.
+Initiating SYN Stealth Scan at 20:20
+Scanning localhost (127.0.0.1) [1 port]
+Discovered open port 8080/tcp on 127.0.0.1
+Completed SYN Stealth Scan at 20:20, 0.00s elapsed (1 total ports)
+Initiating Service scan at 20:20
+Scanning 1 service on localhost (127.0.0.1)
+Completed Service scan at 20:21, 23.15s elapsed (1 service on 1 host)
+NSE: Script scanning 127.0.0.1.
+NSE: Starting runlevel 1 (of 2) scan.
+Initiating NSE at 20:21
+NSE Timing: About 97.18% done; ETC: 20:21 (0:00:01 remaining)
+NSE Timing: About 97.18% done; ETC: 20:22 (0:00:02 remaining)
+Completed NSE at 20:22, 85.14s elapsed
+NSE: Starting runlevel 2 (of 2) scan.
+Initiating NSE at 20:22
+Completed NSE at 20:22, 0.14s elapsed
+Nmap scan report for localhost (127.0.0.1)
+Host is up, received localhost-response (0.0010s latency).
+Other addresses for localhost (not scanned): ::1
+rDNS record for 127.0.0.1: kubernetes.docker.internal
+Scanned at 2022-06-28 20:20:52 Central European Daylight Time for 109s
+
+PORT     STATE SERVICE        REASON          VERSION
+8080/tcp open  ssl/http-proxy syn-ack ttl 128
+| fingerprint-strings: 
+|   GetRequest: 
+|     HTTP/1.1 401 
+|     Content-Length: 0
+|     Date: Tue, 28 Jun 2022 18:21:15 GMT
+|     Connection: close
+|   HTTPOptions: 
+|     HTTP/1.1 401 
+|     Strict-Transport-Security: max-age=31536000; includeSubDomains
+|     Cache-control: no-store
+|     Pragma: no-cache
+|     X-Frame-Options: DENY
+|     Vary: Origin
+|     Vary: Access-Control-Request-Method
+|     Vary: Access-Control-Request-Headers
+|     X-Content-Type-Options: nosniff
+|     X-XSS-Protection: 1; mode=block
+|     Content-Security-Policy: script-src 'self'
+|     Content-Length: 0
+|     Date: Tue, 28 Jun 2022 18:21:15 GMT
+|     Connection: close
+|   RPCCheck, RTSPRequest: 
+|     HTTP/1.1 400 
+|     Content-Type: text/html;charset=utf-8
+|     Content-Language: en
+|     Content-Length: 435
+|     Date: Tue, 28 Jun 2022 18:21:15 GMT
+|     Connection: close
+|     &lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;title&gt;HTTP Status 400 
+|     Request&lt;/title&gt;&lt;style type="text/css"&gt;body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 400 
+|_    Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
+|_http-litespeed-sourcecode-download: Request with null byte did not work. This web server might not be vulnerable
+|_http-jsonp-detection: Couldn't find any JSONP endpoints.
+|_http-wordpress-users: [Error] Wordpress installation was not found. We couldn't find wp-login.php
+| ssl-dh-params: 
+|   VULNERABLE:
+|   Diffie-Hellman Key Exchange Insufficient Group Strength
+|     State: VULNERABLE
+|       Transport Layer Security (TLS) services that use Diffie-Hellman groups
+|       of insufficient strength, especially those using one of a few commonly
+|       shared groups, may be susceptible to passive eavesdropping attacks.
+|     Check results:
+|       WEAK DH GROUP 1
+|             Cipher Suite: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+|             Modulus Type: Safe prime
+|             Modulus Source: RFC2409/Oakley Group 2
+|             Modulus Length: 1024
+|             Generator Length: 8
+|             Public Key Length: 1024
+|     References:
+|_      https://weakdh.org
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port8080-TCP:V=7.92%T=SSL%I=7%D=6/28%Time=62BB469B%P=i686-pc-windows-wi
+SF:ndows%r(GetRequest,5C,"HTTP/1\.1\x20401\x20\r\nContent-Length:\x200\r\n
+SF:Date:\x20Tue,\x2028\x20Jun\x202022\x2018:21:15\x20GMT\r\nConnection:\x2
+SF:0close\r\n\r\n")%r(HTTPOptions,1A5,"HTTP/1\.1\x20401\x20\r\nStrict-Tran
+SF:sport-Security:\x20max-age=31536000;\x20includeSubDomains\r\nCache-cont
+SF:rol:\x20no-store\r\nPragma:\x20no-cache\r\nX-Frame-Options:\x20DENY\r\n
+SF:Vary:\x20Origin\r\nVary:\x20Access-Control-Request-Method\r\nVary:\x20A
+SF:ccess-Control-Request-Headers\r\nX-Content-Type-Options:\x20nosniff\r\n
+SF:X-XSS-Protection:\x201;\x20mode=block\r\nContent-Security-Policy:\x20sc
+SF:ript-src\x20'self'\r\nContent-Length:\x200\r\nDate:\x20Tue,\x2028\x20Ju
+SF:n\x202022\x2018:21:15\x20GMT\r\nConnection:\x20close\r\n\r\n")%r(RTSPRe
+SF:quest,24E,"HTTP/1\.1\x20400\x20\r\nContent-Type:\x20text/html;charset=u
+SF:tf-8\r\nContent-Language:\x20en\r\nContent-Length:\x20435\r\nDate:\x20T
+SF:ue,\x2028\x20Jun\x202022\x2018:21:15\x20GMT\r\nConnection:\x20close\r\n
+SF:\r\n&lt;!doctype\x20html&gt;&lt;html\x20lang=\"en\"&gt;&lt;head&gt;&lt;title&gt;HTTP\x20Status\
+SF:x20400\x20\xe2\x80\x93\x20Bad\x20Request&lt;/title&gt;&lt;style\x20type=\"text/c
+SF:ss\"&gt;body\x20{font-family:Tahoma,Arial,sans-serif;}\x20h1,\x20h2,\x20h3
+SF:,\x20b\x20{color:white;background-color:#525D76;}\x20h1\x20{font-size:2
+SF:2px;}\x20h2\x20{font-size:16px;}\x20h3\x20{font-size:14px;}\x20p\x20{fo
+SF:nt-size:12px;}\x20a\x20{color:black;}\x20\.line\x20{height:1px;backgrou
+SF:nd-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP\x20Status\x
+SF:20400\x20\xe2\x80\x93\x20Bad\x20Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;")%r(RPCCheck
+SF:,24E,"HTTP/1\.1\x20400\x20\r\nContent-Type:\x20text/html;charset=utf-8\
+SF:r\nContent-Language:\x20en\r\nContent-Length:\x20435\r\nDate:\x20Tue,\x
+SF:2028\x20Jun\x202022\x2018:21:15\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;
+SF:!doctype\x20html&gt;&lt;html\x20lang=\"en\"&gt;&lt;head&gt;&lt;title&gt;HTTP\x20Status\x2040
+SF:0\x20\xe2\x80\x93\x20Bad\x20Request&lt;/title&gt;&lt;style\x20type=\"text/css\"&gt;
+SF:body\x20{font-family:Tahoma,Arial,sans-serif;}\x20h1,\x20h2,\x20h3,\x20
+SF:b\x20{color:white;background-color:#525D76;}\x20h1\x20{font-size:22px;}
+SF:\x20h2\x20{font-size:16px;}\x20h3\x20{font-size:14px;}\x20p\x20{font-si
+SF:ze:12px;}\x20a\x20{color:black;}\x20\.line\x20{height:1px;background-co
+SF:lor:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP\x20Status\x20400
+SF:\x20\xe2\x80\x93\x20Bad\x20Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+
+NSE: Script Post-scanning.
+NSE: Starting runlevel 1 (of 2) scan.
+Initiating NSE at 20:22
+Completed NSE at 20:22, 0.00s elapsed
+NSE: Starting runlevel 2 (of 2) scan.
+Initiating NSE at 20:22
+Completed NSE at 20:22, 0.00s elapsed
+Read data files from: C:\Program Files\Nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 119.10 seconds
+           Raw packets sent: 1 (44B) | Rcvd: 2 (88B)
+</output><host comment=""><status state="up"></status><address addrtype="ipv4" vendor="" addr="127.0.0.1"></address><hostnames><hostname type="user" name="localhost"></hostname><hostname type="PTR" name="kubernetes.docker.internal"></hostname></hostnames><ports><port protocol="tcp" portid="8080"><state reason="syn-ack" state="open" reason_ttl="128"></state><service method="probed" conf="10" name="http-proxy"></service></port></ports><os></os><uptime lastboot="" seconds=""></uptime><tcpsequence index="" values="" difficulty=""></tcpsequence><ipidsequence values="" class=""></ipidsequence><tcptssequence values="" class=""></tcptssequence></host><runstats><finished timestr="Tue Jun 28 20:22:41 2022" time="1656440561"></finished><hosts down="0" total="1" up="1"></hosts></runstats></nmaprun>
