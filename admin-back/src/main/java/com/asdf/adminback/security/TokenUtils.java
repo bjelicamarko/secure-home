@@ -59,6 +59,7 @@ public class TokenUtils {
 				.claim("roles", roleNames)
 				.claim("userFingerprint", fingerprintHash)
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+
 	}
 
 	public String generateFingerprint() {
@@ -120,8 +121,7 @@ public class TokenUtils {
 		String userFingerprint = null;
 		if (request.getCookies() != null && request.getCookies().length > 0) {
 			List<Cookie> cookies = Arrays.stream(request.getCookies()).collect(Collectors.toList());
-			Optional<Cookie> cookie = cookies.stream().filter(c -> "Fingerprint".equals(c.getName())).findFirst();
-
+			Optional<Cookie> cookie = cookies.stream().filter(c -> "__Secure-Fgp".equals(c.getName())).findFirst();
 			if (cookie.isPresent()) {
 				userFingerprint = cookie.get().getValue();
 			}

@@ -112,7 +112,8 @@ public class AppUserController {
             appUserService.resetFailedAttempts(appUser.getUsername());
         }
 
-        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+//        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+        String cookie = "__Secure-Fgp=" + fingerprint + "; SameSite=Strict; HttpOnly; Path=/; Secure";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
 

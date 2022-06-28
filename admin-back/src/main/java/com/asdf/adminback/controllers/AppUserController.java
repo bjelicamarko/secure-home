@@ -103,12 +103,11 @@ public class AppUserController {
             appUserService.resetFailedAttempts(appUser.getUsername());
         }
 
-        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+        String cookie = "__Secure-Fgp=" + fingerprint + "; SameSite=Strict; HttpOnly; Path=/; Secure";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
-        logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
 
-        // Vrati token kao odgovor na uspesnu autentifikaciju
+        logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
         return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
 
