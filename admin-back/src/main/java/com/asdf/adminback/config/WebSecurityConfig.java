@@ -1,6 +1,7 @@
 package com.asdf.adminback.config;
 
 import com.asdf.adminback.security.TokenUtils;
+import com.asdf.adminback.security.auth.CustomAfterFilter;
 import com.asdf.adminback.security.auth.RestAuthenticationEntryPoint;
 import com.asdf.adminback.security.auth.TokenAuthenticationFilter;
 import com.asdf.adminback.services.AppUserService;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
@@ -56,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+				.addFilterAfter(new CustomAfterFilter(), ChannelProcessingFilter.class)
 				.authorizeRequests().antMatchers("/auth/**").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/api/csrs").permitAll()

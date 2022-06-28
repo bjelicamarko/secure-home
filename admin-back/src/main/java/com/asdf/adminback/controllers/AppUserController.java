@@ -11,6 +11,7 @@ import com.asdf.adminback.services.LogService;
 import com.asdf.adminback.util.AppUserUtils;
 import com.asdf.adminback.util.LogMessGen;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -88,17 +89,22 @@ public class AppUserController {
 
         // Kreiraj token za tog korisnika
         AppUser appUser = (AppUser) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles());
+
+        String fingerprint = tokenUtils.generateFingerprint();
+        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles(), fingerprint);
         int expiresIn = tokenUtils.getExpiredIn();
 
         if (appUser.getFailedAttempt() > 0) {
             appUserService.resetFailedAttempts(appUser.getUsername());
         }
 
-        logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
+        // String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+        String cookie = "__Secure-Fgp=" + fingerprint + "; SameSite=Strict; HttpOnly; Path=/; Secure";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", cookie);
 
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
+        logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
+        return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
 
     @PutMapping(value = "/unlockUser")

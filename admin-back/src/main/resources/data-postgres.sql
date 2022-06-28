@@ -17,6 +17,7 @@ INSERT INTO privilege (name) VALUES ('READ_CERTIFICATE');
 INSERT INTO privilege (name) VALUES ('SAVE_CERTIFICATE');
 INSERT INTO privilege (name) VALUES ('REVOKE_CERTIFICATE');
 INSERT INTO privilege (name) VALUES ('VALIDATE_CERTIFICATE');
+INSERT INTO privilege (name) VALUES ('READ_VERIFIED_CSRS');
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1); --  ROLE_ADMIN
 
@@ -35,6 +36,7 @@ INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 12);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 13);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 14);
 INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 15);
+INSERT INTO role_privilege (role_id, privilege_id) VALUES (1, 16);
 
 insert into csr (email, common_name, organization, organization_unit, city, state, country, security_code, verified)
 values('csr1@maildrop.cc', 'csr1name', 'csr1organization', 'csr1organizationunit', 'csr1city', 'csr1state', 'c1', '23i5yg23b5i23vA', true);

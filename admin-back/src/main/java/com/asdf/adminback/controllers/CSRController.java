@@ -35,13 +35,12 @@ public class CSRController {
     }
 
     @GetMapping(value="/verified")
-    // @PreAuthorize("hasAuthority('READ_VERIFIED_CSRS')")
+    @PreAuthorize("hasAuthority('READ_VERIFIED_CSRS')")
     public ResponseEntity<List<CSR>> findAllVerified() {
         return new ResponseEntity<>(csrService.findAllVerified(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    // @PreAuthorize("hasAuthority('FIND_CSR')")
     public ResponseEntity<CSR> findOneById(@PathVariable Long id, HttpServletRequest req) {
         CSR csr = csrService.findOneById(id);
 
