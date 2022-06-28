@@ -1,0 +1,30 @@
+.form {
+    width: 40%;
+    position: relative;
+    margin: auto;
+    padding: 18px;
+  }
+  @media (max-width: 350px) {
+    .myForm {
+      min-width: 90%;
+    }
+  }
+  
+  #email-div, #commonName-div, #organization-div, #organizationUnit-div, #city-div, #state-div, #country-div  {
+    text-align: center;
+  }
+  
+  #email, #commonName, #organization, #organizationUnit, #city, #state, #country {
+    position: relative;
+    margin: auto;
+    width: 70%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  #submit-button, a {
+    position: relative;
+    margin: auto;
+    width: 30%;
+    margin-top: 10px;
+  }

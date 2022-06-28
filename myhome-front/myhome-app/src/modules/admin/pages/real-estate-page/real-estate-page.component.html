@@ -1,0 +1,27 @@
+<div class="row justify-content-center align-items-center realEstateCreationForm">
+  <form class="col-md-12 box" [formGroup]="form" (ngSubmit)="submit()">
+    <fieldset>
+      <p class="page-label">Update {{name}} devices</p>
+
+      <div class="inCenter">
+        <div class="form-check form-check-inline" *ngFor="let item of deviceNames; let i=index">
+          <label>
+            <input class="form-check-input" type="checkbox" [checked]="isInRealEstateDevices(item)" [value]="item"
+              (change)="onCbChange($event)" />
+            {{item}}
+          </label>
+        </div>
+
+        <p class="error" style="margin-top: 1%;" *ngIf="form.controls['isArray'].errors?.['required']">
+          You must select at least one device.
+        </p>
+      </div>
+
+      <div class="row">
+        <button id="submit-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
+          Update
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</div>

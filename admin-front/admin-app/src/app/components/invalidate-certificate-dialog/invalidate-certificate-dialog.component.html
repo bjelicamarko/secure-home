@@ -1,0 +1,14 @@
+<div>
+    <h4 style="margin-bottom: 2%;">Possible reasons:</h4>
+    <ul>
+        <li *ngFor="let reasonString of reasons" (click)="setReason(reasonString)"
+            style="cursor: pointer; margin-bottom: 2%">
+            {{ reasonString }}
+        </li>
+    </ul>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="floatingInput" [(ngModel)]="reason" />
+        <label for="floatingInput">Reason</label>
+    </div>
+    <button class="btn command-button" (click)="invalidateCertificate()">Invalidate</button>
+</div>

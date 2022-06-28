@@ -23,9 +23,9 @@ public interface AppUserService extends UserDetailsService {
 
     AppUser getUser(String username);
 
-    void deleteUser(Long id) throws AppUserException;
+    AppUser deleteUser(Long id) throws AppUserException;
 
-    void unlockUser(Long id) throws AppUserException;
+    AppUser unlockUser(Long id) throws AppUserException;
 
     void increaseFailedAttempts(AppUser user);
 
@@ -42,4 +42,8 @@ public interface AppUserService extends UserDetailsService {
     void save(AppUser user);
 
     AppUser findByUsernameVerifiedUnlocked(String username);
+
+    boolean checkMaliciousIpAddress(String remoteAddress);
+
+    boolean isUserLocked(String username);
 }

@@ -106,17 +106,6 @@ public class TokenUtils {
 		return issueAt;
 	}
 
-	public String getAudienceFromToken(String token) {
-		String audience;
-		try {
-			final Claims claims = this.getAllClaimsFromToken(token);
-			audience = claims.getAudience();
-		} catch (Exception e) {
-			audience = null;
-		}
-		return audience;
-	}
-
 	public Date getExpirationDateFromToken(String token) {
 		Date expiration;
 		try {
@@ -144,7 +133,7 @@ public class TokenUtils {
 		String userFingerprint = null;
 		if (request.getCookies() != null && request.getCookies().length > 0) {
 			List<Cookie> cookies = Arrays.stream(request.getCookies()).collect(Collectors.toList());
-			Optional<Cookie> cookie = cookies.stream().filter(c -> "Fingerprint".equals(c.getName())).findFirst();
+			Optional<Cookie> cookie = cookies.stream().filter(c -> "__Secure-Fgp".equals(c.getName())).findFirst();
 
 			if (cookie.isPresent()) {
 				userFingerprint = cookie.get().getValue();
@@ -186,20 +175,6 @@ public class TokenUtils {
 		return request.getHeader(AUTH_HEADER);
 	}
 
-	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-		return (lastPasswordReset != null && created.before(lastPasswordReset));
-	}
-
-	private Boolean isTokenExpired(String token) {
-		final Date expiration = this.getExpirationDateFromToken(token);
-		return expiration.before(new Date());
-	}
-
-	private Boolean ignoreTokenExpiration(String token) {
-		String audience = this.getAudienceFromToken(token);
-		return (audience.equals(AUDIENCE_TABLET) || audience.equals(AUDIENCE_MOBILE));
-	}
-
 	private Claims getAllClaimsFromToken(String token) {
 		Claims claims;
 		try {
@@ -239,5 +214,10 @@ public class TokenUtils {
 		String fingerprintHash = generateFingerprintHash(fingerprint);
 		String fingerprintFromToken = getFingerprintFromToken(token);
 		return fingerprintFromToken.equals(fingerprintHash);
+	}
+
+	public String getUsernameFromRequest(HttpServletRequest request) {
+		String token = this.getToken(request);
+		return this.getUsernameFromToken(token);
 	}
 }

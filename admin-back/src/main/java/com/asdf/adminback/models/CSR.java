@@ -31,6 +31,9 @@ public class CSR {
     private String country;
 
     @Column(nullable = false)
+    private String securityCode;
+
+    @Column(nullable = false)
     private Boolean verified;
 
     public CSR() {}
@@ -102,6 +105,14 @@ public class CSR {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
     public String getCountry() {

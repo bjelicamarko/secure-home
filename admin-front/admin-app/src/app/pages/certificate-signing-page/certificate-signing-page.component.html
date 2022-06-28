@@ -1,0 +1,52 @@
+<div class="center marg">
+    <h2>Certificate signing</h2>
+    
+    <h4>CSR data</h4>
+    <app-csr-viewer [csr]="csrBack"></app-csr-viewer>
+
+    <h4>Extensions</h4>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="rad" id="r1" (click)="selectCa()" checked>
+        <label class="form-check-label" for="r1">
+            CA
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="rad" id="r2" (click)="selectSslServer()">
+        <label class="form-check-label" for="r2">
+            SSL Server
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="rad" id="r3" (click)="selectSslClient()">
+        <label class="form-check-label" for="r3">
+            SSL Client
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="rad" id="r4" (click)="selectCodeSigning()">
+        <label class="form-check-label" for="r4">
+            Code Signing
+        </label>
+      </div>
+
+
+      <div class="marg">
+        <app-key-usage [keyUsage]="keyUsage"></app-key-usage>
+      </div>
+
+      <div *ngIf="!ca" class="marg">
+        <app-extended-key-usage [extendedKeyUsage]="extendedKeyUsage"></app-extended-key-usage>
+      </div>
+
+      <div *ngIf="ca" class="marg">
+        <h4>Basic constraints</h4>
+        <input [(ngModel)]="isCa" class="form-check-input" type="checkbox" value="" id="isCa">
+        <label class="form-check-label" for="isCa">
+            Certificate authority
+        </label>
+      </div>
+
+      <app-certificate-form (submitEvent)="submit($event)" [csr]="csr"></app-certificate-form>
+
+</div>

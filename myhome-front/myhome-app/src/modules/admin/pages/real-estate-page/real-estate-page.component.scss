@@ -1,0 +1,51 @@
+.realEstateCreationForm {
+    transform: translate(0%,15%);
+    width: 60%;
+    position: relative;
+    margin: auto;
+    background-color: lightgray;
+    color: rgba($color: black, $alpha: 0.7);
+    border-radius: 18px;
+    padding: 18px;
+  }
+  @media (max-width: 350px) {
+    .myForm {
+      min-width: 90%;
+    }
+  }
+  
+  #name-div {
+    text-align: center;
+  }
+  
+  #name {
+    position: relative;
+    margin: auto;
+    width: 70%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  #submit-button {
+    position: relative;
+    margin: auto;
+    width: 15%;
+    margin-top: 10px;
+  }
+  
+  .page-label {
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: 350;
+    letter-spacing: 1px;
+    text-align: center;
+    margin: 20px 0px;
+    font-weight: 400;
+  }
+
+  .inCenter {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  

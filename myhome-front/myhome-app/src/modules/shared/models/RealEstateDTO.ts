@@ -1,5 +1,12 @@
+import { DeviceDTO } from "src/modules/user/models/deviceDTO";
+
 export interface RealEstateDTO {
     name: string
+}
+
+export interface RealEstateWithDevicesDTO {
+    name: string
+    devices: string[]
 }
 
 export interface RealEstateToAssignDTO extends RealEstateDTO {
@@ -13,5 +20,5 @@ export interface RealEstateWithPhotoAndRoleDTO extends RealEstateDTO {
 
 export interface RealEstateWithHouseholdAndDevicesDTO {
     household: String[];
-    devices: String[]
+    devices: DeviceDTO[]
 }

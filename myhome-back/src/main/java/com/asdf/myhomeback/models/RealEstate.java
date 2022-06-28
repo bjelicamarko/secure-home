@@ -1,6 +1,7 @@
 package com.asdf.myhomeback.models;
 
 import com.asdf.myhomeback.dto.RealEstateDTO;
+import com.asdf.myhomeback.dto.RealEstateWithDevicesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,18 @@ public class RealEstate {
     @OneToMany(mappedBy = "realEstate")
     Set<UserRealEstate> users;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "real_estate_device",
+            joinColumns = @JoinColumn(name = "real_estate_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "id"))
+    Set<Device> devices;
+
     public RealEstate(RealEstateDTO realEstateDTO) {
         this.name = realEstateDTO.getName();
+    }
+
+    public RealEstate(RealEstateWithDevicesDTO realEstateDTO) {
+        this.name = realEstateDTO.getName();
+        this.photo = "/real_estates_photos/house.png";
     }
 }

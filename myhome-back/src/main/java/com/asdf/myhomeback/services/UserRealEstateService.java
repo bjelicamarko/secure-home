@@ -4,6 +4,7 @@ import com.asdf.myhomeback.dto.UserRealEstateDTO;
 import com.asdf.myhomeback.exceptions.AppUserException;
 import com.asdf.myhomeback.exceptions.RealEstateException;
 import com.asdf.myhomeback.exceptions.UserRealEstateException;
+import com.asdf.myhomeback.models.AppUser;
 import com.asdf.myhomeback.models.RealEstate;
 import com.asdf.myhomeback.models.UserRealEstate;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
@@ -13,9 +14,9 @@ import java.util.List;
 
 public interface UserRealEstateService {
 
-    void saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception;
+    UserRealEstate saveUserRealEstate(UserRealEstateDTO userRealEstateDTO) throws Exception;
 
-    void changeRoleInUserRealEstate(UserRealEstateDTO realEstateDTO) throws Exception;
+    UserRealEstate changeRoleInUserRealEstate(UserRealEstateDTO realEstateDTO) throws Exception;
 
     List<UserRealEstate> getUserRealEstatesFromUser(String username);
 
@@ -25,9 +26,11 @@ public interface UserRealEstateService {
 
     List<String> findUsersRoleInRealEstates(String username, Page<RealEstate> realEstates);
 
-    List<String> getUsersFromByRealEstateName(String name);
+    List<String> getUsersFromByRealEstateName(String username, String name);
 
     boolean isUserInRealEstate(String username, String name);
 
     String findRoleInRealEstateByName(String username, String name);
+
+    List<AppUser> getUsersFromRealEstate(String realEstateName);
 }

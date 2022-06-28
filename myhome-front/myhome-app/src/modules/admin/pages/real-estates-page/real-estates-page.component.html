@@ -1,0 +1,17 @@
+<div>
+
+    <p class="page-label">Real estates</p>
+
+    <div class="row" style="margin-top: 50px; margin-left: 3%;">
+        <h2 *ngIf="realEstates.length == 0"> There are no real estates </h2>
+        <div *ngFor="let realEstate of realEstates" class="col">
+            <app-real-estate-card [realEstate]="realEstate" (click)="showMore(realEstate.name)"
+                style="cursor: pointer;"></app-real-estate-card>
+        </div>
+    </div>
+    <div *ngIf="realEstates.length != 0" class="row" style="margin-top: 50px; margin-left: 50px;">
+        <app-pagination class='pagination' [totalItems]="totalSize" [pageSize]="pageSize"
+            (pageSelected)="changePage($event)">
+        </app-pagination>
+    </div>
+</div>

@@ -1,0 +1,168 @@
+<div class="row justify-content-center align-items-center form">
+    <form class="col-md-12 box" [formGroup]="form" (ngSubmit)="submit()">
+      <fieldset>
+        
+        <div class="form-group row">
+          <div id="email-div" class="col-md">
+            <input [(ngModel)]="csr.email" type="text" class="form-control" id="email" name="email" placeholder="Email" formControlName="email" />
+            <small id='danger-label-email' class="text-danger danger-label" *ngIf="
+            form.controls['email'].touched &&
+            form.controls['email'].errors?.['required']
+            ">
+              Email can't be empty!
+            </small>
+            <small id='danger-label-email' class="text-danger danger-label" *ngIf="
+              form.controls['email'].touched &&
+              form.controls['email'].errors?.['invalidEmail']
+              ">
+                Invalid email pattern
+            </small>
+          </div>
+        </div>
+  
+        <div class="form-group row">
+          <div id="commonName-div" class="col-md">
+            <input [(ngModel)]="csr.commonName" type="text" class="form-control" id="commonName" name="commonName" placeholder="Common name" formControlName="commonName" />
+            <small id='danger-label-commonName' class="text-danger danger-label" *ngIf="
+            form.controls['commonName'].touched &&
+            form.controls['commonName'].errors?.['required']
+            ">
+              Common name can't be empty!
+            </small>
+            <small id='danger-label-commonName' class="text-danger danger-label" *ngIf="
+              form.controls['commonName'].touched &&
+              form.controls['commonName'].errors?.['invalidMinLength']
+              ">
+                Minimum length is 2 characters!
+              </small>
+              <small id='danger-label-commonName' class="text-danger danger-label" *ngIf="
+              form.controls['commonName'].touched &&
+              form.controls['commonName'].errors?.['invalidMaxLength']
+              ">
+                Maximum length is 20 characters!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div id="organization-div" class="col-md">
+            <input [(ngModel)]="csr.organization" type="text" class="form-control" id="organization" name="organization" placeholder="Organization" formControlName="organization" />
+            <small id='danger-label-organization' class="text-danger danger-label" *ngIf="
+            form.controls['organization'].touched &&
+            form.controls['organization'].errors?.['required']
+            ">
+              Organization can't be empty!
+            </small>
+            <small id='danger-label-organization' class="text-danger danger-label" *ngIf="
+              form.controls['organization'].touched &&
+              form.controls['organization'].errors?.['invalidMinLength']
+              ">
+                Minimum length is 2 characters!
+              </small>
+              <small id='danger-label-username' class="text-danger danger-label" *ngIf="
+              form.controls['organization'].touched &&
+              form.controls['organization'].errors?.['invalidMaxLength']
+              ">
+                Maximum length is 20 characters!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div id="organizationUnit-div" class="col-md">
+            <input [(ngModel)]="csr.organizationUnit" type="text" class="form-control" id="organizationUnit" name="organizationUnit" placeholder="Organization unit" formControlName="organizationUnit" />
+            <small id='danger-label-organizationUnit' class="text-danger danger-label" *ngIf="
+            form.controls['organizationUnit'].touched &&
+            form.controls['organizationUnit'].errors?.['required']
+            ">
+              Organization unit can't be empty!
+            </small>
+            <small id='danger-label-organizationUnit' class="text-danger danger-label" *ngIf="
+              form.controls['organizationUnit'].touched &&
+              form.controls['organizationUnit'].errors?.['invalidMinLength']
+              ">
+                Minimum length is 2 characters!
+              </small>
+              <small id='danger-label-organizationUnit' class="text-danger danger-label" *ngIf="
+              form.controls['organizationUnit'].touched &&
+              form.controls['organizationUnit'].errors?.['invalidMaxLength']
+              ">
+                Maximum length is 20 characters!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div id="country-div" class="col-md">
+            <input [(ngModel)]="csr.country" type="text" class="form-control" id="country" name="country" placeholder="Country" formControlName="country" />
+            <small id='danger-label-country' class="text-danger danger-label" *ngIf="
+            form.controls['country'].touched &&
+            form.controls['country'].errors?.['required']
+            ">
+              Country can't be empty!
+            </small>
+            <small id='danger-label-country' class="text-danger danger-label" *ngIf="
+              form.controls['country'].touched &&
+              form.controls['country'].errors?.['invalidTwoLength']
+              ">
+                Country should be two characters long
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div id="state-div" class="col-md">
+            <input [(ngModel)]="csr.state" type="text" class="form-control" id="state" name="state" placeholder="State" formControlName="state" />
+            <small id='danger-label-state' class="text-danger danger-label" *ngIf="
+            form.controls['state'].touched &&
+            form.controls['state'].errors?.['required']
+            ">
+              State can't be empty!
+            </small>
+            <small id='danger-label-state' class="text-danger danger-label" *ngIf="
+              form.controls['state'].touched &&
+              form.controls['state'].errors?.['invalidMinLength']
+              ">
+                Minimum length is 2 characters!
+              </small>
+              <small id='danger-label-state' class="text-danger danger-label" *ngIf="
+              form.controls['state'].touched &&
+              form.controls['state'].errors?.['invalidMaxLength']
+              ">
+                Maximum length is 20 characters!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div id="city-div" class="col-md">
+            <input [(ngModel)]="csr.city" type="text" class="form-control" id="city" name="city" placeholder="City" formControlName="city" />
+            <small id='danger-label-city' class="text-danger danger-label" *ngIf="
+            form.controls['city'].touched &&
+            form.controls['city'].errors?.['required']
+            ">
+              City can't be empty!
+            </small>
+            <small id='danger-label-city' class="text-danger danger-label" *ngIf="
+              form.controls['city'].touched &&
+              form.controls['city'].errors?.['invalidMinLength']
+              ">
+                Minimum length is 2 characters!
+              </small>
+              <small id='danger-label-city' class="text-danger danger-label" *ngIf="
+              form.controls['city'].touched &&
+              form.controls['city'].errors?.['invalidMaxLength']
+              ">
+                Maximum length is 20 characters!
+            </small>
+          </div>
+        </div>
+  
+        <div class="row">
+          <button id="submit-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
+            Sign certificate
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>

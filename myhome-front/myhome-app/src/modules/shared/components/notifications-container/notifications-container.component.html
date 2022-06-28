@@ -1,0 +1,12 @@
+<div class="cen">
+  <h2>Notifications</h2>
+</div>
+
+<div class="container DivWithScroll DivToScroll">
+
+  <div class="row" *ngFor="let notification of notifications">
+    <app-notification-card (notificationSeen)="setSeen($event)" [notification]="notification">
+    </app-notification-card>
+  </div>
+
+</div>

@@ -2,9 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { RealEstateService } from 'src/modules/admin/services/real-estate.service';
 import { PaginationComponent } from 'src/modules/shared/components/pagination/pagination.component';
+import { RealEstateCardComponent } from 'src/modules/shared/components/real-estate-card/real-estate-card.component';
 import { RealEstateWithPhotoAndRoleDTO } from 'src/modules/shared/models/RealEstateDTO';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { UtilService } from 'src/modules/shared/services/util/util.service';
+
 @Component({
   selector: 'app-user-home-page',
   templateUrl: './user-home-page.component.html',
@@ -27,7 +29,6 @@ export class UserHomePageComponent implements OnInit {
     this.pageSize = 4;
     this.currentPage = 1;
     this.totalSize = 1;
-
   }
 
   ngOnInit(): void {

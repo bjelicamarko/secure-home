@@ -1,0 +1,21 @@
+<div>
+    <p><b>Chain: </b></p>
+    <ul>
+        <li *ngFor="let item of certificates">
+          <div (click)="handleClick(item.issuedTo)">
+            <div *ngIf="item.issuedTo === 'Tim asf'">
+              {{ item.issuedTo }}
+            </div>
+            <div style="margin-left: 20px" *ngIf="item.issuedTo === 'Admin'">
+              {{ item.issuedTo }}
+            </div>
+            <div
+              *ngIf="item.issuedTo !== 'Admin' && item.issuedTo !== 'Tim asf'"
+              style="margin-left: 40px"
+            >
+              {{ item.issuedTo }}
+            </div>
+          </div>
+        </li>
+    </ul>
+</div>

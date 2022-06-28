@@ -21,7 +21,7 @@ public interface CertificateService {
 
     void createAndWriteLeafCertificate(CertificateSigningDTO certificateSigningDTO) throws CertificateSigningDTOException;
 
-    void revokeCertificate(String alias, String reason) throws CertificateNotFound;
+    void revokeCertificate(String alias, String reason) throws Exception;
 
     void validateCertificate(String alias) throws CertificateNotFound, InvalidCertificate, CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, NoSuchProviderException;
 }

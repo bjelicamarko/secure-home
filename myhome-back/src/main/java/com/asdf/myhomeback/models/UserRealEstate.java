@@ -1,7 +1,6 @@
 package com.asdf.myhomeback.models;
 
 
-import com.asdf.myhomeback.dto.UserRealEstateDTO;
 import com.asdf.myhomeback.models.enums.UserRoleEnum;
 import lombok.*;
 

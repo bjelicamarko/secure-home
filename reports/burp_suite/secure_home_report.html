@@ -1,0 +1,496 @@
+<html>
+<head>
+<title>SecureHome application report</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'nonce-MWE5OGNhYmYtZDcyYi00YzYwLWJkYTctMjM5YWNlNWM0MzBj'; base-uri 'none';">
+<style nonce="MWE5OGNhYmYtZDcyYi00YzYwLWJkYTctMjM5YWNlNWM0MzBj">
+body {
+font-family: 'Roboto', Helvetica, Arial, sans-serif;
+color: #4d5155;
+-webkit-font-smoothing: antialiased;
+font-size: 14px;
+background-color: #F7F9FD;
+}
+
+.report {
+width: 712px;
+margin: 0 auto;
+position: relative;
+background-color: white;
+border-left: 60px solid white;
+border-right: 60px solid white;
+border-top: 20px solid white;
+border-bottom: 20px solid white;
+}
+
+.header {
+height: 150px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid #0094FF;
+}
+
+.header h1 {
+font-size: 44px;
+color: #333332;
+}
+
+.header h2 {
+font-size: 26px;
+color: #333332;
+}
+
+.line {
+border-left: 16px solid #0094FF;
+height: 150px;
+width: 24px;
+position: absolute;
+left: -40px;
+float: left;
+}
+
+.section {
+width: 100%;
+margin-top: 50px;
+}
+
+.section.no-margin {
+margin-top: 10px;
+}
+
+.label {
+white-space: nowrap;
+color: #8c8d8e;
+margin-top: 30px;
+}
+
+.label:first-child {
+margin-top: 0px;
+}
+
+.divider {
+border-bottom: 1px solid #0094FF;
+}
+
+.title h1 {
+color: #ffffff;
+padding: 10px 15px;
+margin: 0;
+font-size: 1.8em;
+}
+
+.title img {
+display: inline
+}
+
+table {
+line-height: 20px;
+}
+
+h1 {
+color: #333332;
+font-size: 24px;
+font-weight: bold;
+margin-bottom: 20px;
+}
+
+h2 {
+color: #333332;
+font-size: 18px;
+font-weight: normal;
+margin-top: 0;
+margin-bottom: 20px;
+}
+
+a {
+color: #ff6633;
+text-decoration: none;
+}
+
+.column-table .value.warning {
+color: #ff6633;
+font-size: 12px;
+}
+
+.column-table .value.error {
+color: #f32a4c;
+font-size: 12px;
+}
+
+.info-table {
+margin-right: 50px;
+}
+
+.info-table td {
+padding: 3px 3px 3px 0;
+border-bottom: 1px solid #ebf0f2;
+vertical-align: top;
+overflow-wrap: break-word;
+word-break: break-all;
+}
+
+.info-table td + td {
+margin: 20px
+}
+
+.info-table .name {
+width: 200px;
+white-space: nowrap;
+color: #8c8d8e;
+}
+
+.info-table .value {
+text-align: right;
+}
+
+.issue-table {
+border-collapse: collapse;
+margin-top: 30px;
+}
+
+.issue-table thead th {
+white-space: nowrap;
+}
+
+.issue-table tr {
+border: 0;
+border-bottom: 1px solid #8c8d8e;
+}
+
+.issue-table tr.issue-type-row {
+font-weight: bold;
+border-bottom: 0;
+}
+
+.issue-table tr th {
+text-align: left;
+padding-bottom: 8px;
+padding-right: 8px;
+width: 98%;
+}
+
+.issue-table tr .issue-path {
+word-wrap: break-word;
+max-width: 700px;
+text-align: left;
+padding-bottom: 8px;
+padding-right: 8px;
+width: 98%;
+}
+
+.issue-table td {
+padding-right: 8px;
+}
+
+.issue-table td.nowrap {
+white-space: nowrap;
+}
+
+.column-table {
+width: 100%;
+}
+
+.column-table > tbody > tr > td {
+width: 50%;
+vertical-align: top;
+}
+
+.column-table > tbody > tr > td > .value {
+display: flex;
+}
+
+.user-icon {
+padding-right: 6px;
+}
+
+.recorded-icon {
+padding-right: 10px;
+}
+
+.url {
+word-break: break-all;
+}
+
+.section.details h1 {
+margin-bottom: 30px;
+}
+
+.section.details h2 {
+font-size: 14px;
+font-weight: bold;
+color: #4d5155;
+margin: 0;
+}
+
+.section.details h3 {
+font-size: 14px;
+font-weight: normal;
+color: #8c8d8e;
+margin-top: 30px;
+margin-bottom: 20px;
+}
+
+.center {
+text-align: center;
+}
+
+.no-bullets ul {
+list-style: none;
+padding-left: 0;
+}
+
+.issue-container {
+margin-bottom: 30px;
+}
+
+@media print {
+body {
+color: #000000;
+position: relative;
+}
+
+.report {
+width: calc(100% - 80px);
+}
+
+h1, h2, a {
+color: #000000;
+}
+
+.no-print {
+display: none;
+}
+}
+.request-response {
+overflow: auto;
+border-radius: 7px;
+border: 1px solid #dce3e5;
+padding: 8px;
+color: #000000;
+}
+
+.request-response .highlight {
+background-color: rgba(255, 102, 51, 0.4);
+}
+
+.request-response, .code, pre {
+font-family: "Courier New", Courier, monospace;
+line-height: 16px;
+word-break: break-all;
+white-space: pre-wrap;
+}
+
+.request-response .snip {
+margin-top: 20px;
+margin-bottom: 20px;
+position: relative;
+border-top: 1px dashed #cbd0d1;
+}
+
+.request-response .snip > span {
+position: absolute;
+top: -13px;
+display: inline-block;
+width: 100%;
+text-align: center;
+}
+
+.request-response .snip > span > span {
+color: #8c8d8e;
+padding: 0 8px;
+background-color: #ffffff;
+}
+
+th {
+	min-width: 50px;
+    word-wrap: break-word;
+}
+
+td {
+    max-width: 600px;
+    word-wrap: break-word;
+}
+</style>
+</head>
+<body>
+
+<div class="report">
+<div class="line"></div>
+
+<div class="header">
+<div class="text">
+<h1>Scan Remediation</h1>
+<h2>Report</h2>
+</div>
+<img src='data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNzYgODkiIHZpZXdCb3g9IjAgMCAyNzYgODkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTE0OS42IDEyLjJjMi45IDAgNS40IDEgNyAyLjUgMi44IDIuOCAzLjIgNy40IDMuMiAxMi4xcy0uNSA5LjMtMy4yIDEyLjJjLTEuNiAxLjYtNCAyLjUtNyAyLjUtMy4xIDAtNS40LS43LTcuNS0zLjN2MTQuNWgtNS44di00MC4xaDUuN3YzLjFjMi4yLTIuNyA0LjYtMy41IDcuNi0zLjV6bS01Ny4zLjR2MTcuNGMwIDQuNSAyLjUgNi40IDUuOCA2LjQgMy4yIDAgNS45LTIgNS45LTYuNHYtMTcuNGg1Ljh2MjguN2gtNS42di0yLjljLTIgMi4xLTQuOCAzLjMtNy42IDMuMi0yLjYuMS01LjItLjktNy4xLTIuNi0yLjItMi4xLTIuOS00LjktMi45LTguMXYtMTguM3ptMTEyLjMgMHYxNy40YzAgNC41IDIuNSA2LjQgNS44IDYuNCAzLjIgMCA1LjktMiA1LjktNi40di0xNy40aDUuOHYyOC43aC01LjZ2LTIuOWMtMiAyLjEtNC44IDMuMy03LjYgMy4yLTIuNi4xLTUuMi0uOS03LjEtMi42LTIuMi0yLjEtMi45LTQuOS0yLjktOC4xdi0xOC4zem0tMjIuNy0xMmM1LjQgMCA5LjEgMS40IDEyLjUgNC42bC0zLjkgMy44Yy0yLjUtMi40LTUuNC0zLjEtOC45LTMuMS00LjggMC03LjMgMi42LTcuMyA2LjMtLjEgMS40LjQgMi44IDEuNSAzLjcgMSAuOSAyLjIgMS41IDQuNCAxLjhsNC44LjdjMy43LjYgNS43IDEuNCA3LjUgMyAyLjIgMiAzLjMgNC43IDMuMyA4LjMgMCA3LjQtNiAxMS44LTE0LjUgMTEuOC02LjEgMC0xMC40LTEuNC0xNC4zLTUuM2w0LTRjMi45IDIuOSA2LjMgMy45IDEwLjQgMy45IDUuMyAwIDguMy0yLjMgOC4zLTYuMiAwLTEuOC0uNS0zLjItMS42LTQuMi0xLS45LTIuNC0xLjQtNC40LTEuN2wtNC44LS43Yy0zLjMtLjUtNS44LTEuNS03LjYtMy4yLTItMS44LTMtNC40LTMtNy44LjEtNi45IDUuMi0xMS43IDEzLjYtMTEuN3ptODEuMiAxMS42YzcuNyAwIDEyLjIgNS41IDEyLjIgMTMuOXYyLjRoLTE4LjZjMCA1IDIuNSA4IDcuMyA4IDMuMiAwIDQuOS0uOSA3LTIuOWwzLjcgMy41Yy0zIDIuOS01LjcgNC41LTEwLjggNC41LTcuMiAwLTEyLjktMy44LTEyLjktMTQuNy0uMS05LjQgNC43LTE0LjcgMTIuMS0xNC43em0tMzAuNC40djI4LjdoLTUuOHYtMjguN3ptLTE2Mi42LTExLjZjNy41IDAgMTIuMiA0LjIgMTIuMiAxMSAuMSAzLjctMi4xIDcuMS01LjQgOC41IDMuMSAxLjIgNi4xIDQuMiA2LjEgOS4zIDAgNy40LTUgMTEuNC0xMi4yIDExLjRoLTE2LjR2LTQwLjJ6bTY0LjYgMTMuOS00LjQgNC40Yy0xLjMtMS4zLTIuMy0xLjktNC4zLTEuOS0zLjEgMC01LjcgMi41LTUuNyA2LjV2MTcuNGgtNS44di0yOC43aDUuN3YzLjFjMS41LTIgNC40LTMuNCA3LjYtMy40IDIuNy0uMiA1LjIuOCA2LjkgMi42em0xMDkuNS0xMC41djguMmg1LjZ2NC40aC01LjZ2MTZjMCAyLjEgMSAzLjMgMy4yIDMuM2gyLjR2NC45aC0zLjVjLTUuNCAwLTcuOS0zLjgtNy45LTh2LTE2LjJoLTMuM3YtNC40aDMuM3YtOC4yem0tOTYuMSAxM2MtNS4zIDAtNiA0LjQtNiA5LjVzLjcgOS42IDYgOS42IDUuOS00LjUgNS45LTkuNi0uNi05LjUtNS45LTkuNXptLTc3LjkgNi4xaC05LjZ2MTIuM2g5LjZjNC4yIDAgNi42LTIuNiA2LjYtNi4ycy0yLjQtNi4xLTYuNi02LjF6bTE5Mi44LTYuNWMtMi40IDAtNC43IDEuNC01LjcgMy42LS41IDEuMi0uOCAyLjUtLjcgMy45aDEyLjljMC0xLjMtLjMtMi43LS44LTMuOS0xLTIuMS0zLjItMy42LTUuNy0zLjZ6bS0xOTMuNC0xMC41aC05LjF2MTEuNWg5LjFjMy45IDAgNi42LTIgNi42LTUuOCAwLTMuNy0yLjctNS43LTYuNi01Ljd6bTE2My4zLTUuN3Y2LjFoLTYuMXYtNi4xeiIgZmlsbD0iIzAwMDAyMyIvPjxwYXRoIGQ9Im00MS42LjhoLTQwLjd2NDAuN2g0MC43eiIgZmlsbD0iIzAwOTRmZiIvPjxwYXRoIGQ9Im0yMi44IDM1LjhoLTMuMnYtNC43bDQuMy01LjJoLTQuM3YtNi40aC03LjZsNy43LTkuNXYtMy42aDMuMnY0LjdsLTQuMyA1LjJoNC4zdjYuNGg3LjdsLTcuNyA5LjV2My42eiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Im0xMjQuMSA2Ni40YzEuMy0uMSAyLjcuNCAzLjcgMS4zIDEuNSAxLjUgMS45IDQgMS45IDYuM3MtLjQgNC44LTEuOSA2LjNjLTEgLjktMi4zIDEuNC0zLjcgMS4zLTEuNy4xLTMuNC0uNy00LjQtMi4xdjloLTEuNnYtMjJoMS42djEuOWMxLTEuNCAyLjctMi4yIDQuNC0yem0tMjYuMSAwYzMuNyAwIDYgMi43IDYgNy4zdi43aC0xMC40YzAgMy44IDEuNyA1LjkgNC45IDUuOSAxLjYuMSAzLjEtLjYgNC4xLTEuOGwxLjIuOWMtMS40IDEuNS0zLjMgMi40LTUuNCAyLjMtNC4xIDAtNi40LTIuNi02LjQtNy42IDAtNC45IDIuMi03LjcgNi03Ljd6bTcwLjEgMGMzLjggMCA2IDIuNyA2IDcuM3YuN2gtMTAuNGMwIDMuOCAxLjcgNS45IDQuOSA1LjkgMS42LjEgMy4xLS42IDQuMS0xLjhsMS4yLjljLTEuNCAxLjUtMy4zIDIuNC01LjQgMi4zLTQuMSAwLTYuNC0yLjYtNi40LTcuNiAwLTQuOSAyLjItNy43IDYtNy43em00Mi4xLTd2MjJoLTEuNnYtMS45Yy0xIDEuNC0yLjcgMi4yLTQuNCAyLjEtMS4zLjEtMi43LS40LTMuNy0xLjMtMS41LTEuNS0xLjktNC0xLjktNi4zIDAtMi40LjQtNC44IDEuOS02LjMgMS0uOSAyLjMtMS40IDMuNy0xLjMgMS43LS4xIDMuNC43IDQuNCAyLjF2LTloMS42em0tNTAuOSA4LjUtMS4xIDEuMWMtMS4yLS45LTIuNy0xLjMtNC4yLTEuMy0yLjUgMC0zLjggMS0zLjggMi45IDAgMS42LjkgMi4zIDMgMi41bDIuNC4yYzIuNS4yIDQuNCAxIDQuNCAzLjkgMCAyLjctMi4zIDQuNC02IDQuNC0yLjYgMC00LjUtLjctNi4xLTIuMWwxLjEtMS4xYzEuMyAxLjMgMy4xIDEuOSA0LjkgMS44IDIuOSAwIDQuNS0xIDQuNS0zIDAtMS42LS45LTIuMy0yLjktMi41bC0yLjUtLjJjLTMtLjItNC41LTEuNS00LjUtMy45IDAtMi42IDIuMS00LjIgNS40LTQuMiAyLS4xIDMuOS41IDUuNCAxLjV6bTgyLjcuMWMxLjYgMS42IDEuOSAzLjkgMS45IDZzLS4zIDQuNC0xLjkgNmMtMi4zIDIuMi02IDIuMi04LjMgMC0xLjYtMS42LTEuOS0zLjktMS45LTZzLjMtNC40IDEuOS02YzIuMy0yLjIgNS45LTIuMiA4LjMgMHptLTEyNS42LS4yLTEuMSAxLjFjLS43LS44LTEuNy0xLjItMi44LTEuMi0yLjYgMC00IDIuMS00IDQuNXY5LjJoLTEuNnYtMTQuOGgxLjZ2MmMxLTEuNCAyLjYtMi4yIDQuNC0yLjIgMS4yLS4xIDIuNS40IDMuNSAxLjR6bTI1LjkgMC0xLjEgMS4xYy0uNy0uOC0xLjctMS4yLTIuOC0xLjItMi42IDAtNCAyLjEtNCA0LjV2OS4yaC0xLjZ2LTE0LjhoMS42djJjMS0xLjQgMi42LTIuMiA0LjQtMi4yIDEuMy0uMSAyLjYuNCAzLjUgMS40em0xMTIuNC0xLjRjMi4zLjggMy44IDMuMSAzLjYgNS41djkuNWgtMS42di05LjNjMC0yLjktMS40LTQuNS00LjEtNC41cy00LjIgMS42LTQuMiA0LjV2OS4zaC0xLjZ2LTE0LjloMS42djEuOGMxLjUtMS45IDQtMi43IDYuMy0xLjl6bS01Ny43LTd2MS41aC0xMS43djguN2gxMHYxLjVoLTEwdjguOWgxMS43djEuNWgtMTMuNHYtMjJoMTMuNHptMjQuNCAyLjR2NC44aDMuNHYxLjJoLTMuNHY5LjljMCAxLjYuNyAyLjUgMi4zIDIuNWgxLjF2MS40aC0xLjRjLTIuNCAwLTMuNi0xLjYtMy42LTMuOXYtOS45aC0ydi0xLjJoMnYtNC44em0tMTQyLjkgNC43YzIuMy44IDMuOCAzLjEgMy42IDUuNXY5LjVoLTEuNnYtOS4zYzAtMi45LTEuNC00LjUtNC4xLTQuNXMtNC4yIDEuNi00LjIgNC41djkuM2gtMS42di0xNWgxLjZ2MS44YzEuNS0xLjkgNC0yLjcgNi4zLTEuOHptLTEwLjYtNy4xdjEuNWgtMTEuN3Y4LjdoMTB2MS41aC0xMHY4LjloMTEuN3YxLjVoLTEzLjR2LTIyaDEzLjR6bTE0Ny42IDcuMXYxNC45aC0xLjZ2LTE0Ljl6bS0xMjguMS00Ljd2NC44aDMuNHYxLjJoLTMuNHY5LjljMCAxLjYuNyAyLjUgMi4zIDIuNWgxLjF2MS40aC0xLjRjLTIuNCAwLTMuNi0xLjYtMy42LTMuOXYtOS45aC0ydi0xLjJoMnYtNC44em01OC4zIDQuN3YxNC45aC0xLjZ2LTE0Ljl6bTgzLjEgMHYxNC45aC0xLjZ2LTE0Ljl6bTUuOSAyLjVjLTEuMiAxLjItMS4zIDMuMS0xLjMgNC44di4yYzAgMS43LjEgMy43IDEuMyA1IDEuNyAxLjcgNC41IDEuNyA2LjIgMCAxLjItMS4yIDEuMy0zLjEgMS4zLTQuOHYtLjJjMC0xLjctLjEtMy43LTEuMy01LTEuNy0xLjctNC41LTEuNy02LjIgMHptLTMwLjMtMS4yYy0zLjcgMC00LjIgMy4yLTQuMiA2LjNzLjYgNi4zIDQuMiA2LjNjMy43IDAgNC4yLTMuMiA0LjItNi4zcy0uNi02LjMtNC4yLTYuM3ptLTgwLjUgMGMtMy43IDAtNC4yIDMuMi00LjIgNi4zcy42IDYuMyA0LjIgNi4zIDQuMi0zIDQuMi02LjF2LS4yYzAtMy4yLS41LTYuMy00LjItNi4zem00NC4yIDBjLTEuNyAwLTMuMiAxLTMuOSAyLjUtLjQuOS0uNiAxLjktLjUgMi44aDguOGMwLTEtLjItMS45LS41LTIuOC0uNy0xLjYtMi4yLTIuNi0zLjktMi41em0tNzAuMSAwYy0xLjcgMC0zLjIgMS0zLjkgMi41LS40LjktLjYgMS45LS41IDIuOGg4LjhjMC0xLS4yLTEuOS0uNS0yLjgtLjctMS42LTIuMi0yLjYtMy45LTIuNXptNDcuOS04LjR2MmgtMnYtMnptNjkuOCAwdjJoLTJ2LTJ6bTEzLjMgMHYyaC0ydi0yeiIgZmlsbD0iIzAwOTRmZiIvPjwvc3ZnPg==' width="210" height="60"/>
+</div>
+
+<div class="section no-margin">
+<span class="label">Generated by Burp Suite Enterprise Edition | 2022-06-28 4:44 PM</span>
+</div>
+
+<div class="section">
+<table class="column-table">
+<tbody>
+<tr>
+<td>
+<div class="label">Site name:</div>
+<div class="value">secure_home</div>
+<div class="label">Status:</div>
+<div class="value">Completed</div>
+</td>
+<td>
+<div class="label">Included URLs:</div>
+<div class="value url">https://localhost:8081/api/</div><div class="value url">https://localhost:8081/api/users/login</div><div class="value url">https://localhost:8081/api/alarmNotifications</div><div class="value url">https://localhost:8081/api/alarmNotifications/countNotSeend</div><div class="value url">https://localhost:8081/api/alarmNotifications/notSeen</div><div class="value url">https://localhost:8081/api/alarmNotifications/setSeen</div><div class="value url">https://localhost:8081/api/users/deleteUser/9</div><div class="value url">https://localhost:8081/api/users/getAllUsersButAdmin</div><div class="value url">https://localhost:8081/api/users/logout</div><div class="value url">https://localhost:8081/api/users/register</div><div class="value url">https://localhost:8081/api/users/searchUsers</div><div class="value url">https://localhost:8081/api/users/unlockUser</div><div class="value url">https://localhost:8081/api/users/verify-registration/admin</div><div class="value url">https://localhost:8081/api/devices</div><div class="value url">https://localhost:8081/api/devices/all</div><div class="value url">https://localhost:8081/api/devices/createAllReport</div><div class="value url">https://localhost:8081/api/devices/createReport</div><div class="value url">https://localhost:8081/api/devices/filterAllMessages</div><div class="value url">https://localhost:8081/api/devices/filterMessages</div><div class="value url">https://localhost:8081/api/devices/getAllMessagesFromDevice/Fridge</div><div class="value url">https://localhost:8081/api/devices/getAllMessagesFromRealEstate/Kuca%201</div><div class="value url">https://localhost:8081/api/devices/names</div><div class="value url">https://localhost:8081/api/devices/updateDeviceReadPeriod</div><div class="value url">https://localhost:8081/api/devices/Fridge</div><div class="value url">https://localhost:8081/api/logs</div><div class="value url">https://localhost:8081/api/logs/filterLogs</div><div class="value url">https://localhost:8081/api/realEstate</div><div class="value url">https://localhost:8081/api/realEstate/all</div><div class="value url">https://localhost:8081/api/realEstate/deviceNames/Kuca%201</div><div class="value url">https://localhost:8081/api/realEstate/findLowestReadPeriod/Kuca%201</div><div class="value url">https://localhost:8081/api/realEstate/toAssign</div><div class="value url">https://localhost:8081/api/realEstate/1</div><div class="value url">https://localhost:8081/api/rules</div><div class="value url">https://localhost:8081/api/rules/2</div><div class="value url">https://localhost:8081/api/ownerships</div><div class="value url">https://localhost:8081/api/ownerships/delete</div><div class="value url">https://localhost:8081/api/ownerships/fromUser</div><div class="value url">https://localhost:8081/api/ownerships/Kuca%201</div>
+
+<div class="label">Application logins:</div>
+<div class="value"> <img src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IgogICAgIHZpZXdCb3g9IjAgMCAxNyAxNyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTcgMTc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojMzMzMzMyO30KPC9zdHlsZT4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTEzLjEsMTEuNGMtMC4xLTEuNi0xLTMuMS0yLjMtMy45YzAuMy0wLjQsMC41LTEsMC41LTEuNWMwLTEuNS0xLjItMi44LTIuOC0yLjhTNS43LDQuNSw1LjcsNgoJYzAsMC42LDAuMiwxLjEsMC41LDEuNWMtMS40LDAuOC0yLjMsMi4zLTIuMyw0djEuNWwwLDAuMWMwLDAuMywwLjMsMC41LDAuNiwwLjVjMC4zLDAsMC42LTAuMywwLjYtMC42di0xLjVsMC0wLjEKCUM1LjIsMTAuMSw2LDksNy4yLDguNWMwLDAsMCwwLDAsMGwwLjEsMGMwLDAtMC4xLDAtMC4xLDAuMUM3LjYsOC43LDgsOC44LDguNSw4LjhjMC41LDAsMC45LTAuMSwxLjMtMC4zYzEuMiwwLjUsMi4xLDEuOCwyLjEsMy4xCgl2MS41bDAsMC4xYzAsMC4zLDAuMywwLjUsMC42LDAuNWMwLjMsMCwwLjYtMC4zLDAuNi0wLjZ2LTEuNUwxMy4xLDExLjR6IE04LjUsNy42QzcuNiw3LjYsNyw2LjksNyw2czAuNy0xLjUsMS41LTEuNVMxMCw1LjIsMTAsNgoJUzkuNCw3LjYsOC41LDcuNnoiLz4KPC9zdmc+' width="22" height="22" class="user-icon"/> administrator</div><div class="value"> <img src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IgogICAgIHZpZXdCb3g9IjAgMCAxNyAxNyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTcgMTc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojMzMzMzMyO30KPC9zdHlsZT4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTEzLjEsMTEuNGMtMC4xLTEuNi0xLTMuMS0yLjMtMy45YzAuMy0wLjQsMC41LTEsMC41LTEuNWMwLTEuNS0xLjItMi44LTIuOC0yLjhTNS43LDQuNSw1LjcsNgoJYzAsMC42LDAuMiwxLjEsMC41LDEuNWMtMS40LDAuOC0yLjMsMi4zLTIuMyw0djEuNWwwLDAuMWMwLDAuMywwLjMsMC41LDAuNiwwLjVjMC4zLDAsMC42LTAuMywwLjYtMC42di0xLjVsMC0wLjEKCUM1LjIsMTAuMSw2LDksNy4yLDguNWMwLDAsMCwwLDAsMGwwLjEsMGMwLDAtMC4xLDAtMC4xLDAuMUM3LjYsOC43LDgsOC44LDguNSw4LjhjMC41LDAsMC45LTAuMSwxLjMtMC4zYzEuMiwwLjUsMi4xLDEuOCwyLjEsMy4xCgl2MS41bDAsMC4xYzAsMC4zLDAuMywwLjUsMC42LDAuNWMwLjMsMCwwLjYtMC4zLDAuNi0wLjZ2LTEuNUwxMy4xLDExLjR6IE04LjUsNy42QzcuNiw3LjYsNyw2LjksNyw2czAuNy0xLjUsMS41LTEuNVMxMCw1LjIsMTAsNgoJUzkuNCw3LjYsOC41LDcuNnoiLz4KPC9zdmc+' width="22" height="22" class="user-icon"/> user</div>
+
+<div class="label">Reference:</div>
+
+<div class="value">
+#18
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<table class="column-table">
+<tbody>
+<tr>
+<td>
+<h2>Issues by severity</h2>
+<table class="info-table">
+<tbody>
+<tr>
+<td class="name">High:</td>
+<td class="value">0</td>
+</tr>
+<tr>
+<td class="name">Medium:</td>
+<td class="value">1</td>
+</tr>
+<tr>
+<td class="name">Low:</td>
+<td class="value">0</td>
+</tr>
+<tr>
+<td class="name">Information:</td>
+<td class="value">0</td>
+</tr>
+<tr>
+<td class="name">Total issues found:</td>
+<td class="value">1</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<h2>Scan statistics</h2>
+<table class="info-table">
+<tbody>
+<tr>
+<td class="name">Total scanned URLs:</td>
+<td class="value">38</td>
+</tr>
+<tr>
+<td class="name">URLs with errors:</td>
+<td class="value">0</td>
+</tr>
+<tr>
+<td class="name">Requests made:</td>
+<td class="value">6645</td>
+</tr>
+<tr>
+<td class="name">Network errors:</td>
+<td class="value">0</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="section divider"></div>
+
+<div class="section">
+<h1>Issues found on https://localhost:8081</h1>
+
+<table class='issue-table'>
+<thead>
+<tr>
+<th>URLs By issue type</th>
+<th>Severity</th>
+<th>Confidence</th>
+<th class="no-print">More detail</th>
+</tr>
+</thead>
+<tbody>
+<tr class="issue-type-row">
+<td colspan="4">TLS certificate [1]</td>
+</tr>
+
+<tr>
+<td class="issue-path issue-link">
+/
+</td>
+<td>Medium</td>
+<td class="nowrap">Certain</td>
+<td class="nowrap center no-print"><a href="#7103312411967617024">&gt;&gt;</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="section divider"></div>
+
+<div class="section details">
+<h1>More details for https://localhost:8081</h1>
+</div>
+
+<div class="section details">
+<div class="issue-container">
+<a name="7103312411967617024"></a>
+<h2>TLS certificate</h2>
+<a href="">/</a>
+
+<h3>Issue detail:</h3>
+<div>
+The following problems were identified with the server's TLS certificate:<ul><li>The server's certificate is not valid for the server's hostname.</li><li>The server's certificate is not trusted.</li></ul><b>Note:</b> Burp relies on the Java trust store to determine whether certificates are trusted. The Java trust store does not include every root CA certificate that is included within browser trust stores. Burp might incorrectly report that a certificate is not trusted, if a valid root CA certificate is being used that is not included in the Java trust store.<br><br>The server presented the following certificate:<br><br><table><tr><td><b>Issued to:</b>&nbsp;&nbsp;</td><td>SecureHome</td></tr><tr><td><b>Issued by:</b>&nbsp;&nbsp;</td><td>UID=2,1.2.840.113549.1.9.1=#161561646d696e5f617366406d61696c64726f702e6363,C=RS,OU=Katedra za informatiku,O=UNS-FTN,CN=Admin</td></tr><tr><td><b>Valid from:</b>&nbsp;&nbsp;</td><td>Wed Jun 01 00:00:00 CEST 2022</td></tr><tr><td><b>Valid to:</b>&nbsp;&nbsp;</td><td>Thu Jun 01 00:00:00 CEST 2023</td></tr></table>
+</div>
+
+<h3>
+Issue background
+</h3>
+<div>
+<p>TLS (or SSL) helps to protect the confidentiality and integrity of information in transit between the browser and server, and to provide authentication of the server's identity. To serve this purpose, the server must present an TLS certificate that is valid for the server's hostname, is issued by a trusted authority and is valid for the current date. If any one of these requirements is not met, TLS connections to the server will not provide the full protection for which TLS is designed.</p>
+<p>It should be noted that various attacks exist against TLS in general, and in the context of HTTPS web connections in particular. It may be possible for a determined and suitably-positioned attacker to compromise TLS connections without user detection even when a valid TLS certificate is used. </p>
+</div>
+
+<h3>References</h3>
+<div class="no-bullets">
+<ul><li><a href="https://wiki.mozilla.org/Security/Server_Side_TLS">SSL/TLS Configuration Guide</a></li></ul>
+</div>
+
+<h3>Vulnerability classifications</h3>
+<div class="no-bullets">
+<ul>
+<li><a href="https://cwe.mitre.org/data/definitions/295.html">CWE-295: Improper Certificate Validation</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a></li>
+<li><a href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<div class="section divider"></div>
+
+</div>
+</body>
+</html>

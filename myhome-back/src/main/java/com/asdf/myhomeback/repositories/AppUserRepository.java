@@ -28,11 +28,11 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             " and u.verified = true and u.accountNonLocked = true")
     Optional<AppUser> findByUsernameVerifiedUnlocked(String username);
 
-    @Query("select u from AppUser u where not u.userType = 'ROLE_ADMIN' ")
+    @Query("select u from AppUser u where not u.userType = 'ROLE_ADMIN' and not u.username = 'devices' and not u.username = 'panicdev'")
     Page<AppUser> getAllUsersButAdmin(Pageable pageable);
 
     @Query("select u from AppUser u " +
-            "where not u.userType = 'ROLE_ADMIN' and " +
+            "where not u.userType = 'ROLE_ADMIN'  and not u.username = 'devices' and not u.username = 'panicdev' and " +
             "( :search = '' " +
             "or lower(u.firstname) like lower(concat('%', :search, '%')) " +
             "or lower(u.lastname) like lower(concat('%', :search, '%'))" +
@@ -56,4 +56,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByEmail(String email);
 
+    Optional<AppUser> findByUsernameAndAccountNonLocked(String username, boolean b);
 }

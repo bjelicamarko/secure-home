@@ -32,7 +32,7 @@ public class BasicValidator {
     }
 
     public static boolean isValidRealEstateName(String realEstateName){
-        String reg = "^[a-zA-Z0-9\s]*$";
+        String reg = "^[a-zA-Z0-9\\s]*$";
         Pattern pat = Pattern.compile(reg);
 
         return pat.matcher(realEstateName).matches();

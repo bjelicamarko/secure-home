@@ -1,0 +1,66 @@
+<div class="container center">
+    <h4>Extended key usage</h4>
+
+    <div class="row">
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.adobePdfSigning" class="form-check-input" type="checkbox" value="" id="adobePdfSigning">
+            <label class="form-check-label" for="adobePdfSigning">
+                Adobe pdf signing
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.documentSigning" class="form-check-input" type="checkbox" value="" id="documentSigning">
+            <label class="form-check-label" for="documentSigning">
+                Document Signing
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.ipSecurityEndSystem" class="form-check-input" type="checkbox" value="" id="ipSecurityEndSystem">
+            <label class="form-check-label" for="ipSecurityEndSystem">
+                Ip security end system
+            </label>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.ocspSigning" class="form-check-input" type="checkbox" value="" id="ocspSigning">
+            <label class="form-check-label" for="ocspSigning">
+                Ocsp signing
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.tlsWebClientAuthentication" class="form-check-input" type="checkbox" value="" id="tlsWebClientAuthentication">
+            <label class="form-check-label" for="tlsWebClientAuthentication">
+                Tls web client authentication
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.timeStamping" class="form-check-input" type="checkbox" value="" id="timeStamping">
+            <label class="form-check-label" for="timeStamping">
+                Time stamping
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.tlsWebServerAuthentication" class="form-check-input" type="checkbox" value="" id="tlsWebServerAuthentication">
+            <label class="form-check-label" for="tlsWebServerAuthentication">
+                Tls web server authentication
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.emailProtection" class="form-check-input" type="checkbox" value="" id="emailProtection">
+            <label class="form-check-label" for="emailProtection">
+                Email protection 
+            </label>
+        </div>
+        <div class="col">
+            <input [(ngModel)]="extendedKeyUsage.tslSigning" class="form-check-input" type="checkbox" value="" id="tslSigning">
+            <label class="form-check-label" for="tslSigning">
+                Tsl signing
+            </label>
+        </div>
+    </div>
+</div>

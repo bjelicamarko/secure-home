@@ -26,6 +26,15 @@ public class AppUser implements UserDetails {
     @Column(name = "password", unique=false, nullable=false)
     private String password;
 
+    @Column(name = "account_non_locked", nullable = false)
+    private boolean accountNonLocked;
+
+    @Column(name = "failed_attempt")
+    private int failedAttempt;
+
+    @Column(name = "lock_time")
+    private Long lockTime;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -98,9 +107,13 @@ public class AppUser implements UserDetails {
         return true;
     }
 
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
@@ -113,4 +126,19 @@ public class AppUser implements UserDetails {
         return true;
     }
 
+    public int getFailedAttempt() {
+        return failedAttempt;
+    }
+
+    public void setFailedAttempt(int failedAttempt) {
+        this.failedAttempt = failedAttempt;
+    }
+
+    public Long getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(Long lockTime) {
+        this.lockTime = lockTime;
+    }
 }

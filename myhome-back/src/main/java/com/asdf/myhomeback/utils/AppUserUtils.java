@@ -14,13 +14,13 @@ public class AppUserUtils {
         if(!isValidUsername(appUser.getUsername()))
             throw new AppUserException("Invalid username. None other than latin characters and digits, length: [3-20].");
         if(appUser.getPassword() == null || !isPasswordValid(appUser.getPassword()))
-            throw new AppUserException("""
-                    Invalid password.
-                    Password must contain at least one digit [0-9].
-                    Password must contain at least one lowercase Latin character [a-z].
-                    Password must contain at least one uppercase Latin character [A-Z].
-                    Password must contain at least one special character ! @ # & ( ) - + = < >.
-                    Password must contain a length of at least 8 characters and a maximum of 20 characters."""); // Proveri sifru
+            throw new AppUserException("\n" +
+                    "Invalid password.\n" +
+                    "Password must contain at least one digit [0-9].\n" +
+                    "Password must contain at least one lowercase Latin character [a-z].\n" +
+                    "Password must contain at least one uppercase Latin character [A-Z].\n" +
+                    "Password must contain at least one special character ! @ # & ( ) - + = < >.\n" +
+                    "Password must contain a length of at least 8 characters and a maximum of 20 characters."); // Proveri sifru
         if(PasswordValidator.isCommon(appUser.getPassword()))
             throw new AppUserException("Common password. Try another one");
         if(appUser.getEmail() == null || !isEmailValid(appUser.getEmail()))
