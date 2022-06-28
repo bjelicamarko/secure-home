@@ -2,6 +2,7 @@ package com.asdf.adminback.services.impl;
 
 import com.asdf.adminback.exceptions.AppUserException;
 import com.asdf.adminback.models.AppUser;
+import com.asdf.adminback.models.IpAddress;
 import com.asdf.adminback.repositories.AppUserRepository;
 import com.asdf.adminback.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +23,9 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private List<IpAddress> maliciousIpAddresses;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -85,6 +92,20 @@ public class AppUserServiceImpl implements AppUserService {
     public boolean isUserLocked(String username) {
         Optional<AppUser> user = appUserRepository.findByUsernameAndAccountNonLocked(username, false);
         return user.isEmpty();
+    }
+
+    @Override
+    public boolean checkMaliciousIpAddress(String remoteAddress) {
+
+        IpAddress ipAddress = new IpAddress(remoteAddress);
+
+
+        for (IpAddress ipAddressTemp : maliciousIpAddresses) {
+            if(ipAddress.getAddress().equals(ipAddressTemp.getAddress())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

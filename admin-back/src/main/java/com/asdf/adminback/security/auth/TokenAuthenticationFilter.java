@@ -33,12 +33,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		String username;
 		String authToken = tokenUtils.getToken(request);
 
+		String fingerprint = tokenUtils.getFingerprintFromCookie(request);
+
 		if (authToken != null) {
 			username = tokenUtils.getUsernameFromToken(authToken);
 			if (username != null) {
 				if(appUserService.isUserLocked(username)) {
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-					if (tokenUtils.validateToken(authToken, userDetails)) {
+					if (tokenUtils.validateToken(authToken, userDetails, fingerprint)) {
 						TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
 						authentication.setToken(authToken);
 						SecurityContextHolder.getContext().setAuthentication(authentication);

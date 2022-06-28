@@ -106,17 +106,6 @@ public class TokenUtils {
 		return issueAt;
 	}
 
-	public String getAudienceFromToken(String token) {
-		String audience;
-		try {
-			final Claims claims = this.getAllClaimsFromToken(token);
-			audience = claims.getAudience();
-		} catch (Exception e) {
-			audience = null;
-		}
-		return audience;
-	}
-
 	public Date getExpirationDateFromToken(String token) {
 		Date expiration;
 		try {
@@ -184,20 +173,6 @@ public class TokenUtils {
 
 	public String getAuthHeaderFromHeader(HttpServletRequest request) {
 		return request.getHeader(AUTH_HEADER);
-	}
-
-	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-		return (lastPasswordReset != null && created.before(lastPasswordReset));
-	}
-
-	private Boolean isTokenExpired(String token) {
-		final Date expiration = this.getExpirationDateFromToken(token);
-		return expiration.before(new Date());
-	}
-
-	private Boolean ignoreTokenExpiration(String token) {
-		String audience = this.getAudienceFromToken(token);
-		return (audience.equals(AUDIENCE_TABLET) || audience.equals(AUDIENCE_MOBILE));
 	}
 
 	private Claims getAllClaimsFromToken(String token) {

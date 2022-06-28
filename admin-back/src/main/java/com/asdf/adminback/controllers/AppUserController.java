@@ -11,6 +11,7 @@ import com.asdf.adminback.services.LogService;
 import com.asdf.adminback.util.AppUserUtils;
 import com.asdf.adminback.util.LogMessGen;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +47,13 @@ public class AppUserController {
     private AppUserService appUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest)  {
+    public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
+                                                                       HttpServletRequest  request)  {
+        if (appUserService.checkMaliciousIpAddress(request.getRemoteAddr())) {
+            logService.generateErrLog(LogMessGen.maliciousIpAddress(request.getRemoteAddr()));
+            return new ResponseEntity<>(new UserTokenStateDTO("Your address is on list of malicious IP addresses."), HttpStatus.UNAUTHORIZED);
+        }
+
         Authentication authentication = null;
         try {
             AppUserUtils.checkLoginUserInfo(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -88,17 +95,21 @@ public class AppUserController {
 
         // Kreiraj token za tog korisnika
         AppUser appUser = (AppUser) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles());
+        String fingerprint = tokenUtils.generateFingerprint();
+        String jwt = tokenUtils.generateToken(appUser.getUsername(), appUser.getRoles(), fingerprint);
         int expiresIn = tokenUtils.getExpiredIn();
 
         if (appUser.getFailedAttempt() > 0) {
             appUserService.resetFailedAttempts(appUser.getUsername());
         }
 
+        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", cookie);
         logService.generateInfoLog(LogMessGen.successfulLogin(appUser.getUsername()));
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
+        return ResponseEntity.ok().headers(headers).body(new UserTokenStateDTO(jwt, expiresIn));
     }
 
     @PutMapping(value = "/unlockUser")

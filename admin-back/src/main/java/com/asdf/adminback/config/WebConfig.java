@@ -11,6 +11,9 @@ public class WebConfig implements WebMvcConfigurer {
  
 	@Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("https://localhost:4000"); // dozvolio front
+        registry.addMapping("/**").allowedOrigins("https://localhost:4000")
+                .allowedMethods("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH")
+                .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization")
+                .allowCredentials(true);
     }
 }

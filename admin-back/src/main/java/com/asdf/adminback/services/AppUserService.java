@@ -21,4 +21,6 @@ public interface AppUserService extends UserDetailsService {
     boolean unlockWhenTimeExpired(AppUser user);
 
     boolean isUserLocked(String username);
+
+    boolean checkMaliciousIpAddress(String remoteAddress);
 }
