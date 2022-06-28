@@ -2,16 +2,12 @@ package com.asdf.myhomeback;
 
 import com.asdf.myhomeback.models.drools.IpAddress;
 import com.asdf.myhomeback.services.LogService;
-import com.asdf.myhomeback.services.impls.LogServiceImpl;
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -21,7 +17,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @EnableMongoRepositories(basePackages = "com.asdf.myhomeback.repositories.mongo")
