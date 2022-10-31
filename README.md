@@ -3,6 +3,8 @@
 
 ## The architecture of the application
 
+![alt text](https://github.com/bjelicamarko/secure-home/blob/main/the_architecture_of_the_application.jpg)
+
 ## Running the application
 
 - Run SecureHome backend application as Spring boot application. 
